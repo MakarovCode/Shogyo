@@ -152,7 +152,7 @@ imageO.remote_source_url = Faker::Avatar.image
 imageO.save validate: false
 
 cities = City.all
-(2..10).each do |i|
+(1..10).each do |i|
   Level.create name: Faker::Games::Pokemon.name, min: i*100, max: i*100*2, number: i, description: Faker::Lorem.paragraphs
 end
 (1..30).each do |i|
