@@ -1,0 +1,52 @@
+<% if user_signed_in? %>
+<% @contact = current_user.user_contacts.new %>
+<button type="button" class="btn btn-secondary <%= btn %>" data-toggle="modal" data-target="#user-contact-modal-<%= id%>">
+  <% if label.nil? %>
+  Contactar
+  <% else %>
+  <%= label %>
+  <% end %>
+</button>
+<!-- Modal -->
+<div class="modal fade" id="user-contact-modal-<%= id%>" tabindex="-1" role="dialog" aria-labelledby="buy-modalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <%= form_for [:account, user, @contact], url: account_user_contacts_path(user) do |f| %>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-left" id="buy-modalLabel">
+          Contactar a <%= user.name %>
+        </h4>
+      </div>
+      <div class="modal-body text-left">
+        <p class="green">
+          Escribe un mensaje para <%= user.name %>
+        </p>
+        <div class="">
+
+          <%= f.text_area :message, class: "form-control", placeholder: "Escribe tu mensaje...", style: "width: 100%; height: 200px;" %>
+
+        </div>
+        <p class="green">
+          Al dar click en contactar estas aceptando nuestros términos y condiciones.
+          <br>
+          <br>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#terms-modal">
+            Ver términos y condiciones
+          </button>
+        </p>
+
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" value="<%= redirect_to %>" name="redirect_to">
+        <button type="button" class="btn btn-link" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary btn-lg">
+          Contactar
+        </button>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
+<% end %>

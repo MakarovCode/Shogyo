@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-md-2">
+    <%= render "account/shared/sidebar" %>
+  </div>
+  <div class="col-md-10">
+    <table class="table table-responsive" style="border: none;">
+      <% if @purchases.count == 0%>
+        <% if params[:as] == "buyer"%>
+        <%= render "layouts/no_results", namespace: "Compras" %>
+        <% else %>
+        <%= render "layouts/no_results", namespace: "Ventas" %>
+        <% end %>
+      <% end %>
+      <% @purchases.each do |purchase| %>
+        <% if params[:as] == "buyer"%>
+          <%= render "account/purchases/buyer_item", purchase: purchase %>
+        <% else %>
+          <%= render "account/purchases/seller_item", purchase: purchase %>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>

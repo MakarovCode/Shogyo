@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="grid2 blog-masonry">
+      <div class="grid-sizer2"></div>
+
+      <% if @publications.count == 0%>
+      <%= render "layouts/no_results", namespace: "Publicaciones" %>
+      <% end %>
+
+      <% @publications.each do |publication| %>
+        <%= render "market/publications/index/grid_item", publication: publication %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <%= paginate @publications %>
+  </div>
+</div>

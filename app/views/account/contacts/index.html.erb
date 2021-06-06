@@ -1,0 +1,91 @@
+<div class="row">
+  <div class="col-md-2">
+    <%= render "account/shared/sidebar" %>
+  </div>
+  <div class="col-md-10">
+    <table class="table table-responsive" style="border: none;">
+      <% if @conversations.count == 0%>
+      <%= render "layouts/no_results", namespace: "Conversaciones" %>
+      <% end %>
+      <% @conversations.each do |conversation| %>
+      <% contacts = UserContact.between_users(current_user.id, conversation.id).order(created_at: :desc).first(2) %>
+      <% contact = contacts.first %>
+      <% closed = false %>
+      <% second_contact = nil %>
+
+      <% if contacts.count == 2 %>
+      <% second_contact = contacts.last %>
+      <% end %>
+
+      <% tc = contact.interested %>
+      <% if contact.user != current_user %>
+      <% tc = contact.user %>
+      <% else %>
+      <% closed = contact.closed %>
+      <% end %>
+
+      <% if !second_contact.user.nil? && second_contact.user == current_user %>
+      <% closed = second_contact.closed %>
+      <% else %>
+      <% end %>
+      <% unless closed %>
+      <tr>
+        <!-- <td></td> -->
+        <td class="text-left" style="width: 100px;">
+          <%= image_tag tc.get_profile_image, style: "width: 100px;" %>
+        </td>
+        <td>
+          <%= link_to account_user_path(tc) do %>
+          <h4 class="green">
+            Contacto de: <%= tc.name %>
+          </h4>
+          <% end %>
+          <p>
+            <b>Teléfono:</b> <%= tc.phone %> <br>
+            <b>Email:</b> <%= tc.email %> <br>
+            <% unless tc.city.nil? %>
+            <b>Ciudad:</b> <%= tc.city.name %>
+            <% end %>
+          </p>
+          <% if second_contact.user != current_user %>
+          <p style="">
+            <i class="fa fa-comment"></i>
+            <b>Tu: </b>
+            <%= second_contact.message %>
+          </p>
+          <% else %>
+          <p style="padding-left: 40px;">
+            <i class="fa fa-comments"></i>
+            <%= second_contact.message %>
+          </p>
+          <% end %>
+          <% if contact.user != current_user %>
+          <p>
+            <i class="fa fa-comment"></i>
+            <b>Tu: </b>
+            <%= contact.message %>
+          </p>
+          <% else %>
+          <p style="padding-left: 40px;">
+            <i class="fa fa-comments"></i>
+            <%= contact.message %>
+          </p>
+          <% end %>
+          <% if contact.user != current_user %>
+          <%= link_to "Ver conversación completa.", account_user_contact_path(current_user, contact, other_id: contact.user.id) %>
+          <% else %>
+          <%= link_to "Ver conversación completa.", account_user_contact_path(current_user, contact, other_id: contact.interested.id) %>
+          <% end %>
+        </td>
+        <td class="text-right">
+          Hace <%= time_ago_in_words contact.created_at %>
+          <br>
+          <br>
+          <%= render "account/contacts/new", btn: "", user: conversation, id: conversation.id, label: "Responder", redirect_to: request.path%>
+        </td>
+      </tr>
+      <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>

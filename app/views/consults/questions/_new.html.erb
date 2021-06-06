@@ -1,0 +1,137 @@
+<% unless user_signed_in? %>
+<div class="row" id="new-consult-question-cont-<%= id%>">
+  <div class="col-md-12 text-center">
+    <h3 class="green">Haz tu pregunta, es grátis.</h3>
+    <div class="input-group">
+      <input type="text" class="form-control input-lg" placeholder="Escribe tu pregunta" id="aux_consult_question-<%= id%>">
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#subscribe-modal">
+          Preguntar
+        </button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<% else %>
+<div class="row" id="new-consult-question-cont-<%= id%>">
+  <div class="col-md-12 text-center">
+    <h3 class="green">Haz tu pregunta, es grátis.</h3>
+    <div class="input-group">
+      <input type="text" class="form-control input-lg" placeholder="Escribe tu pregunta" id="aux_consult_question-<%= id%>">
+      <span class="input-group-btn">
+        <button class="btn btn-primary btn-lg" type="button" data-toggle="modal" data-target="#new-consult-question-<%= id%>">Preguntar</button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="new-consult-question-<%= id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <% @new_question = ConsultQuestion.new
+      if @new_question.consult_question_images.count == 0
+        @new_question.consult_question_images.new
+      end
+      %>
+      <%= nested_form_for @new_question, as: :question, url: consults_questions_path, method: :post do |f| %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Consultar en AgroNeto</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <label for="image">Adjunta una imagen o foto:</label>
+            <% i = 0 %>
+            <%= f.fields_for :consult_question_images do |p_images_form| %>
+            <div class="">
+              <div style="margin-top: 20px;">
+                <%= image_tag "no-image.png", class: "img-responsive preview-target" %>
+              </div>
+              <label class="btn btn-primary btn-file pull-right btn-block">
+                <i class="fa fa-picture-o"></i>
+                Seleccionar
+                <%= p_images_form.file_field :source, value: nil, style: "display: none;", :"data-target" => "#preview-#{i}", class: "preview-file" %>
+              </label>
+              <br>
+
+
+            </div>
+            <% i += 1 %>
+            <% end %>
+          </div>
+          <div class="col-sm-8">
+            <label for="image">Consulta:</label>
+            <%= f.text_area :text, class: "form-control input-lg", placeholder: "Escribe aquí tu pregunta...", style: "height: 300px;" %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" value="<%= request.original_fullpath%>" name="redirect_to">
+        <button type="submit" class="btn btn-primary">Guardar y Preguntar</button>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+$(function() {
+  var fieldsCount,
+  maxFieldsCount = 4,
+  $addLink = $('a.add_nested_fields');
+
+  function toggleAddLink() {
+    $addLink.toggle(fieldsCount <= maxFieldsCount)
+  }
+
+  $(document).on('nested:fieldAdded', function() {
+    fieldsCount += 1;
+    toggleAddLink();
+    $(".preview-file").change(function(){
+      readURL(this);
+    });
+  });
+
+  $(document).on('nested:fieldRemoved', function() {
+    fieldsCount -= 1;
+    toggleAddLink();
+  });
+
+  // count existing nested fields after page was loaded
+  fieldsCount = $('form .fields').length;
+  toggleAddLink();
+
+  function readURL(input) {
+
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      var element = $(input);
+
+      reader.onload = function (e) {
+        $(element.parent().parent().find(".preview-target")).attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  $(".preview-file").change(function(){
+    readURL(this);
+  });
+
+  $('#new-consult-question-1').on('show.bs.modal', function () {
+    var aux = $('#new-consult-question-cont-1 #aux_consult_question-1').val();
+    $('#new-consult-question-1 #question_text').val(aux);
+  });
+
+  $('#new-consult-question-2').on('show.bs.modal', function () {
+    var aux = $('#new-consult-question-cont-2 #aux_consult_question-2').val();
+    $('#new-consult-question-2 #question_text').val(aux);
+  });
+
+});
+</script>
+<% end %>

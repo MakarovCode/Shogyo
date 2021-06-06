@@ -1,0 +1,60 @@
+<%= form_for [:account, @purchase], url: account_reputation_path(@purchase.id), method: :patch do |f| %>
+  <h4 class="green">
+    ¿Recibiste el artículo que esperabas?
+  </h4>
+  <div class="input-group-radio" style="margin-top: 20px;">
+    <%= f.radio_button :received, 1 %>
+    <%= f.label :received, "Sí, tengo el producto y está bien", value: 1  %>
+  </div>
+  <div class="input-group-radio">
+    <%= f.radio_button :received, 2 %>
+    <%= f.label :received, "Decidí no comprarlo", value: 2  %>
+  </div>
+  <div class="input-group-radio">
+    <%= f.radio_button :received, 3 %>
+    <%= f.label :received, "Tuve un problema", value: 3  %>
+  </div>
+  <% if !@purchase.nil? && @purchase.errors.include?(:received) %>
+  <p class="error-message">
+    <%= @purchase.errors[:received].to_sentence %>
+  </p>
+  <% end %>
+  <h4 class="green">
+    ¿Recomendarías al vendedor?
+  </h4>
+  <div class="input-group-radio" style="margin-top: 20px;">
+    <%= f.radio_button :recommended, 1 %>
+    <%= f.label :recommended, "Sí", value: 1  %>
+  </div>
+  <div class="input-group-radio">
+    <%= f.radio_button :recommended, 2 %>
+    <%= f.label :recommended, "No estoy seguro", value: 2  %>
+  </div>
+  <div class="input-group-radio">
+    <%= f.radio_button :recommended, 3 %>
+    <%= f.label :recommended, "No", value: 3  %>
+  </div>
+  <% if !@purchase.nil? && @purchase.errors.include?(:recommended) %>
+  <p class="error-message">
+    <%= @purchase.errors[:recommended].to_sentence %>
+  </p>
+  <% end %>
+  <h4 class="green">
+    ¿Comprate tu opinión sobre el vendedor?
+  </h4>
+  <div class="">
+    <%= f.text_area :review, class: "form-control", placeholder: "Escribe tu comentario aquí...", style: "height: 100px;" %>
+  </div>
+  <% if !@purchase.nil? && @purchase.errors.include?(:review) %>
+  <p class="error-message">
+    <%= @purchase.errors[:review].to_sentence %>
+  </p>
+  <% end %>
+  <div style="margin-top: 40px;">
+    <input type="hidden" name="as" value="buyer" >
+    <button type="submit" class="btn btn-primary btn-lg">
+      Calificar
+    </button>
+    <%= link_to "Cancelar", account_purchases_path(as: "buyer", only_not_reviewd: true), class: "btn btn-link" %>
+  </div>
+<% end %>

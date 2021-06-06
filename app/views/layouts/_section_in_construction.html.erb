@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="thankyou-message">
+      <%= image_tag "construction.jpg", class: "img-responsive"%>
+      <br><br>
+      <h1><%= message%>.</h1>
+      <p class="order-info">
+        <%= content %>
+      </p>
+      <p class="contact-info">Para más información contáctanos al <a href="mailto:contacto@agroneto.com">contacto@agroneto.com</a> estamos atentos para atenderte.</p>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <%= render "layouts/subscribe_forms" %>
+  </div>
+</div>

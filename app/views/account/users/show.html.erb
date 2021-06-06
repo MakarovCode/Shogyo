@@ -1,0 +1,120 @@
+<div class="row">
+  <div class="col-sm-3 visible-lg visible-md">
+    <%= image_tag @user.get_profile_image, class: "img-responsive", style: "border-radius: 300px;" %>
+  </div>
+  <div class="col-md-3 hidden-lg hidden-md">
+    <div class="row">
+      <div class="col-xs-6">
+        <%= image_tag @user.get_profile_image, class: "img-responsive" %>
+        <!-- #, style: "border-radius: 300px;" -->
+      </div>
+      <% if current_user == @user %>
+      <div class="col-xs-6 text-center">
+        <%= render "account/achivements/level", user: @user, left: 12, right: 12, id: 2 %>
+      </div>
+      <% end %>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <% if @user.is_official == true %>
+        <button type="button" class="btn btn-primary btn-block btn-lg secondary-color-font">
+          <i class="fa fa-star fa-5x"></i>
+          <br>
+          Tienda oficial
+        </button>
+        <br>
+        <% end %>
+        <% unless current_user == @user %>
+        <%= render "account/contacts/new", user: @user, btn: "btn-block", id: "2", label: "Contactar", redirect_to: request.path %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <h1>
+      <%= @user.name %>
+      <% if current_user == @user %>
+      <%= link_to edit_account_user_path(current_user) do %>
+      <i class="fa fa-pencil-square-o pull-right"></i>
+      <% end %>
+      <% end %>
+      <br>
+      <small>
+        <%= @user.profession%>
+      </small>
+    </h1>
+    <p>
+      <%= @user.main_activity%>
+    </p>
+    <% unless @user.city.nil? %>
+    <p>
+      <b>Ubicación:</b> <%= @user.city.name %> - <%= @user.city.department.name %>
+    </p>
+    <% end %>
+    <% if current_user == @user %>
+    <p class="green">
+      <i class="fa fa-chevron-down"></i> La siguiente información solo la puedes ver tu
+    </p>
+    <p>
+      <b>Teléfono/Celular:</b> <%= @user.phone %>
+    </p>
+    <p>
+      <b>Dirección:</b> <%= @user.address %>
+    </p>
+    <p>
+      <%= link_to "Cancelar mi cuenta", user_registration_path(current_user), method: :delete, data: {confirm: "¿Estás seguro(a)?"}%>
+    </p>
+    <% end %>
+  </div>
+  <div class="col-sm-3 visible-lg visible-md">
+    <% if @user.is_official == true %>
+    <button type="button" class="btn btn-primary btn-block btn-lg secondary-color-font">
+      <i class="fa fa-star fa-5x"></i>
+      <br>
+      Tienda oficial
+    </button>
+    <br>
+    <% end %>
+    <% if current_user == @user %>
+    <%= render "account/achivements/level", user: @user, left: 4, right: 8, id: 1 %>
+    <br><br>
+    <% else %>
+    <%= render "account/contacts/new", user: @user, btn: "btn-block", id: "1", label: "Contactar", redirect_to: request.path %>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="custom-tabs-line tabs-line-bottom left-aligned">
+      <ul class="nav" role="tablist">
+        <li class="active">
+          <a href="#tab-publications" role="tab" data-toggle="tab">
+            Publicaciones
+          </a>
+        </li>
+        <li class="">
+          <a href="#tab-history" role="tab" data-toggle="tab">
+            Historial
+          </a>
+        </li>
+        <!-- <li class="">
+          <a href="#tab-forum" role="tab" data-toggle="tab">
+            Consultas
+          </a>
+        </li> -->
+      </ul>
+    </div>
+    <div class="tab-content">
+      <div class="tab-pane fade" id="tab-history">
+        <%= render "account/users/history" %>
+      </div>
+      <div class="tab-pane fade in active " id="tab-publications">
+        <%= render "account/users/publications"%>
+      </div>
+      <!-- <div class="tab-pane fade" id="tab-forum">
+
+      </div> -->
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,12 @@
+<div class="row">
+  <% users.each do |user| %>
+  <div class="col-xs-3">
+    <%= link_to account_user_path(user) do %>
+      <%= image_tag user.get_profile_image, style: "width: 100%; border-radius: 100px; margin-bottom: 10px;" %>
+    <% end %>
+  </div>
+  <% end %>
+  <div class="col-md-12">
+    + <%= User.count %> Usuarios
+  </div>
+</div>

@@ -1,0 +1,176 @@
+<div class="<%= params[:native_app].blank? ? '' : 'container'%>" ng-controller="NewFeedController as nfCtrl" ng-init="nfCtrl.init('<%= current_user.email %>', '<%= current_user.authentication_token %>', <%= @categories.to_json(include: :subcategories) %>, '<%= params[:native_app]%>')">
+  <div class="row text-center" style="top: 0px; padding: 10px; width: 100%; position: fixed; z-index: 100; background-color: #f1f1f1;">
+    <div class="col-md-12">
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary btn-lg" ng-class="{'btn-primary': nfCtrl.step == 1, 'btn-default': nfCtrl.step != 1}" ng-click="nfCtrl.GoToStep1();">
+          1
+        </button>
+        <button type="button" class="btn btn-default btn-lg" ng-class="{'btn-primary': nfCtrl.step == 2, 'btn-default': nfCtrl.step != 2}" ng-click="nfCtrl.GoToStep2(nfCtrl.type_selected);">
+          2
+        </button>
+        <button type="button" class="btn btn-default btn-lg" ng-class="{'btn-primary': nfCtrl.step == 3, 'btn-default': nfCtrl.step != 3}" ng-click="nfCtrl.GoToStep3();">
+          3
+        </button>
+        <button type="button" class="btn btn-default btn-lg" ng-class="{'btn-primary': nfCtrl.step == 4, 'btn-default': nfCtrl.step != 4}" ng-click="nfCtrl.GoToStep4();">
+          4
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 40px;" ng-if="nfCtrl.step == 1">
+    <div class="col-md-12">
+      <h1 class="text-center" style="margin-bottom: 20px;">
+        ¿Que quieres publicar?
+      </h1>
+      <button type="button" class="btn btn-secondary btn-block btn-lg" style="margin-bottom: 20px;" ng-click="nfCtrl.GoToStep2(1);">
+        Una consulta
+      </button>
+      <button type="button" class="btn btn-secondary btn-block btn-lg" style="margin-bottom: 20px;" ng-click="nfCtrl.GoToStep2(2);">
+        Vender un producto/servicio
+      </button>
+      <button type="button" class="btn btn-secondary btn-block btn-lg" style="margin-bottom: 20px;" ng-click="nfCtrl.GoToStep2(3);">
+        Comprar un producto/servicio
+      </button>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 40px;" ng-if="nfCtrl.step == 2">
+    <div class="col-md-12">
+      <h1 class="text-center" style="margin-bottom: 20px;" ng-show="nfCtrl.type_selected == 2">
+        Qué estas vendiendo
+      </h1>
+      <h1 class="text-center" style="margin-bottom: 20px;" ng-show="nfCtrl.type_selected == 3">
+        Qué estas buscando
+      </h1>
+    </div>
+    <div class="col-md-12">
+      <div class="list-group" ng-show="nfCtrl.subject_selected == null">
+        <a href="javascript:void(0)" class="list-group-item" ng-repeat="subject in nfCtrl.subjects" ng-click="nfCtrl.SelectSubject(subject)">
+          {{subject}}
+        </a>
+      </div>
+      <div class="list-group" ng-show="nfCtrl.category_selected == null && nfCtrl.subject_selected != null">
+        <a href="javascript:void(0)" class="list-group-item" ng-click="nfCtrl.SelectSubject(null)">
+          Volver
+        </a>
+        <a href="javascript:void(0)" class="list-group-item" ng-repeat="category in nfCtrl.categories | filter: { subject: nfCtrl.subject_selected}" ng-click="nfCtrl.SelectCategory(category)">
+          {{category.name}}
+        </a>
+      </div>
+      <div class="list-group" ng-show="nfCtrl.subcategory_selected == null && nfCtrl.category_selected != null && nfCtrl.subject_selected != null">
+        <a href="javascript:void(0)" class="list-group-item" ng-click="nfCtrl.SelectCategory(null)">
+          Volver
+        </a>
+        <a href="javascript:void(0)" class="list-group-item" ng-repeat="subcategory in nfCtrl.category_selected.subcategories" ng-click="nfCtrl.SelectSubcategory(subcategory)">
+          {{subcategory.name}}
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="row" ng-if="nfCtrl.step == 3" style="margin-top: 40px;">
+    <div class="col-md-12">
+      <div class="row text-center" style="margin-bottom: 20px;">
+        <div class="col-md-12">
+          <h1 class="text-center" style="margin-bottom: 20px;">
+            Información
+          </h1>
+        </div>
+        <div class="col-md-12" ng-hide="nfCtrl.type_selected == 1">
+          <label for="">Estado</label>
+        </div>
+        <div class="col-md-12 btn-group" ng-hide="nfCtrl.type_selected == 1">
+          <button type="button" class="btn btn-lg" ng-click="nfCtrl.SetKind(1)" ng-class="{'btn-primary': nfCtrl.publication.kind == 1, 'btn-default': nfCtrl.publication.kind != 1}">
+            Nuevo
+          </button>
+          <button type="button" class="btn btn-lg" ng-click="nfCtrl.SetKind(2)" ng-class="{'btn-primary': nfCtrl.publication.kind == 2, 'btn-default': nfCtrl.publication.kind != 2}">
+            Usado
+          </button>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 20px;" ng-hide="nfCtrl.type_selected == 1">
+        <div class="col-md-12">
+          <label for="">Título</label>
+          <input type="text" class="input-lg form-control" placeholder="Vendo ganado de 1 año de edad" ng-model="nfCtrl.publication.title">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 20px;" ng-hide="nfCtrl.type_selected == 1">
+        <div class="col-md-12">
+          <label for="">Descripción (Se lo más detallado posible)</label>
+          <textarea class="input-lg form-control" style="height: 200px;" placeholder="Escribe aquí..." ng-model="nfCtrl.publication.description"></textarea>
+        </div>
+      </div>
+      <div class="row text-center" style="margin-bottom: 20px;" ng-hide="nfCtrl.type_selected == 1">
+        <div class="col-md-12 btn-group">
+          <button type="button" class="btn btn-lg" ng-click="nfCtrl.SetPriceType(1)" ng-class="{'btn-primary': nfCtrl.price_type == 1, 'btn-default': nfCtrl.price_type != 1}">
+            Precio
+          </button>
+          <button type="button" class="btn btn-lg" ng-click="nfCtrl.SetPriceType(2)" ng-class="{'btn-primary': nfCtrl.price_type == 2, 'btn-default': nfCtrl.price_type != 2}" ng-show="nfCtrl.subject_selected == 'Animales'">
+            En adopción
+          </button>
+          <button type="button" class="btn btn-lg" ng-click="nfCtrl.SetPriceType(3)" ng-class="{'btn-primary': nfCtrl.price_type == 3, 'btn-default': nfCtrl.price_type != 3}">
+            A convenir
+          </button>
+        </div>
+        <div class="col-md-12 text-left" ng-show="nfCtrl.price_type == 1">
+          <label for="">Precio ({{nfCtrl.publication.price | myCurrency}})</label>
+          <input type="number" class="input-lg form-control" ng-model="nfCtrl.publication.price">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 20px;" ng-show="nfCtrl.type_selected == 1">
+        <div class="col-md-12">
+          <label for="">¿Cual es tu consulta? (Se lo más detallado posible, mínimo 20 caracteres)</label>
+          <textarea class="input-lg form-control" style="height: 200px;" placeholder="Escribe aquí..." ng-model="nfCtrl.question.text"></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <span ng-show="nfCtrl.CheckStep3() == false">
+            Debes diligenciar todos los campos
+          </span>
+          <button type="button" class="btn btn-secondary btn-block btn-lg" ng-click="nfCtrl.GoToStep4();" ng-disabled="nfCtrl.CheckStep3() == false">
+            Continuar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" ng-if="nfCtrl.step == 4">
+    <div class="col-md-12">
+      <h1 class="text-center" style="margin-bottom: 20px;" ng-show="nfCtrl.type_selected == 1">
+        ¿Quieres subir fotos o imágenes?
+      </h1>
+      <h1 class="text-center" style="margin-bottom: 20px;" ng-hide="nfCtrl.type_selected == 1">
+        Debes subir almenos una imagen
+      </h1>
+    </div>
+    <div class="col-md-12" style="margin-bottom: 20px;">
+      <div class="media" ng-repeat="item in nfCtrl.uploader.queue">
+        <!-- <div class="media-left media-middle">
+          <a href="#">
+            <img class="media-object" ng-src="{{item._file}}" alt="Imagen">
+          </a>
+        </div> -->
+        <div ng-show="nfCtrl.uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+        <div class="media-body">
+          <h4 class="media-heading">
+            <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+            <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+            <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+          </h4>
+          <div class="progress" style="margin-bottom: 0;">
+            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <span class="btn btn-primary btn-block btn-lg btn-file" style="margin-bottom: 20px;">
+        Subir foto(s)/imagen(es)
+        <input type="file" multiple nv-file-select uploader="nfCtrl.uploader"/>
+      </span>
+      <p ng-hide="nfCtrl.image_uploaded == true || nfCtrl.type_selected == 1">Para venta o compra de productos sube almenos una imagen</p>
+      <button type="button" class="btn btn-secondary btn-block btn-lg" style="margin-bottom: 20px;" ng-click="nfCtrl.Finish()" ng-disabled="!(nfCtrl.image_uploaded == true || nfCtrl.type_selected == 1)">
+        Finalizar
+      </button>
+    </div>
+  </div>
+</div>

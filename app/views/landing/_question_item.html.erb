@@ -1,0 +1,53 @@
+<% first_answer = question.answers.hot.first%>
+<div class="row">
+  <div class="col-xs-3 text-center hidden-xs">
+    <%= link_to account_user_path(question.user) do %>
+    <%= image_tag question.user.get_profile_image, style: "width: 60%; border-radius: 100px;" %>
+    <br>
+    Pregunta por: <br>
+    <span class="green">
+      <%= question.user.name%>
+    </span>
+    <% end %>
+  </div>
+  <div class="col-xs-12 visible-xs">
+    <%= link_to account_user_path(question.user) do %>
+      Pregunta por: <%= question.user.try(:name)%>
+    <% end %>
+  </div>
+  <div class="col-xs-9">
+    <h4 class="hidden-xs">
+      <%= link_to consults_question_path(question), style: "color: #777;" do %>
+      <%= question.text %>
+      <% end %>
+    </h4>
+    <p class="visible-xs" style="font-weight: bold;">
+      <%= link_to consults_question_path(question), style: "color: #777;" do %>
+      <%= question.text %>
+      <% end %>
+    </p>
+    <p>
+      <% unless first_answer.nil? %>
+      <p><i class="fa fa-comments"></i> Mejor Respuesta por: <%= first_answer.user.try(:name) %></p>
+      <p><%= truncate first_answer.text, length: 200 %></p>
+      <% else %>
+      <p class="green"><i class="fa fa-comments"></i> <%= "Se el primero en responder" %></p>
+      <% end %>
+    </p>
+    <p class="text-left">
+      <%= render "consults/questions/new_answer", direct: false, question: question %>
+      <br>
+      <br>
+    </p>
+    <% unless question.consult_category.nil? %>
+    <p>
+      <span class="label label-primary">
+        <%= question.consult_category.name %>
+      </span>
+    </p>
+    <% end %>
+  </div>
+  <div class="col-xs-12">
+    <hr>
+  </div>
+</div>

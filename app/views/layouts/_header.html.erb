@@ -1,0 +1,143 @@
+<!-- NAVBAR -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container" style="z-index: 100;">
+    <ul class="list-inline pull-right hidden-xs hidden-sm" style="height: 0px; margin-bottom: -5px; padding-top: 5px; margin-right: 10px; z-index: 100; margin-right: 110px;">
+      <%= render "layouts/main_share_buttons" %>
+    </ul>
+    <ul class="list-inline text-center visible-xs visible-sm" style="height: 0px; padding-top: 5px; z-index: 100;">
+      <%= render "layouts/main_share_buttons" %>
+    </ul>
+  </div>
+  <div class="container">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav-collapse">
+      <span class="sr-only">Toggle Navigation</span>
+      <i class="fa fa-bars"></i>
+    </button>
+    <%= link_to main_app.root_path, class: "navbar-brand", style: "padding: 0px;" do %>
+    <%= image_tag @info.logo.url, alt: "AgroNeto", style: "padding-top: 10px; height: 60px;", class: "visible-md visible-lg" %>
+    <%= image_tag @info.small_logo.url, alt: "AgroNeto", style: "padding-top: 10px; height: 60px;", class: "hidden-md hidden-lg" %>
+    <% end %>
+    <%#= render "layouts/searchbar", classs: "navbar-form navbar-left" %>
+    <%= render "layouts/notifications" %>
+    <%= render "layouts/favorites" %>
+    <%= render "layouts/feedback" %>
+    <div id="main-nav-collapse" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav main-navbar-nav">
+        <!-- <li>
+          <%= link_to main_app.consults_weather_index_path, class: "" do %>
+          <i class="wi wi-day-cloudy-gusts" aria-hidden="true"></i>
+          <% if user_signed_in? %>
+          <span class="llabel">
+            CLIMA
+          </span>
+          <% else %>
+          CLIMA
+          <% end %>
+          <% end %>
+        </li> -->
+        <li>
+          <%= link_to main_app.market_publications_path, class: "" do %>
+          <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+          <% if user_signed_in? %>
+          <span class="llabel">
+            EL MERCADO
+          </span>
+          <% else %>
+          EL MERCADO
+          <% end %>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to main_app.blog_posts_path, class: ""  do %>
+          <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+          <% if user_signed_in? %>
+          <span class="llabel">
+            NOTICIAS
+          </span>
+          <% else %>
+          NOTICIAS
+          <% end %>
+          <% end %>
+        </li>
+        <li class="">
+          <%= link_to "/market/publications", class: ""  do %>
+          <i class="fa fa-shopping-basket" aria-hidden="true"></i> EL MERCADO
+          <% end %>
+        </li>
+        <li class="">
+          <%= link_to "/consults/questions?scope=hot", class: ""  do %>
+          <i class="fa fa-comments-o" aria-hidden="true"></i>
+          <% if user_signed_in? %>
+          <span class="llabel">
+            AGROCONSULTAS
+          </span>
+          <% else %>
+          AGROCONSULTAS
+          <% end %>
+          <% end %>
+        </li>
+        <% unless user_signed_in? %>
+        <li class="">
+          <a href="#" class="btn btn-secondary btn-xs" data-toggle="modal" data-target="#subscribe-modal">
+            <i class="fa fa-user"></i> INGRESAR
+          </a>
+        </li>
+        <% else %>
+        <li class="dropdown ">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-address-card-o" aria-hidden="true"></i>
+            <%= truncate current_user.name, length: 18 %>
+            <i class="fa fa-angle-down"></i>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li class="">
+              <%= link_to main_app.dashboard_account_users_path, class: ""  do %>
+              <i class="fa fa-handshake-o" aria-hidden="true"></i>
+              Mi Cuenta
+              <% end %>
+            </li>
+            <li class="">
+              <%= link_to main_app.account_user_path(current_user), class: ""  do %>
+              <i class="fa fa-user" aria-hidden="true"></i>
+              Mi Información
+              <% end %>
+            </li>
+            <li class="">
+              <%= link_to main_app.edit_account_user_path(current_user), class: ""  do %>
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              Editar Información
+              <% end %>
+            </li>
+            <li class="">
+              <%= link_to main_app.account_achivements_path, class: ""  do %>
+              <i class="fa fa-trophy" aria-hidden="true"></i>
+              Mis Logros
+              <% end %>
+            </li>
+            <li class="">
+              <%= link_to main_app.select_country_landing_index_path(redirect_to: request.path), class: ""  do %>
+              <i class="fa fa-flag" aria-hidden="true"></i>
+              Cambiar de país
+              <% end %>
+            </li>
+            <li class="">
+              <%= link_to main_app.destroy_user_session_path, class: "", method: :delete  do %>
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
+              Cerrar Sesión
+              <% end %>
+            </li>
+          </ul>
+        </li>
+        <li class="">
+          <%= link_to new_account_publication_path, class: "btn btn-secondary btn-xs"  do %>
+          <i class="fa fa-star"></i>
+          PUBLICAR
+          <% end %>
+        </li>
+        <% end %>
+      </ul>
+    </div>
+    <!-- END MAIN NAVIGATION -->
+  </div>
+</nav>
+<!-- END NAVBAR -->

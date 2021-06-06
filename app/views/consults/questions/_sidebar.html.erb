@@ -1,0 +1,44 @@
+<div class="visible-md visible-lg">
+<%#= render "new", id: "1" %>
+<% unless user_signed_in? %>
+<div class="widget">
+  <div class="post-entry-card" data-toggle="modal" data-target="#subscribe-modal">
+    <%= image_tag "construction.jpg", class: "img-responsive" %>
+    <div class="post-info">
+      <h4 class="post-excerpt text-center">
+        Subscríbete y haz parte de la red del Agro en Colombia, Latinoamérica y el Mundo
+      </h4>
+      <button type="button" class="btn btn-secondary btn-lg btn-block">
+        Ingresar
+      </button>
+    </div>
+  </div>
+</div>
+<% else %>
+<div class="widget">
+  <div class="post-entry-card" data-toggle="modal" data-target="#subscribe-modal">
+    <%= image_tag "construction.jpg", class: "img-responsive" %>
+    <div class="post-info">
+      <h4 class="post-excerpt text-center">
+        ¿Tienes una consulta, vendes o necesitas algo?
+        <br>
+        <b>¡En AgroNeto lo encuentras!</b>
+      </h4>
+      <%= link_to new_account_publication_path, class: "btn btn-secondary btn-lg btn-block"  do %>
+      <i class="fa fa-star"></i>
+      Publica tu anuncio
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>
+</div>
+<div class="visible-md visible-lg">
+  <%= render "ads/02"%>
+</div>
+<div class="visible-md visible-lg" style="margin-top: 20px;">
+  <%#= render "market/publications/relevant", size: "col-xs-6"  %>
+</div>
+<div class="">
+  <%= render "landing/faces", users: User.profile_complete.order(created_at: :desc).first(16)  %>
+</div>

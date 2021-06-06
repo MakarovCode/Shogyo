@@ -1,0 +1,65 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  logo: MyString
+  facebook_link: MyString
+  twitter_link: MyString
+  linkedin_link: MyString
+  youtube_link: MyString
+  instagram_link: MyString
+  googleplus_link: MyString
+  meta_description: MyString
+  meta_keywords: MyString
+  blog_tab_title: MyString
+  blog_sidebar_title: MyString
+  about_us_image: MyString
+  about_us_title: MyString
+  about_us_content: MyText
+  copyrights_text: MyString
+  terms: MyText
+  policy: MyText
+  habeasdata: MyText
+  contact_email: MyString
+  contact_address: MyString
+  contact_phone: MyString
+  register_image: MyString
+  register_title: MyString
+  register_content: MyText
+  login_image: MyString
+  login_title: MyString
+  login_content: MyText
+  explanation_image: MyString
+  explanation_title: MyString
+  explanation_content: MyText
+
+two:
+  logo: MyString
+  facebook_link: MyString
+  twitter_link: MyString
+  linkedin_link: MyString
+  youtube_link: MyString
+  instagram_link: MyString
+  googleplus_link: MyString
+  meta_description: MyString
+  meta_keywords: MyString
+  blog_tab_title: MyString
+  blog_sidebar_title: MyString
+  about_us_image: MyString
+  about_us_title: MyString
+  about_us_content: MyText
+  copyrights_text: MyString
+  terms: MyText
+  policy: MyText
+  habeasdata: MyText
+  contact_email: MyString
+  contact_address: MyString
+  contact_phone: MyString
+  register_image: MyString
+  register_title: MyString
+  register_content: MyText
+  login_image: MyString
+  login_title: MyString
+  login_content: MyText
+  explanation_image: MyString
+  explanation_title: MyString
+  explanation_content: MyText

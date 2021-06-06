@@ -1,0 +1,38 @@
+<div class="row" style="margin-top: 20px;">
+  <% @plans.each do |plan| %>
+  <div class="col-md-4">
+    <div class="post-entry-card text-center">
+      <i class="<%= plan.icon %> fa-5x" style="margin-top: 40px; color: <%= plan.color %>;"></i>
+      <div class="post-info">
+        <h1 class="green">
+          <%= plan.name %>
+        </h1>
+        <p class="post-excerpt">
+            <%= raw plan.description %>
+        </p>
+        <p class="green" style="font-size: 18px; font-weight: bold;">
+          <% if plan.points > 0 %>
+            <%= plan.points %> PuntosAgro
+          <% else %>
+            Grátis
+          <% end %>
+        </p>
+        <% if plan.priority == 1 %>
+        <button type="button" disabled="true" class="btn btn-primary">
+          Seleccionado
+        </button>
+        <% else %>
+        <%= link_to "Seleccionar", change_plan_account_publication_path(@publication, plan_id: plan.id), method: :post, class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+  <div class="col-md-12">
+    <p class="green">
+      Tu publicación ya se encuentra al aire. Usa tus puntos para más exposición y tiempo ilimitado para tu publicación.
+    </p>
+    <%= link_to "Ver publicaciones", account_publications_path, class: "btn btn-primary" %>
+    <%= link_to "Modificar publicación", edit_account_publication_path(@publication, step: 3), class: "btn btn-default" %>
+  </div>
+</div>

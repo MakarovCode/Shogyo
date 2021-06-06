@@ -1,0 +1,10 @@
+<% @commodities = Commodity.all.order(:priority) %>
+<!-- BREADCRUMBS -->
+<div class="page-header breadcrumbs-only">
+  <!-- <div class="container"> -->
+    <%= render "layouts/commodities", commodities: @commodities, step: 4, visible: "visible-md visible-lg", id: 1 %>
+    <%= render "layouts/commodities", commodities: @commodities, step: 3, visible: "visible-sm", id: 2 %>
+    <%= render "layouts/commodities", commodities: @commodities, step: 2, visible: "visible-xs", id: 3 %>
+  <!-- </div> -->
+</div>
+<!-- END BREADCRUMBS -->

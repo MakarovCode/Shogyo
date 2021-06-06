@@ -1,0 +1,27 @@
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#answer-modal-<%= question.id%>">
+  Responder
+</button>
+
+<div class="modal fade" id="answer-modal-<%= question.id%>" tabindex="-1" role="dialog" aria-labelledby="answer-modalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content text-left">
+      <%= form_for [:account, question], url: account_question_path(question) do |f| %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="answer-modalLabel">Responder pregunta</h4>
+      </div>
+      <div class="modal-body">
+        <p class="green">
+          <i class="fa fa-comment"></i>
+          <%= question.question %>
+        </p>
+        <%= f.text_area :answer, class: "form-control", style: "height: 100px;", placeholder: "Escribe aquí tu respuesta." %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

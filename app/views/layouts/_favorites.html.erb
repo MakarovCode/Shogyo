@@ -1,0 +1,44 @@
+<% if user_signed_in? %>
+<ul class="nav navbar-nav secondary-navbar-nav pull-left visible-lg visible-md">
+  <li class="dropdown dropdown-cart">
+    <a href="javascript:void(0);" class="as-icon dropdown-toggle" data-toggle="dropdown">
+      <i class="fa fa-heart"></i>
+      <% if @tfavorites.count > 0 %>
+      <span class="cart-count"><%= @tfavorites.count %></span>
+      <% end %>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-left">
+      <li>
+        <div class="shopping-cart-widget" style="max-height: 350px; overflow-y: auto;">
+          <strong>Tienes <span class="text-primary"><%= @tfavorites.count %></span> favoritos.</strong>
+          <ul class="list-unstyled">
+            <% @tfavorites.each do |noti| %>
+            <li>
+              <div class="cart-item clearfix">
+                <a href="<%= main_app.market_publication_path(noti.publication)%>">
+                  <%= image_tag noti.publication.get_image("low"), style: "width: 60px; margin-right: 10px;", alt: "Imagen" %>
+                </a>
+                <div class="info">
+                  <a href="<%= main_app.market_publication_path(noti.publication)%>">
+                    <strong class="product-title"><%= noti.publication.title %></strong>
+                  </a>
+                  <!-- <span class="product-qty-price text-muted-2x">1 x $135</span> -->
+                </div>
+                <!-- <button type="button" class="btn btn-link btn-close"><i class="fa fa-close"></i></button> -->
+              </div>
+            </li>
+            <% end %>
+          </ul>
+          <div class="cart-footer">
+            <!-- <strong class="total">Total: $215</strong> -->
+            <a href="<%= main_app.favorites_account_publications_path %>" class="btn btn-primary btn-checkout ">Ver todos</a>
+            <div class="clearfix"></div>
+            <!-- <p class="continue-shopping"><a href="index-shop.html">Continue shopping</a></p> -->
+          </div>
+        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<% end %>

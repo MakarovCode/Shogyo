@@ -1,0 +1,93 @@
+<h3 class="green">
+  Reputación como Comprador:
+</h3>
+<% if @show_reputation_as_buyer %>
+<div class="progress">
+  <div class="progress-bar progress-bar-success" style="width: <%= @as_buyer[:positives] %>%">
+    <span class="sr-only">35% Complete (success)</span>
+  </div>
+  <div class="progress-bar progress-bar-warning" style="width: <%= @as_buyer[:neutrals] %>%">
+    <span class="sr-only">20% Complete (warning)</span>
+  </div>
+  <div class="progress-bar progress-bar-danger" style="width: <%= @as_buyer[:negatives] %>%">
+    <span class="sr-only">10% Complete (danger)</span>
+  </div>
+</div>
+<p>
+  <% if @as_buyer[:positives] >= 80 %>
+  Tu reputación como comprador es
+  <span class="label label-primary">Positiva</span>
+  <% elsif @as_buyer[:neutrals] >= 15 %>
+  Tu reputación como comprador es positiva
+  <span class="label label-warning">Neutral</span>
+  <% else %>
+  Tu reputación como comprador es positiva
+  <span class="label label-danger">Negativa</span>
+  <% end %>
+</p>
+<% else %>
+<p>
+  <% if current_user == @user %>
+  Debes realizar al menor 3 compras para ver tu barra de reputación.
+  <% else %>
+  <div class="alert alert-warning">
+    Este usuario es nuevo, aún no tenemos suficiente información para mostrar su reputación.
+  </div>
+  <% end %>
+  <br>
+  <% if current_user == @user %>
+  Llevas <%= @purchases_as_seller.count %> compras concretadas.
+  <% else %>
+  Lleva <%= @purchases_as_seller.count %> compras concretadas.
+  <% end %>
+</p>
+<% end %>
+<h3 class="green">
+  Reputación como Vendedor:
+</h3>
+<% if @show_reputation_as_seller %>
+<div class="progress">
+  <div class="progress-bar progress-bar-success" style="width: <%= @as_seller[:positives] %>%">
+    <span class="sr-only">35% Complete (success)</span>
+  </div>
+  <div class="progress-bar progress-bar-warning" style="width: <%= @as_seller[:neutrals] %>%">
+    <span class="sr-only">20% Complete (warning)</span>
+  </div>
+  <div class="progress-bar progress-bar-danger" style="width: <%= @as_seller[:negatives] %>%">
+    <span class="sr-only">10% Complete (danger)</span>
+  </div>
+</div>
+<p>
+  <% if current_user == @user %>
+  Tu
+  <% else %>
+  Su
+  <% end %>
+  <% if @as_seller[:positives] >= 80 %>
+  reputación como vendedor es
+  <span class="label label-primary">Positiva</span>
+  <% elsif @as_seller[:neutrals] >= 15 %>
+  reputación como vendedor es positiva
+  <span class="label label-warning">Neutral</span>
+  <% else %>
+  reputación como vendedor es positiva
+  <span class="label label-danger">Negativa</span>
+  <% end %>
+</p>
+<% else %>
+<p>
+  <% if current_user == @user %>
+  Debes realizar al menor 3 ventas para ver tu barra de reputación.
+  <% else %>
+  <div class="alert alert-warning">
+    Este usuario es nuevo, aún no tenemos suficiente información para mostrar su reputación.
+  </div>
+  <% end %>
+  <br>
+  <% if current_user == @user %>
+  Llevas <%= @purchases_as_buyer.count %> ventas concretadas.
+  <% else %>
+  Lleva <%= @purchases_as_buyer.count %> ventas concretadas.
+  <% end %>
+</p>
+<% end %>

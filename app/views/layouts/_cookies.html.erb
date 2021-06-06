@@ -1,0 +1,19 @@
+<div class="container" id="cookies-cont" style="width: 100%; position: fixed; bottom: 0; left: 0; background-color: rgba(0,0,0,0.75); z-index: 20000; padding-bottom: 10px;">
+  <div class="row ">
+    <div class="col-xs-12 text-center" style="margin-bottom: -10px;">
+      <p style="color: white; font-weight: bold; font-size: 14px;">
+        Éste sitio utiliza las Cookies de tu navegador, para más información lee nuestros
+        <%= link_to "Términos y condiciones", terms_path %>.
+      </p>
+    </div>
+    <div class="col-xs-8 col-xs-offset-2 text-center">
+      <%= link_to "Acepto", accept_cookies_landing_index_path, class: "btn btn-secondary btn-lg", id: "link-cookies", method: :post, remote: true, "onclick" => "$('#cookies-cont').hide();"%>
+    </div>
+  </div>
+</div>
+
+<script>
+$('#link-cookies').bind('ajax:complete', function() {
+  $('#cookies-cont').hide();
+});
+</script>

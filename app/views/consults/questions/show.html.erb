@@ -1,0 +1,130 @@
+<%
+meta title: "AgroNeto | #{@question.text}",
+description: @question.text,
+keywords: !@info.meta_keywords.nil? ? @info.meta_keywords.split(",") : []
+%>
+
+<% unless @question.get_image.nil?
+
+  meta og: {
+    image: "#{@question.get_image}",
+    url: consults_question_path(@question),
+    title: "Consulta en AgroNeto",
+    description: @question.text,
+    type: "website"
+  }
+
+end %>
+
+<%
+meta twitter: {
+  card: "AgroNeto | #{@question.text}",
+  site: "@AgroNetoOficial"
+}
+%>
+
+
+<% first_answer = @question.answers.hot.first%>
+<div class="row">
+  <div class="col-md-8">
+    <div class="btn-group text-center" style="margin-bottom: 20px;">
+      <% if params[:back_to].nil? %>
+      <%= link_to "Volver a preguntas", consults_questions_path(scope: "hot"), class: "btn btn-primary" %>
+      <% else %>
+      <%= link_to "Volver a preguntas", params[:back_to], class: "btn btn-primary" %>
+      <% end %>
+    </div>
+    <div class="blog-container">
+
+      <div class="blog-header">
+        <!-- <div class="blog-cover"> -->
+        <div class="blog-author--no-cover">
+          <small>
+            <fa class="fa fa-question-circle"></fa>
+            Pregunta de:
+          </small>
+          <% unless @question.user.nil? %>
+          <h3><%= image_tag @question.user.get_profile_image, class: "profile-icon"%><%= @question.user.name %></h3>
+          <% end %>
+        </div>
+        <!-- </div> -->
+      </div>
+
+      <div class="blog-body">
+        <div class="blog-title">
+          <h3><a href="#"><%= @question.text %></a></h3>
+          <div class="text-center">
+            <% if @question.consult_question_images.count > 0 %>
+            <%= image_tag @question.consult_question_images.first.source.high.url, style: "width: 60%"%>
+            <% end %>
+          </div>
+        </div>
+        <% unless first_answer.nil? %>
+        <div class="text-center">
+          <%= render "new_answer", direct: true, question: @question %>
+          <br><br>
+        </div>
+        <% end %>
+        <% unless @question.consult_category.nil? %>
+        <div class="blog-tags">
+          <ul>
+            <li><a href="#"><%= @question.consult_category.name %></a></li>
+          </ul>
+        </div>
+        <% end %>
+      </div>
+
+      <div class="blog-footer">
+        <ul>
+          <li class="published-date">Hace <%= distance_of_time_in_words(Time.now, @question.created_at) %></li>
+          <li style="padding-right: 10px;">
+            <%#= social_share_button_tag("Consultas AgroNeto", :url => consults_question_path(@question), desc: @question.text, via: "AgroNetoOficial") %>
+          </li>
+          <li class="comments">
+            <%= link_to voted_consults_question_path(@question, value: 1, redirect_to: request.original_fullpath), class: "icon", method: :post do %>
+            <i class="fa fa-thumbs-up fa-2x" style="color: #0F6A37;"></i>
+            <span class="numero"><%= @question.user_consult_question_votes.positives.count %></span>
+            <% end %>
+          </li>
+          <li class="shares">
+            <%= link_to voted_consults_question_path(@question, value: -1, redirect_to: request.original_fullpath), class: "icon", method: :post do %>
+            <i class="fa fa-thumbs-down fa-2x"></i>
+            <span class="numero"><%= @question.user_consult_question_votes.negatives.count %></span>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+    <% unless first_answer.nil? %>
+    <h3 class="text-center" style="margin-top: 40px;">Respuestas</h3>
+    <% else %>
+    <h3 class="text-center" style="margin-top: 40px;">Se el primero en responder</h3>
+    <% end %>
+
+    <div class="col-md-12 visible-xs visible-sm" id="relevant-publications" style="margin-top: 20px; margin-bottom: 20px;">
+      <%= render "market/publications/relevant", size: "col-xs-6 col-sm-4 col-md-3" %>
+    </div>
+
+
+    <% @question.answers.hot.each do |answer| %>
+    <%= render "answer", answer: answer %>
+    <% end %>
+    <div class="col-md-12 text-center" style="margin-top: 40px;">
+      <%= render "new_answer", direct: true, question: @question %>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <%= render "sidebar" %>
+  </div>
+</div>
+<% if params[:answer] == "true" %>
+<script>
+  $(function(){
+
+    $(document).ready(function(){
+      $("#new-consult-answer").modal("show");
+    });
+  });
+</script>
+<% end %>

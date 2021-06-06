@@ -1,0 +1,23 @@
+<!-- Button trigger modal -->
+<% unless btn == false %>
+<button type="button" class="btn <%= btn %>" data-toggle="modal" data-target="#questions-modal">
+  Preguntar
+</button>
+<% end %>
+<!-- Modal -->
+<div class="modal fade" id="questions-modal" tabindex="-1" role="dialog" aria-labelledby="questions-modalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content text-left">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="questions-modalLabel">Preguntas</h4>
+      </div>
+      <div class="modal-body">
+        <%= render "market/publications/show/questions", publication: publication %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

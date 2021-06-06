@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  content: MyText
+  kind: 1
+  mode: 1
+  price: 1.5
+  units: 1
+  status: 1
+  user: one
+
+two:
+  title: MyString
+  description: MyText
+  content: MyText
+  kind: 1
+  mode: 1
+  price: 1.5
+  units: 1
+  status: 1
+  user: two

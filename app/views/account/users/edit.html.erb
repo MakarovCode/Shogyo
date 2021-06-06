@@ -1,0 +1,162 @@
+<%= form_for [:account, @user] do |f| %>
+<div class="row">
+  <div class="col-sm-3 visible-md visible-lg">
+    <%= image_tag current_user.get_profile_image, class: "img-responsive" %>
+    <!-- #, style: "border-radius: 300px;" -->
+    <br>
+    <button class="btn btn-primary btn-block" type="button" onclick="$('#user_image').trigger('click');">
+      <i class="fa fa-cloud-upload"></i>
+      Cargar imagen
+      <%= f.file_field :image %>
+    </button>
+  </div>
+  <div class="col-md-3 hidden-md hidden-lg">
+    <div class="row">
+      <div class="col-xs-6">
+        <%= image_tag current_user.get_profile_image, class: "img-responsive", style: "border-radius: 300px;" %>
+        <br>
+        <button class="btn btn-primary btn-block" type="button" onclick="$('#user_image').trigger('click');">
+          <i class="fa fa-cloud-upload"></i>
+          Cargar imagen
+          <%= f.file_field :image %>
+        </button>
+      </div>
+      <div class="col-xs-6 text-center">
+        <%= render "account/achivements/level", user: @user, left: 12, right: 12, id: 2 %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <% unless @user.errors.empty? %>
+    <div class="alert alert-danger">
+      <strong>Revisa los siguientes errores: </strong>
+      <ul>
+        <% @user.errors.full_messages.each do |error| %>
+        <li>
+          <%= error %>
+        </li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 50px;">
+        <i class="fa fa-envelope-o"></i>
+      </span>
+      <%= f.text_field :email, placeholder: "Correo electrónico", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+      <!-- <span class="input-group-btn">
+        <button class="btn btn-default" type="button">
+          <i class="fa fa-asterisk"></i>
+        </button>
+      </span> -->
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 50px;">
+        <i class="fa fa-address-book-o"></i>
+      </span>
+      <%= f.text_field :name, placeholder: "Nombre completo", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+      <!-- <span class="input-group-btn">
+        <button class="btn btn-default" type="button">
+          <i class="fa fa-asterisk"></i>
+        </button>
+      </span> -->
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 50px;">
+        <i class="fa fa-briefcase"></i>
+      </span>
+      <%= f.text_field :profession, placeholder: "Profesión", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 50px;">
+        <i class="fa fa-file-text-o"></i>
+      </span>
+      <%= f.text_area :main_activity, placeholder: "Describe tu actividad principal", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 50px;">
+        <i class="fa fa-birthday-cake"></i>
+      </span>
+      <%= f.date_select :birthdate, {start_year: Date.today.strftime('%Y').to_i, end_year: (Date.today-100.years).strftime('%Y').to_i}, {placeholder: "Fecha de cumpleaños", class: "form-control"} %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 50px;">
+        <i class="fa fa-mobile"></i>
+      </span>
+      <%= f.text_field :phone, placeholder: "Teléfono/Celular", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 50px;">
+        <i class="fa fa-map-marker"></i>
+      </span>
+      <%= autocomplete_field_tag :city_name, !@user.city.nil? ? @user.city.name : '', autocomplete_city_name_account_users_path, id_element: '#user_city_id', class: "form-control", placeholder: "Escribe la ciudad y apareceran las opciones..." %>
+      <%= f.hidden_field :city_id, value: @user.city_id %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 50px;">
+        <i class="fa fa-map-marker"></i>
+      </span>
+      <%= f.text_field :address, placeholder: "Dirección", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <div class="input-group">
+      <input type="checkbox" onchange="$('.pass-input').prop('disabled', !this.checked)"> ¿Deseas cambiar tu clave?</input>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 50px;">
+        <i class="fa fa-map-marker"></i>
+      </span>
+      <%= f.text_field :password, placeholder: "Nueva contraseña", class: "form-control pass-input", disabled: true %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 50px;">
+        <i class="fa fa-map-marker"></i>
+      </span>
+      <%= f.text_field :password_confirmation, placeholder: "Confirma tu nueva contraseña", class: "form-control pass-input", disabled: true %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <div>
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i>
+        Guardar
+      </button>
+    </div>
+  </div>
+  <div class="col-sm-3 visible-md visible-lg">
+    <%= render "account/achivements/level", user: @user, left: 4, right: 8, id: 1 %>
+  </div>
+</div>
+<% end %>
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-6 col-md-offset-3">
+    <%= render "interests_form" %>
+  </div>
+</div>

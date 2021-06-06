@@ -1,0 +1,22 @@
+<%
+aggs = {kind: {min_doc_count: 1}, subject: {min_doc_count: 1}, subcategory_name: {min_doc_count: 1}, category_name: {min_doc_count: 1}, city_name: {min_doc_count: 1}}
+relevant_publications = Publication.ready.search "*",
+operator: "or",
+fields: [:subcategory_name, :category_name, :title],
+aggs: aggs,
+smart_aggs: false,
+where: {status: 1},
+misspellings: {below: 5},
+track: user_signed_in? ? {user_id: current_user.id} : false,
+suggest: true,
+boost_by: {visits_count: {factor: 50}},
+boost_where: {plan_id: [{value: 1, factor: 10}, {value: 2, factor: 100}]},
+page: 1, per_page: 20
+
+
+%>
+<div class="row">
+  <div class="col-md-12">
+    <%= render "market/publications/index/carusel_line", size: size, publications: relevant_publications, id: "history" %>
+  </div>
+</div>

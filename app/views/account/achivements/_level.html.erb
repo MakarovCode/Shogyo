@@ -1,0 +1,53 @@
+<% unless current_user.is_official == true %>
+  <%
+    progress = current_user.current_points * 100 / current_user.level.max
+    progress_div = progress / 100.0
+  %>
+  <%= link_to account_achivements_path do %>
+  <div class="row">
+    <div class="col-xs-12">
+      <h4>
+        PuntosAgro
+      </h4>
+    </div>
+  </div>
+  <div class="row" style="cursor: pointer;">
+    <div class="col-xs-<%= left%>">
+      <div id="circle<%= id%>" class="text-center">
+        <strong class="green"></strong>
+      </div>
+
+      <script>
+      $('#circle<%= id%>').circleProgress({
+        value: <%= progress_div %>,
+        size: 80,
+        fill: {
+          gradient: ["#A3E4D7", "#69B417"]
+        }
+      }).on('circle-animation-progress', function(event, progress) {
+        $(this).find('strong').html(Math.round(<%= progress%> * progress) + '<i>%</i>');
+
+      });
+      </script>
+    </div>
+    <div class="col-xs-<%= right%>">
+      <h2 style="margin-top: 0px;">
+        <small>
+          Nivel <%= current_user.level.number %>
+        </small>
+        <br>
+        <span class="green"><%= current_user.level.name %></span>
+        <br>
+        <small>
+          <%= current_user.current_points %>/<%= current_user.level.max %>
+        </small>
+      </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= link_to "Ver logros y retos", account_achivements_path, class: "btn btn-link" %>
+    </div>
+  </div>
+  <% end %>
+<% end %>

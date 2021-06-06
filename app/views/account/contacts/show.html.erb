@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-md-2">
+    <%= render "account/shared/sidebar" %>
+  </div>
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-xs-2">
+        <%= image_tag @user.get_profile_image, style: "width: 100px;" %>
+      </div>
+      <div class="col-xs-10">
+        <%= link_to account_user_path(@user) do %>
+        <h4 class="green">
+          Contacto de: <%= @user.name %>
+        </h4>
+        <% end %>
+        <p>
+          <b>Teléfono:</b> <%= @user.phone %> <br>
+          <b>Email:</b> <%= @user.email %> <br>
+          <% unless @user.city.nil? %>
+          <b>Ciudad:</b> <%= @user.city.name %>
+          <% end %>
+        </p>
+        <%= render "account/contacts/new", user: @user, btn: "", id: @user.id, label: "Responder", redirect_to: "#{request.path}?other_id=#{@user.id}" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <% @contacts.each do |contact| %>
+        <% if contact.user != current_user %>
+        <p style="">
+          <i class="fa fa-comment"></i>
+          <b>Tu: </b>
+          <%= contact.message %>
+          <br>
+          <small>
+            <span class="pull-right">
+              Hace <%= time_ago_in_words contact.created_at %>
+            </span>
+          </small>
+        </p>
+        <% else %>
+        <p style="padding-left: 40px;">
+          <i class="fa fa-comments"></i>
+          <%= contact.message %>
+          <br>
+          <small>
+
+            <span class="pull-right">
+              Hace <%= time_ago_in_words contact.created_at %>
+            </span>
+          </small>
+        </p>
+        <% end %>
+        <hr>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <%#= link_to "Cerrar conversación", close_account_user_contact_path(@user, contact), method: :post, class: "btn btn-block btn-primary"%>
+  </div>
+</div>

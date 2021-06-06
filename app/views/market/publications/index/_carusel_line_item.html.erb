@@ -1,0 +1,19 @@
+<div class="<%= size%>">
+  <div class="post-entry-card" style="position: relative;">
+    <%= link_to market_publication_path(pub) do %>
+    <%= image_tag pub.get_image("mid"), class: "img-responsive" %>
+    <hr style="margin-bottom: -5px; ">
+    <div class="post-info" style="height: 100px;">
+      <p class="green" style="font-size: 18px; font-weight: bold;">
+        <%= number_to_currency pub.price, precision: pub.get_currency_precision, unit: pub.get_currency_unit, delimiter: "." %>
+      </p>
+      <span class="post-meta">
+        <%= truncate pub.title, length: 23 %>
+      </span>
+      <% unless pub.city.department.country.nil? %>
+        <%= image_tag pub.city.department.country.flag.url, style: "width: 30px; border-radius: 30px; position: absolute; top: 10px; left: 10px;" %>
+      <% end %>
+    </div>
+  </div>
+  <% end %>
+</div>

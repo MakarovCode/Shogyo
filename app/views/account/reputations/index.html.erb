@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-md-2">
+    <%= render "account/shared/sidebar" %>
+  </div>
+  <div class="col-md-10">
+    <div class="row">
+      <div class="col-md-6">
+        <%= render "account/reputations/indicators" %>
+        <div class="panel panel-default" style="margin-top: 20px;">
+          <div class="panel-heading" style="font-size: 20px;">
+            Cómo funciona nuestro sistema de reputación
+          </div>
+          <div class="panel-body">
+            <p class="text-center green">
+              <i class="fa fa-thumbs-o-up fa-5x"></i>
+            </p>
+            <p>
+              Es un compilado de tus últimas ventas y la calificación que recibiste por ellas. Entre más calificaciones positivas tengas, más posibilidades tienes de estar en <b>Positivo</b>
+            </p>
+            <p>
+              Si el 80% de tu calificaciones son positivas, tu calificación en general será positiva.
+            </p>
+            <p>
+              De lo contrario estarás en <b>Neutral</b> o incluso en <b>Negativo</b>.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-primary" style="margin-top: 20px;">
+          <div class="panel-heading" style="font-size: 20px;">
+            Conviertete en vendedor certificado AgroNeto
+          </div>
+          <div class="panel-body">
+            <p class="text-center" style="color: gold;">
+              <i class="fa fa-star fa-5x"></i>
+            </p>
+            <% unless @apply_for_certification %>
+            <p class="green">
+              Debes realizar al menor 3 ventas positivas para poder aplicar.
+              <br>
+              Llevas <%= @purchases_as_seller.count %> ventas concretadas.
+            </p>
+            <% end %>
+            <b>
+              Súmate a nuestro grupo de vendedores certificados. ¡No te quedes por fuera!
+            </b>
+            <p>
+              Demostraste ser un excelente vendedor y queremos que continúes creciendo. Para tu certificación necesitas:
+              <ul>
+                <li>
+                  Enviar una copia de tu documento personal
+                </li>
+                <li>
+                  Mantener un número de 5 ventas al més en <b>AgroNeto.</b>
+                </li>
+                <li>
+                  Mantener tu reputación positiva.
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

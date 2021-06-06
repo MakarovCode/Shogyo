@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-md-9">
+    <!-- blog post -->
+    <article class="entry-post entry-post-single">
+      <header class="entry-header">
+        <h1 class="entry-title">
+          <%= @post.title %>
+        </h1>
+
+        <div class="meta-line">
+          <% unless @post.author.nil? %>
+          <span class="post-author">
+            <i class="fa fa-user"></i>
+            <a href="javascript:void(0)">
+              <%= @post.author %>
+            </a>
+          </span>
+          <% end %>
+          <span class="post-date">
+            <i class="fa fa-calendar"></i>
+            <a href="javascript:void(0)">
+              <%= @post.date.strftime("%d de %b, %Y") %>
+            </a>
+          </span>
+          <!-- <span class="post-comment"><i class="fa fa-comments"></i> <a href="#">4 Comments</a></span> -->
+          <span class="post-comment">
+            <i class="fa fa-eye"></i>
+            <a href="javascript:void(0)">
+              <%= @post.views_count%>
+            </a>
+          </span>
+          <span class="post-comment">
+            <i class="fa fa-map-marker"></i>
+            <a href="javascript:void(0)">
+              <%= @post.get_scope %>
+            </a>
+          </span>
+        </div>
+      </header>
+      <figure class="media">
+        <%= image_tag @post.image.original.url, class: "img-responsive", alt: "Imagen" %>
+      </figure>
+      <div class="content">
+        <% unless @post.video_file.url.nil? %>
+        <div class="row">
+          <div class="col-md-offset-2 col-md-8">
+            <video height="320" controls controlsList="nodownload" style="width: 100%;">
+              <source src="<%= @post.video_file %>" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <% end %>
+          <%= raw @post.content %>
+          <%= raw @post.content2 %>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-xs-3">
+    <%= link_to market_publication_path(publication) do %>
+    <%= image_tag publication.get_image("mid_original"), class: "img-responsive" %>
+    <% end %>
+  </div>
+  <div class="col-xs-9">
+    <h3>
+      <%= link_to market_publication_path(publication), style: "color: #777;" do %>
+      <%= publication.title %>
+      <% end %>
+    </h3>
+    <p class="green" style="font-size: 25px; font-weight: bold;">
+      <% if publication.in_need == true %>
+      <span class="label label-secondary pull-right">
+        Se busca
+      </span>
+      <% end %>
+      <% if publication.user.is_official == true %>
+      <span class="label label-primary secondary-color-font pull-right">
+        <i class="fa fa-star"></i> Tienda oficial
+      </span>
+      <% end %>
+      <% unless publication.in_need == true %>
+      <%= number_to_currency publication.price, precision: publication.get_currency_precision, unit: publication.get_currency_unit, delimiter: "." %>
+      <% end %>
+      <% unless publication.city.department.country.nil? %>
+        <br>
+        <%= image_tag publication.city.department.country.flag.url, style: "width: 30px; border-radius: 30px;" %>
+      <% end %>
+    </p>
+    <p>
+      <span class="label label-primary">
+        <%= publication.subject %>
+      </span>
+      <span class="label label-secondary">
+        <%= publication.subcategory.category.name %> <i class="fa fa-chevron-right"></i> <%= publication.subcategory.name %>
+      </span>
+      <span class="label label-default">
+        <%= publication.get_kind %>
+      </span>
+      <% if publication.subject == Publication::INMUEBLES %>
+      <span class="label label-secondary">
+        <%= publication.get_mode %>
+      </span>
+      <% end %>
+      <br>
+      <small>
+        <% if publication.in_need == true %>
+          <%= publication.purchases.count %> vendidos /
+        <% end %>
+        <%= publication.visits_count %> vistas / <i class="fa fa-map-marker"></i> <%= publication.city.name.downcase.camelcase %> - <%= publication.city.department.name.downcase.camelcase %>
+      </small>
+    </p>
+  </div>
+  <div class="col-md-12">
+    <hr>
+  </div>
+</div>

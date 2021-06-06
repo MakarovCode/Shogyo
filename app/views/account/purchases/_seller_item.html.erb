@@ -1,0 +1,84 @@
+<tr>
+  <td>
+    <b>
+      <%= link_to account_user_path(purchase.user) do %>
+      <%= purchase.user.name %>
+      <% end %>
+    </b>
+    <br>
+    <small>
+      <%= purchase.user.email %>
+    </small>
+    <br>
+    <%= purchase.user.phone %>
+  </td>
+  <td class="text-left" style="width: 50px;">
+    <%= image_tag purchase.publication.get_image("low"), style: "width: 50px;" %>
+  </td>
+  <td>
+    <%= link_to market_publication_path(purchase.publication) do %>
+    <h6 class="green">
+      <%= purchase.publication.title %>
+      <p>
+        <%= number_to_currency purchase.price, precision: purchase.publication.get_currency_precision, unit: purchase.publication.get_currency_unit, delimiter: "." %>
+        <% if purchase.publication.subject == Publication::PRODUCTOS %>
+        x
+        <%= purchase.units %> unidad(es)
+        <% end %>
+      </p>
+    </h6>
+    <% end %>
+  </td>
+  <td>
+    <% if 5 == 6 %>
+      <% if purchase.pay_status == true %>
+        <i class="fa fa-check-circle green"></i> Pagado
+      <% else %>
+        <i class="fa fa-check-circle"></i> Pendiente de pago
+      <% end %>
+      <br>
+      <% if purchase.charge_status == true %>
+        <i class="fa fa-check-circle green"></i> Cobrado
+      <% else %>
+        <i class="fa fa-check-circle"></i> Pendiente de cobro
+      <% end %>
+      <br>
+      <% if purchase.send_status == true %>
+        <i class="fa fa-truck green"></i> Despachado
+      <% else %>
+        <i class="fa fa-truck"></i> Pendiente por despachar
+      <% end %>
+    <% end %>
+    <br>
+    <% if purchase.buyer_reviewed == true %>
+      <% if purchase.buyer_recommended == 1 %>
+        <i class="fa fa-thumbs-o-up green"></i> Calificaste positivo
+      <% elsif purchase.buyer_recommended == -1 %>
+        <i class="fa fa-thumbs-o-down error"></i> Calificaste negativo
+      <% else %>
+        <i class="fa fa-minus-circle"></i> Calificaste neutro
+      <% end %>
+    <% else %>
+      <i class="fa fa-clock-o"></i> <%= distance_of_time_in_words purchase.created_at, purchase.created_at + 20.days %> días para calificar
+    <% end %>
+  </td>
+  <td>
+    <%= link_to "Ver detalles", account_purchase_path(purchase), class: "btn btn-primary" %>
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fa fa-cog"></i> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu pull-right">
+      <% if purchase.publication.subject == Publication::PRODUCTOS %>
+      <li>
+        <%= link_to purchase.charge_status == true ? "Marcar como no cobrado" : "Marcar como cobrado", mark_as_charged_account_purchase_path(purchase), method: :post%>
+      </li>
+      <li>
+        <%= link_to purchase.send_status == true ? "Marcar como no enviado" : "Marcar como enviado", mark_as_sent_account_purchase_path(purchase), method: :post%>
+      </li>
+      <% end %>
+      <li>
+        <%= link_to "Calificar", new_account_reputation_path(id: purchase.id, as: "seller")%>
+      </li>
+    </ul>
+  </td>
+</tr>

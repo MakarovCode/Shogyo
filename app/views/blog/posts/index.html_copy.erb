@@ -1,0 +1,96 @@
+<%
+meta title: "AgroNeto | #{@info.blog_tab_title}",
+description: @info.meta_description,
+keywords: !@info.meta_keywords.nil? ? @info.meta_keywords.split(",") : []
+%>
+
+<% unless @info.meta_image.nil?
+
+  meta og: {
+    image: "#{@info.meta_image.url}"
+  }
+
+end %>
+
+<%
+meta twitter: {
+  card: "AgroNeto | #{@info.blog_tab_title}",
+  site: "@AgroNetoOficial"
+}
+%>
+
+<div class="row" ng-controller="BlogController as bCtrl" ng-init="bCtrl.initialize(<%= @categories.to_json(include: :subcategories)%>, <%= @tags.to_json%>, true, true)">
+  <!-- MAIN CONTENT -->
+  <div class="col-md-12">
+    <h3 class="widget-title">NOTICIAS</h3>
+  </div>
+  <div class="col-md-8 col-lg-9">
+    <div class="post-entry-card">
+      <a href="/blog/posts/{{bCtrl.last_post.slug}}">
+        <img ng-src="{{bCtrl.last_post.image_wide}}" class="img-responsive" alt="Imagen"/>
+      </a>
+      <div class="post-info">
+        <h3 class="post-title">
+          <a href="/blog/posts/{{bCtrl.last_post.slug}}">
+            {{bCtrl.last_post.title}}
+          </a>
+        </h3>
+        <p class="post-excerpt">
+          {{ bCtrl.last_post.abstract }}
+        </p>
+        <span class="post-meta">
+          <i class="fa fa-calendar-o"></i>
+          {{bCtrl.last_post.date}}
+        </span>
+        <a href="/blog/posts/{{bCtrl.last_post.slug}}" class="read-more pull-right">Leer más</a>
+      </div>
+    </div>
+    <!-- latest posts -->
+    <section class="no-padding-top">
+      <div class="clearfix margin-top-30 margin-bottom-30"></div>
+      <div class="alert alert-info" ng-show="bCtrl.posts.length == 0">
+        No se encontraron resultados.
+        <button type="button" ng-click="bCtrl.reloadAll();" class="btn btn-default">
+          <i class="fa fa-refresh"></i>
+          Cargar todos...
+        </button>
+      </div>
+      <div id="wrapper">
+        <div id="columns">
+          <div class="pin" ng-repeat="post in bCtrl.posts" ng-hide="$index == 0">
+            <div class="post-entry-card">
+              <a href="/blog/posts/{{post.slug}}">
+                <img ng-src="{{post.image}}" class="img-responsive" alt="Imagen" >
+              </a>
+              <div class="post-info">
+                <h3 class="post-title">
+                  <a href="/blog/posts/{{post.slug}}">
+                    {{post.title}}
+                  </a>
+                </h3>
+                <p class="post-excerpt">
+                  {{ post.abstract | limitTo: 300 }}{{ post.abstract.length > 200 ? '...' : '' }}
+                </p>
+                <span class="post-meta">
+                  <i class="fa fa-calendar-o"></i>
+                  {{post.date}}
+                </span>
+                <a href="/blog/posts/{{post.slug}}" class="read-more pull-right">Leer más</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <%= paginate @posts %>
+      </div>
+    </section>
+    <!-- end latest posts -->
+  </div>
+  <!-- END MAIN CONTENT -->
+  <!-- SIDEBAR CONTENT -->
+  <div class="col-md-4 col-lg-3">
+    <%= render "sidebar" %>
+  </div>
+  <!-- END SIDEBAR CONTENT -->
+</div>

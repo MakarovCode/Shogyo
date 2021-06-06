@@ -1,0 +1,54 @@
+<div class="row" style="margin-top: 40px">
+  <div class="col-md-12">
+    <div class="blog-container-2">
+
+      <div class="blog-header">
+        <!-- <div class="blog-cover"> -->
+          <div class="blog-author--no-cover">
+            <small>
+              <fa class="fa fa-comments"></fa>
+              Respuesta de:
+            </small>
+            <% unless answer.user.nil? %>
+            <h3><%= image_tag answer.user.get_profile_image, class: "profile-icon"%><%= answer.user.try(:name) %></h3>
+            <% end %>
+          </div>
+        <!-- </div> -->
+      </div>
+
+      <div class="blog-body">
+        <div class="blog-summary">
+          <p><%= answer.text %></p>
+        </div>
+        <div class="text-center">
+          <% if answer.consult_answer_images.count > 0 %>
+          <%= image_tag answer.consult_answer_images.first.source.high.url, style: "width: 60%"%>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="blog-footer">
+        <ul>
+          <% if answer.created_at.nil? %>
+          <li class="published-date">Hace menos de un minuto</li>
+          <% else %>
+          <li class="published-date">Hace <%= distance_of_time_in_words(Time.now, answer.created_at) %></li>
+          <% end %>
+          <li class="comments">
+            <%= link_to voted_consults_question_answer_path(answer.question, answer, value: 1, redirect_to: request.original_fullpath), class: "icon", method: :post do %>
+              <i class="fa fa-thumbs-up fa-2x" style="color: #0F6A37;"></i>
+              <span class="numero"><%= answer.user_consult_answer_votes.positives.count %></span>
+            <% end %>
+          </li>
+          <li class="shares">
+            <%= link_to voted_consults_question_answer_path(answer.question, answer, value: -1, redirect_to: request.original_fullpath), class: "icon", method: :post do %>
+              <i class="fa fa-thumbs-down fa-2x"></i>
+              <span class="numero"><%= answer.user_consult_answer_votes.negatives.count %></span>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>

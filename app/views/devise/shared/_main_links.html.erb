@@ -1,0 +1,7 @@
+<%- if controller_name != 'sessions' %>
+¿Ya tienes cuenta? Inicia sesión <%= link_to "aquí", new_session_path(resource_name) %><br />
+<% end -%>
+
+<%- if controller_name != 'registrations' %>
+  ¿Aún no tienes cuenta? Subscríbete <%= link_to "aquí", new_registration_path(resource_name) %><br />
+<% end -%>

@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  publication: one
+  user: one
+  status: 1
+  review: MyText
+  received: 1
+  recommended: 1
+  address: MyString
+  city: one
+  phone: MyString
+  shipping: false
+  units: 1
+
+two:
+  publication: two
+  user: two
+  status: 1
+  review: MyText
+  received: 1
+  recommended: 1
+  address: MyString
+  city: two
+  phone: MyString
+  shipping: false
+  units: 1

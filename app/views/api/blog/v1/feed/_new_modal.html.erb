@@ -1,0 +1,19 @@
+<!-- Modal -->
+<% @categories = Category.all.order(name: :asc) %>
+<div class="modal fade" id="new-feed-modal" tabindex="-1" role="dialog" aria-labelledby="new-feed-modalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="new-feed-modalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <% if user_signed_in? %>
+        <%= render "api/blog/v1/feed/form" %>
+        <% else %>
+        <%#= render "layouts/subscribe_forms" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

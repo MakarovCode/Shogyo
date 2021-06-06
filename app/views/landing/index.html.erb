@@ -1,0 +1,104 @@
+<%
+meta title: "AgroNeto | #{@info.blog_tab_title}",
+description: @info.meta_description,
+keywords: !@info.meta_keywords.nil? ? @info.meta_keywords.split(",") : []
+%>
+
+<% unless @info.meta_image.nil?
+
+meta og: {
+  image: "#{@info.meta_image.url}"
+}
+
+end %>
+
+<%
+meta twitter: {
+  card: "AgroNeto | #{@info.blog_tab_title}",
+  site: "@AgroNetoOficial"
+}
+%>
+
+<div class="row">
+  <!-- MAIN CONTENT -->
+  <!-- <div class="col-md-12">
+  <h3 class="widget-title">EL MERCADO</h3>
+</div> -->
+<!-- <div class="col-md-12 visible-xs visible-sm">
+<%#= render "ads/02"%>
+</div> -->
+<!-- <div class="col-md-12 visible-xs visible-sm">
+  <%#= render "consults/questions/new", id: "2" %>
+</div> -->
+<div class="col-md-3 visible-lg visible-md" style="position: fixed; left: 3%;">
+  <!-- end widget -->
+  <% unless user_signed_in? %>
+  <div class="widget">
+    <div class="post-entry-card" data-toggle="modal" data-target="#subscribe-modal">
+      <%= image_tag "construction.jpg", class: "img-responsive" %>
+      <div class="post-info">
+        <h4 class="post-excerpt text-center">
+          Subscríbete y haz parte de la red del Agro en Colombia, Latinoamérica y el Mundo
+        </h4>
+        <button type="button" class="btn btn-secondary btn-lg btn-block">
+          Ingresar
+        </button>
+      </div>
+    </div>
+  </div>
+  <% else %>
+  <div class="widget">
+    <div class="post-entry-card" data-toggle="modal" data-target="#subscribe-modal">
+      <%= image_tag "construction.jpg", class: "img-responsive" %>
+      <div class="post-info">
+        <h4 class="post-excerpt text-center">
+          ¿Tienes una consulta, vendes o necesitas algo?
+          <br>
+          <b>¡En AgroNeto lo encuentras!</b>
+        </h4>
+        <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal" data-target="#new-feed-modal">
+          Publica tu anuncio
+        </button>
+      </div>
+    </div>
+  </div>
+  <% end %>
+  <div class="btn-group-vertical visible-md visible-lg">
+    <button type="button" class="btn" ng-class="{'btn-primary': scope == 'all' || scope == '', 'btn-default': scope != 'all' || scope != ''}" ng-click="GetFeed('')">
+      Todos
+    </button>
+    <button type="button" class="btn" ng-class="{'btn-primary': scope == 'consults', 'btn-default': scope != 'consults'}" ng-click="GetFeed('consults')">
+      Consultas
+    </button>
+    <button type="button" class="btn" ng-class="{'btn-primary': scope == 'market', 'btn-default': scope != 'market'}" ng-click="GetFeed('market')">
+      Mercado
+    </button>
+    <button type="button" class="btn" ng-class="{'btn-primary': scope == 'posts', 'btn-default': scope != 'posts'}" ng-click="GetFeed('posts')">
+      Noticias
+    </button>
+  </div>
+</div>
+<div class="col-md-6 col-md-offset-3">
+  <!-- latest posts -->
+  <div class="no-padding-top">
+    <%#= render "consults/questions/new", id: "2" %>
+  </div>
+  <div class="no-padding-top">
+    <%= render "api/blog/v1/feed/list" %>
+  </div>
+  <!-- end latest posts -->
+</div>
+<!-- <div class="col-md-12 visible-xs visible-sm">
+<%#= render "ads/03"%>
+</div> -->
+<!-- END MAIN CONTENT -->
+<!-- SIDEBAR CONTENT -->
+<div class="col-md-3 col-lg-3">
+  <%= render "sidebar" %>
+</div>
+<!-- <div class="col-md-9" style="margin-bottom: 20px;">
+  <%#= render "layouts/searchbar", classs: "" %>
+</div> -->
+
+<!-- END SIDEBAR CONTENT -->
+</div>

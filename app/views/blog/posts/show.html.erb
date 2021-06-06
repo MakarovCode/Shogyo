@@ -1,0 +1,180 @@
+<%
+meta title: "AgroNeto | #{@post.title}",
+description: @post.abstract,
+keywords: !@info.meta_keywords.nil? ? @info.meta_keywords.split(",") + @post.tags.collect(&:name) : []
+%>
+
+<% unless @post.image.url.nil?
+
+  meta og: {
+    image: "#{@post.image.url}",
+    url: blog_post_url(@post),
+    title: @post.title,
+    description: @post.abstract,
+    type: "website"
+  }
+
+end %>
+
+<%
+meta twitter: {
+  card: "AgroNeto | #{@post.title}",
+  site: "@AgroNetoOficial"
+}
+%>
+
+<div class="row" ng-controller="BlogController as bCtrl" ng-init="bCtrl.initialize(<%= @categories.to_json(include: :subcategories)%>, <%= @tags.to_json%>, false, false)">
+  <div class="col-md-12 visible-xs visible-sm">
+    <%= render "ads/02"%>
+  </div>
+  <div class="col-md-9">
+    <!-- blog post -->
+    <article class="entry-post entry-post-single">
+      <header class="entry-header">
+        <h1 class="entry-title">
+          <%= @post.title %>
+        </h1>
+
+        <div class="meta-line">
+          <% unless @post.author.nil? %>
+          <span class="post-author">
+            <i class="fa fa-user"></i>
+            <a href="javascript:void(0)">
+              <%= @post.author %>
+            </a>
+          </span>
+          <% end %>
+          <span class="post-date">
+            <i class="fa fa-calendar"></i>
+            <a href="javascript:void(0)">
+              <%= @post.date.strftime("%d de %b, %Y") %>
+            </a>
+          </span>
+          <!-- <span class="post-comment"><i class="fa fa-comments"></i> <a href="#">4 Comments</a></span> -->
+          <span class="post-comment">
+            <i class="fa fa-eye"></i>
+            <a href="javascript:void(0)">
+              <%= @post.views_count%>
+            </a>
+          </span>
+          <span class="post-comment">
+            <i class="fa fa-map-marker"></i>
+            <a href="javascript:void(0)">
+              <%= @post.get_scope %>
+            </a>
+          </span>
+        </div>
+      </header>
+      <figure class="media">
+        <%= image_tag @post.image.original.url, class: "img-responsive", alt: "Imagen" %>
+        <!-- <span class="media-attribution text-muted-2x">Illustration by <a href="http://www.unsplash.com" target="_blank">Unsplash</a></span> -->
+      </figure>
+      <div class="content">
+        <% unless @post.video_file.url.nil? %>
+        <div class="row">
+          <div class="col-md-offset-2 col-md-8">
+            <video height="320" controls controlsList="nodownload" style="width: 100%;">
+              <source src="<%= @post.video_file %>" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <% end %>
+          <%= raw @post.content %>
+          <% if params[:more].nil? %>
+          <%= link_to blog_post_path(more: true), class: "btn btn-primary btn-lg btn-block" do %>
+          Seguir leyendo noticia... <i class="fa fa-arrow-right"></i>
+          <% end %>
+          <% else %>
+          <div id="more-content">
+            <%= raw @post.content2 %>
+          </div>
+          <% end %>
+        </div>
+      </article>
+      <!-- end blog post -->
+      <div class="row">
+        <div class="col-md-6">
+          <!-- tag list -->
+          <ul class="list-inline tag-list">
+            <% @post.tags.each do |tag| %>
+            <li>
+              <%= link_to blog_posts_path(tag: tag.id) do %>
+              <%= tag.name %>
+              <% end %>
+            </li>
+            <% end %>
+          </ul>
+          <!-- end tag list -->
+        </div>
+        <div class="col-md-6">
+          <!-- social sharing -->
+          <div class="post-social-sharing text-right">
+            <h3 class="section-heading">Comparte esta noticia: </h3>
+            <%#= social_share_button_tag("Consultas AgroNeto", :url => blog_post_url(@post), :image => @post.image.high.url, desc: @post.abstract, via: "AgroNetoOficial") %>
+          </div>
+          <!-- end social sharing -->
+        </div>
+      </div>
+      <div class="row relevant-publications-ori" id="relevant-publications">
+        <div class="col-md-12">
+          <%= render "market/publications/relevant", size: "col-xs-6 col-sm-4 col-md-3" %>
+        </div>
+      </div>
+      <!-- author info -->
+      <!-- <section class="post-author-info">
+      <h3 class="section-heading sr-only">About The Author</h3>
+      <div class="media">
+      <a href="#" class="media-left">
+      <img src="assets/img/blog/post-author.png" class="img-circle" alt="Avatar">
+    </a>
+    <div class="media-body">
+    <a href="#" class="author-name">Ashley Young</a>
+    <p class="author-title">Writer, Entrepreneur, Marketing Consultant</p>
+  </div>
+</div>
+</section> -->
+<!-- end author info -->
+<!-- related post -->
+<section class="related-posts">
+  <h3 class="section-heading">Artículos relacionados</h3>
+  <div class="grid2 blog-masonry">
+    <div class="grid-sizer2"></div>
+    <% @related.each do |post| %>
+    <div class="grid-item2">
+
+      <div class="post-entry-card">
+
+        <%= link_to blog_post_path(post) do %>
+        <%= image_tag post.image.low.url, class: "img-responsive", alt: "Image"%>
+        <% end %>
+        <div class="post-info">
+          <%= link_to post.title, blog_post_path(post), class: "post-title" %>
+        </div>
+      </div>
+    </div>
+
+    <% end %>
+  </div>
+</section>
+<%= raw @post.facebook_comments_link %>
+</div>
+<div class="col-md-12 visible-xs visible-sm">
+  <%= render "ads/03"%>
+</div>
+<div class="col-md-3">
+  <%= render "sidebar" %>
+</div>
+<!-- end sidebar -->
+</div>
+<script>
+$(function() {
+  $(document).ready(function(){
+    $("#relevant-publications").clone().insertAfter("div.relevant-publications");
+    $(".relevant-publications-ori:last").remove();
+    if ($("#more-content").text() != ""){
+      var position = $("#more-content").offset().top;
+      $('html, body').animate({scrollTop: (position-200)+'px'}, 300);
+    }
+  });
+});
+</script>

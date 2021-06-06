@@ -1,0 +1,26 @@
+<div class="grid-item">
+  <div class="post-entry-card">
+    <% if post.subcategories.count > 0 %>
+    <div class="post-header" style="<%= post.subcategories.first.category.color %>">
+      <%= post.subcategories.first.category.name %>
+    </div>
+    <% end %>
+    <%= link_to blog_post_path(post), style: "position: relative;" do %>
+    <%= image_tag post.image.mid.url, class: "img-responsive", alt: "Imagen" %>
+    <% end %>
+    <div class="post-info">
+      <h3 class="post-title">
+        <%= link_to blog_post_path(post) do %>
+        <%= post.title %>
+        <% end %>
+      </h3>
+      <p class="post-excerpt">
+        <%= post.abstract %>
+      </p>
+      <span class="post-meta">
+        <i class="fa fa-map-marker"></i> <%= post.get_scope %> / <%= post.date.strftime("%d de %b") %>
+      </span>
+      <%= link_to "Leer más", blog_post_path(post), class: "read-more pull-right" %>
+    </div>
+  </div>
+</div>

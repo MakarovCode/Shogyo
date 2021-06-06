@@ -1,0 +1,34 @@
+<div class="grid-item2">
+  <div class="post-entry-card">
+    <%= link_to account_user_path(user) do %>
+    <div class="text-center">
+      <%= image_tag user.get_profile_image, style: "width: 60%;" %>
+      <!-- border-radius: 200px; -->
+    </div>
+
+    <hr style="margin-bottom: -5px; ">
+    <div class="post-info">
+      <% if user.is_official == true %>
+      <span class="label label-primary secondary-color-font pull-right" style="font-size: 18px;">
+        <i class="fa fa-star"></i> Tienda oficial
+      </span>
+      <% end %>
+      <p class="green" style="font-size: 20px; font-weight: bold;">
+        <%= user.name %>
+      </p>
+      <p style="color: #777; height: 60px;">
+        <%= truncate user.main_activity, length: 150, omission: "(Click para ver más...)" %>
+      </p>
+      <span class="label label-primary">
+        <%= user.profession %>
+      </span>
+      <br>
+      <% unless user.city.nil? %>
+      <span class="post-meta">
+        <i class="fa fa-map-marker"></i> <%= user.city.name.downcase.camelcase %> - <%= user.city.department.name.downcase.camelcase %>
+      </span>
+      <% end %>
+    </div>
+    <% end %>
+  </div>
+</div>

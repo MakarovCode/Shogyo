@@ -1,0 +1,447 @@
+<%= nested_form_for [:account, @publication] do |f| %>
+<div class="row">
+  <div class="col-md-12">
+    <p class="green">
+      Ingresa fotos de tu producto
+    </p>
+    <div class="alert alert-warning">
+      Muéstralo en detalle, con fondo blanco y bien iluminados. No incluyas logos, banners, textos promocionales ni numeros de contacto. Los usuarios interesados en tu publicación te contactarán por medio del botón contactar sin ningún costo.
+    </div>
+    <div class="row" id="images">
+      <% i = 0 %>
+      <%= f.fields_for :publication_images do |p_images_form| %>
+      <div class="col-xs-3 col-sm-2">
+        <div style="margin-top: 20px;">
+          <% unless p_images_form.object.source.url.nil? %>
+          <%= image_tag p_images_form.object.source.low.url, class: "img-responsive" %>
+          <% else %>
+          <%= image_tag "no-image.png", class: "img-responsive preview-target" %>
+          <% end %>
+        </div>
+        <label class="btn btn-primary btn-file pull-right btn-block">
+          <i class="fa fa-picture-o"></i>
+          Seleccionar
+          <%= p_images_form.file_field :source, value: nil, style: "display: none;", :"data-target" => "#preview-#{i}", class: "preview-file" %>
+        </label>
+        <br>
+        <%= p_images_form.link_to_remove class: "btn btn-danger btn-sm btn-block", disabled: i == 0, style: "margin-top: 10px;" do %>
+        <i class="fa fa-remove"></i> <%= i == 0 ? "Obligatorio" : "Borrar"%>
+        <% end %>
+
+      </div>
+      <% i += 1 %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-12">
+    <%= f.link_to_add :publication_images, data: { target: "#images" }, class: "btn btn-primary" do %>
+    <i class="fa fa-plus"></i> Adicionar imagen
+    <% end %>
+  </div>
+</div>
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-6">
+    <p class="green">
+      Video (Copia tu video de YouTube)
+    </p>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Link de YouTube:
+      </span>
+      <%= f.text_field :video, placeholder: "Copia y pega el link de tu video en YouTube", class: "form-control" %>
+      <span class="input-group-addon">
+        Opcional
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("video") %>
+    <p class="error-message">
+      <%= @errors["video"].to_sentence %>
+    </p>
+    <% end %>
+
+    <p class="green">
+      Describre tu producto
+    </p>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Título:
+      </span>
+      <%= f.text_field :title, placeholder: "Escribe aquí un título para tu publicación", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("title") %>
+    <p class="error-message">
+      <%= @errors["title"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Descripción:
+      </span>
+      <%= f.cktext_area :description, placeholder: "Escribe aquí una descripción de tu publicación", class: "form-control", style: "height: 300px;", ckeditor: { language: 'co', toolbar: 'mini'} %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("description") %>
+    <p class="error-message">
+      <%= @errors["description"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Ciudad:
+      </span>
+      <%= autocomplete_field_tag :city_name, !@publication.city.nil? ? @publication.city.name : '', autocomplete_city_name_account_users_path, id_element: '#publication_city_id', class: "form-control", placeholder: "Escribe la ciudad y apareceran las opciones..." %>
+      <%= f.hidden_field :city_id %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("city_id") %>
+    <p class="error-message">
+      <%= @errors["city_id"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        <% unless @publication.in_need == true%>
+        Dirección:
+        <% else %>
+        Ubicación de preferencia:
+        <% end %>
+      </span>
+      <% unless @publication.in_need == true%>
+      <%= f.text_field :address, placeholder: "Dirección del #{@publication.getSubjectSingular}", class: "form-control" %>
+      <% else %>
+      <%= f.text_field :address, placeholder: "Ubicación de preferencia del #{@publication.getSubjectSingular}", class: "form-control" %>
+      <% end %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("address") %>
+    <p class="error-message">
+      <%= @errors["address"].to_sentence %>
+    </p>
+    <% end %>
+    <% if @publication.subject == Publication::VEHICULOS %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Año:
+      </span>
+      <%= f.select :year, (1900..Date.today.year).to_a.reverse.each {|p| [ p, p ] }, { include_blank: true }, class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("year") %>
+    <p class="error-message">
+      <%= @errors["year"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Marca:
+      </span>
+      <%= f.text_field :brand, placeholder: "Escribe aquí la marca del vehículo", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("brand") %>
+    <p class="error-message">
+      <%= @errors["brand"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Kilómetros:
+      </span>
+      <%= f.number_field :km, placeholder: "Kilometros recorridos del vehículo", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("km") %>
+    <p class="error-message">
+      <%= @errors["km"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Modelo:
+      </span>
+      <%= f.text_field :model, placeholder: "Escribe aquí el modelo del vehículo", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("model") %>
+    <p class="error-message">
+      <%= @errors["model"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Transmisión:
+      </span>
+      <%= f.select :transmission, [["Manual", "Manual"], ["Automática", "Automática"], ["Secuencial", "Secuencial"]], { include_blank: true }, class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("transmission") %>
+    <p class="error-message">
+      <%= @errors["transmission"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Cilindraje:
+      </span>
+      <%= f.number_field :cylinder, placeholder: "Cilindraje del vehículo", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("cylinder") %>
+    <p class="error-message">
+      <%= @errors["cylinder"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Color:
+      </span>
+      <%= f.text_field :color, placeholder: "Color del vehículo", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("color") %>
+    <p class="error-message">
+      <%= @errors["color"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Combustible:
+      </span>
+      <%= f.select :fuel_type, [["Gasolina", "Gasolina"], ["Disel", "Disel"], ["Gas", "Gas"], ["Eléctrico", "Eléctrico"]], { include_blank: true }, class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("fuel_type") %>
+    <p class="error-message">
+      <%= @errors["fuel_type"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group-radio">
+      <%= f.check_box :with_ac %>
+      <%= f.label :with_ac, "Aire acondicionado"%>
+    </div>
+    <div class="input-group-radio">
+      <%= f.check_box :uniq_owner %>
+      <%= f.label :uniq_owner, "Único dueño"%>
+    </div>
+    <% end %>
+    <% if @publication.subject == Publication::INMUEBLES %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Número:
+      </span>
+      <%= f.text_field :number, placeholder: "Código identificador", class: "form-control" %>
+      <span class="input-group-addon">
+        Opcional
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("number") %>
+    <p class="error-message">
+      <%= @errors["number"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Metros terreno:
+      </span>
+      <%= f.number_field :total_mtr, placeholder: "Metros cuadrados del terreno", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("total_mtr") %>
+    <p class="error-message">
+      <%= @errors["total_mtr"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Metros construidos:
+      </span>
+      <%= f.number_field :builded_mtr, placeholder: "Metros construidos", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("builded_mtr") %>
+    <p class="error-message">
+      <%= @errors["builded_mtr"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Estrato:
+      </span>
+      <%= f.select :estrato, (1..6).each {|p| [ p, p ] }, { include_blank: true }, class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("estrato") %>
+    <p class="error-message">
+      <%= @errors["estrato"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Precio administración:
+      </span>
+      <%= f.number_field :admin_price, placeholder: "Valor de administración", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("admin_price") %>
+    <p class="error-message">
+      <%= @errors["admin_price"].to_sentence %>
+    </p>
+    <% end %>
+    <% end %>
+    <% if @publication.subject != Publication::SERVICIOS && @publication.subject != Publication::ANIMALES %>
+    <p class="green">
+      Indica las condiciones de tu producto
+    </p>
+    <div class="input-group-radio">
+      <%= f.radio_button :kind, 1, :checked => true %>
+      <%= f.label :kind, "Nuevo", value: 1  %>
+    </div>
+    <div class="input-group-radio">
+      <%= f.radio_button :kind, 2 %>
+      <%= f.label :kind, "Usado", :value => 2 %>
+    </div>
+    <% if !@errors.nil? && @errors.include?("kind") %>
+    <p class="error-message">
+      <%= @errors["kind"].to_sentence %>
+    </p>
+    <% end %>
+    <% end %>
+    <% if @publication.subject == Publication::INMUEBLES %>
+    <p class="green">
+      Condiciones de contrato del inmueble
+    </p>
+    <div class="input-group-radio">
+      <%= f.radio_button :mode, 1, :checked => true %>
+      <%= f.label :mode, "Para vender", value: 1  %>
+    </div>
+    <div class="input-group-radio">
+      <%= f.radio_button :mode, 2 %>
+      <%= f.label :mode, "Para arrendar", :value => 2 %>
+    </div>
+    <% if !@errors.nil? && @errors.include?("mode") %>
+    <p class="error-message">
+      <%= @errors["mode"].to_sentence %>
+    </p>
+    <% end %>
+    <% end %>
+    <% if @publication.subject == Publication::SERVICIOS %>
+    <div class="input-group-radio">
+      <%= f.check_box :willing_to_move, :checked => @publication.willing_to_move.nil? ? false : @publication.willing_to_move %>
+      <%= f.label :willing_to_move, "Estoy dispuesto a desplazarme"%>
+    </div>
+    <% end %>
+    <% if @publication.subject == Publication::ANIMALES %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Edad:
+      </span>
+      <%= f.select :age, (1..50).each{|a| [a, a]}, class: "form-control" %>
+      <% if @age_selector == "Mes(es)"%>
+      <%= select "none", :age_selector, [["Mes(es)", "Mes(es)"], ["Año(s)", "Año(s)"]], class: "form-control" %>
+      <% else %>
+      <%= select "none", :age_selector, [["Año(s)", "Año(s)"], ["Mes(es)", "Mes(es)"]], class: "form-control" %>
+      <% end %>
+      <!-- <span class="input-group-addon">
+      <i class="fa fa-asterisk"></i>
+    </span> -->
+  </div>
+  <% if !@errors.nil? && @errors.include?("age") %>
+  <p class="error-message">
+    <%= @errors["age"].to_sentence %>
+  </p>
+  <% end %>
+  <% end %>
+</div>
+</div>
+<div class="row" style="margin-top: 20px">
+  <%= hidden_field_tag :step, "", value: 2%>
+  <div class="col-md-12">
+    <button type="submit" class="btn btn-primary">
+      Continuar
+    </button>
+    <%= link_to "Volver", edit_account_publication_path(@publication, step: 1, subject: @publication.subject, category_id: @publication.subcategory.category.id, subcategory_id: @publication.subcategory.id), class: "btn btn-default" %>
+  </div>
+</div>
+<% end %>
+<script>
+$(function() {
+  var fieldsCount,
+  maxFieldsCount = 11,
+  $addLink = $('a.add_nested_fields');
+
+  function toggleAddLink() {
+    $addLink.toggle(fieldsCount <= maxFieldsCount)
+  }
+
+  $(document).on('nested:fieldAdded', function() {
+    fieldsCount += 1;
+    toggleAddLink();
+    $(".preview-file").change(function(){
+  		readURL(this);
+  	});
+  });
+
+  $(document).on('nested:fieldRemoved', function() {
+    fieldsCount -= 1;
+    toggleAddLink();
+  });
+
+  // count existing nested fields after page was loaded
+  fieldsCount = $('form .fields').length;
+  toggleAddLink();
+
+  function readURL(input) {
+
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			var element = $(input);
+
+			reader.onload = function (e) {
+				$(element.parent().parent().find(".preview-target")).attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+	$(".preview-file").change(function(){
+		readURL(this);
+	});
+
+});
+</script>

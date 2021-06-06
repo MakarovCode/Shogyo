@@ -1,0 +1,17 @@
+<% ad = AdsHelper.load_ad("04") %>
+<% unless ad.nil? %>
+<div class="grid-item2">
+  <div class="post-entry-card">
+    <% ahoy.track "Viewed ad", title: "#{ad.title}", ad_id: ad.id %>
+    <%= link_to main_app.awesome_path(ad), target: "_blank", method: :put do %>
+      <%= image_tag ad.image.tall_high.url, class: "img-responsive", alt: ad.title %>
+      <hr style="margin-bottom: -5px; ">
+      <div class="post-info">
+        <p style="color: #777; font-size: 24px; margin-bottom: 20px;">
+          <%= ad.title %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+</div>
+<% end %>

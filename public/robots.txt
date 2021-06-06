@@ -1,0 +1,23 @@
+# See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots$
+#
+# To ban all spiders from the entire site uncomment the next two lines:
+# User-agent: *
+# Carpetas
+Disallow: /app/
+Disallow: /bin/
+Disallow: /config/
+Disallow: /config.ru
+Disallow: /db/
+Disallow: /Gemfile
+Disallow: /Gemfile.lock
+Disallow: /lib/
+Disallow: /log/
+Disallow: /public/uploads/
+Disallow: /Rakefile
+Disallow: /README.rdoc
+Disallow: /test/
+Disallow: /tmp/
+Disallow: /vendor/
+# RUTAS
+Disallow: admin/*
+Disallow: terms/

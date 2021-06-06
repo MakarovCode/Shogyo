@@ -1,0 +1,56 @@
+<%= form_for [:account, @purchase], url: account_reputation_path(id: @purchase.id), method: :put do |f| %>
+  <h4 class="green">
+    ¿Ya entregaste el producto?
+  </h4>
+  <div class="input-group-radio" style="margin-top: 20px;">
+    <%= f.radio_button :delivered, 1 %>
+    <%= f.label :delivered, "Sí, ya lo entregué", value: 1  %>
+  </div>
+  <div class="input-group-radio">
+    <%= f.radio_button :delivered, 2 %>
+    <%= f.label :delivered, "No, no lo voy a entregar", value: 2  %>
+  </div>
+  <% if !@purchase.nil? && @purchase.errors.include?(:delivered) %>
+  <p class="error-message">
+    <%= @purchase.errors[:delivered].to_sentence %>
+  </p>
+  <% end %>
+  <h4 class="green">
+    ¿Lo recomedarías con otros vendedores?
+  </h4>
+  <div class="input-group-radio" style="margin-top: 20px;">
+    <%= f.radio_button :buyer_recommended, 1 %>
+    <%= f.label :buyer_recommended, "Sí", value: 1  %>
+  </div>
+  <div class="input-group-radio">
+    <%= f.radio_button :buyer_recommended, 2 %>
+    <%= f.label :buyer_recommended, "No estoy seguro", value: 2  %>
+  </div>
+  <div class="input-group-radio">
+    <%= f.radio_button :buyer_recommended, 3 %>
+    <%= f.label :buyer_recommended, "No", value: 3  %>
+  </div>
+  <% if !@purchase.nil? && @purchase.errors.include?(:buyer_recommended) %>
+  <p class="error-message">
+    <%= @purchase.errors[:buyer_recommended].to_sentence %>
+  </p>
+  <% end %>
+  <h4 class="green">
+    ¿Comprate tu opinión sobre el vendedor?
+  </h4>
+  <div class="">
+    <%= f.text_area :buyer_review, class: "form-control", placeholder: "Escribe tu comentario aquí...", style: "height: 100px;" %>
+  </div>
+  <% if !@purchase.nil? && @purchase.errors.include?(:buyer_review) %>
+  <p class="error-message">
+    <%= @purchase.errors[:buyer_review].to_sentence %>
+  </p>
+  <% end %>
+  <div style="margin-top: 40px;">
+    <input type="hidden" name="as" value="seller" >
+    <button type="submit" class="btn btn-primary btn-lg">
+      Calificar
+    </button>
+    <%= link_to "Cancelar", account_purchases_path(as: "buyer", only_not_reviewd: true), class: "btn btn-link" %>
+  </div>
+<% end %>

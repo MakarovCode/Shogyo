@@ -1,0 +1,44 @@
+<% if user_signed_in? %>
+<ul class="nav navbar-nav secondary-navbar-nav pull-left visible-lg visible-md">
+  <li class="dropdown dropdown-cart">
+    <a href="javascript:void(0);" class="as-icon dropdown-toggle" data-toggle="dropdown">
+      <i class="fa fa-bell-o"></i>
+      <% if @notifications.count > 0 %>
+      <span class="cart-count"><%= @notifications.count %></span>
+      <% end %>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-left">
+      <li>
+        <div class="shopping-cart-widget" style="max-height: 350px; overflow-y: auto;">
+          <strong>Tienes <span class="text-primary"><%= @notifications.count %></span> sin leer.</strong>
+          <ul class="list-unstyled">
+            <% @notifications.each do |noti| %>
+            <li>
+              <div class="cart-item clearfix">
+                <a href="<%= main_app.account_user_notification_path(current_user, noti)%>">
+                  <%= image_tag noti.get_image, alt: "Imagen", style: "width: 60px; margin-right: 10px;" %>
+                </a>
+                <div class="info">
+                  <a href="<%= main_app.account_user_notification_path(current_user, noti)%>">
+                    <strong class="product-title"><%= raw noti.text %></strong>
+                  </a>
+                  <span class="product-qty-price text-muted-2x">Hace <%= time_ago_in_words noti.created_at %></span>
+                </div>
+                <!-- <button type="button" class="btn btn-link btn-close"><i class="fa fa-close"></i></button> -->
+              </div>
+            </li>
+            <% end %>
+          </ul>
+          <!-- <div class="cart-footer">
+            <strong class="total">Total: $215</strong>
+            <a href="shop-cart-checkout.html" class="btn btn-primary btn-checkout ">CHECKOUT</a>
+            <div class="clearfix"></div>
+            <p class="continue-shopping"><a href="index-shop.html">Continue shopping</a></p>
+          </div> -->
+        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<% end %>

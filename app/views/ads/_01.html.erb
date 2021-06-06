@@ -1,0 +1,88 @@
+<% if @not_show_main_banner.nil? || @not_show_main_banner == false %>
+  <% ads = AdsHelper.load_ad("01") %>
+  <% if ads.count > 0 %>
+    <% ahoy.track "Viewed ad", title: "#{ads.first.title}", ad_id: ads.first.id %>
+
+    <div id="carousel-ads" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <% ads.each_with_index do |ad, index| %>
+        <li data-target="#carousel-ads" data-slide-to="<%= index%>" class="<%= index == 0 ? 'active' : ''%>"></li>
+        <% end %>
+      </ol>
+
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner" role="listbox">
+        <% ads.each_with_index do |ad, index| %>
+          <div class="item <%= index == 0 ? 'active' : ''%>" data-id="<%= ad.id%>" data-read="<%= index == 0 ? true : false%>">
+            <div style="position:relative;">
+              <div>
+                <% unless ad.link.empty? %>
+                  <%= link_to main_app.awesome_path(ad), target: "_blank", method: :put do %>
+                    <%= image_tag ad.image.wide_high.url, class: "img-responsive", alt: ad.title %>
+                  <% end %>
+                <% else %>
+                  <%= image_tag ad.image.wide_high.url, class: "img-responsive", alt: ad.title %>
+                <% end %>
+              </div>
+              <% unless ad.content.blank? %>
+              <div class="hidden-xs hidden-sm" style="background-color: rgba(255,255,255,0.7); position: absolute; padding: 20px; margin: 50px; top: 0px; text-align:center; border-radius: 10px; width: 300px;">
+                <h4>
+                  <%= raw ad.content %>
+                </h4>
+              </div>
+              <div class="visible-xs visible-sm" style="background-color: rgba(255,255,255,0.7); position: absolute; padding: 10px; margin: 10px; top: 0px; text-align:center; border-radius: 10px; width: 300px;">
+                <h6>
+                  <%= raw ad.content %>
+                </h6>
+              </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      </a>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @ads_settings.use_adsense == true %>
+  <%= render "ads/adsense/wide" %>
+<% end %>
+
+<script>
+
+$('#carousel-ads').carousel({
+  interval: 5000
+});
+
+$('#carousel-ads').on('slide.bs.carousel', function (e) {
+  var id = $(e.relatedTarget).data("id");
+  var title = $(e.relatedTarget).data("title");
+  var read = $(e.relatedTarget).data("read");
+  if (read == false){
+    ahoy.track("Viewed ad", {title: title, ad_id: id});
+    $(e.relatedTarget).data("read", true);
+  }
+});
+
+var banner_counter = 5;
+
+var interval = setInterval(function(){
+  banner_counter --;
+  $("#banner-counter").text(banner_counter + "s");
+  if (banner_counter <= 0){
+    clearInterval(interval);
+    if ($(window).width() <= 992){
+      $("#download-apps").removeClass('visible-sm visible-xs').hide();
+      $("#carousel-ads").css({
+        position: "fixed",
+        bottom: "0px",
+        left: "0px",
+        "z-index": "9999"
+      });
+    }
+  }
+}, 1000);
+
+</script>

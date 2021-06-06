@@ -1,0 +1,2 @@
+class AdsSetting < ApplicationRecord
+end

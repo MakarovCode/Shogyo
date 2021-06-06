@@ -1,0 +1,104 @@
+<div class="sidebar">
+  <div class="widget visible-md visible-lg">
+    <%= render "ads/02"%>
+  </div>
+
+  <% unless user_signed_in? %>
+  <div class="widget">
+    <div class="post-entry-card" data-toggle="modal" data-target="#subscribe-modal">
+      <%= image_tag "construction.jpg", class: "img-responsive" %>
+      <div class="post-info">
+        <h4 class="post-excerpt text-center">
+          Subscríbete y haz parte de la red del Agro en Colombia, Latinoamérica y el Mundo
+        </h4>
+        <button type="button" class="btn btn-secondary btn-lg btn-block">
+          Ingresar
+        </button>
+      </div>
+    </div>
+  </div>
+  <% else %>
+  <div class="widget">
+    <div class="post-entry-card" data-toggle="modal" data-target="#subscribe-modal">
+      <%= image_tag "construction.jpg", class: "img-responsive" %>
+      <div class="post-info">
+        <h4 class="post-excerpt text-center">
+          ¿Tienes una consulta, vendes o necesitas algo?
+          <br>
+          <b>¡En AgroNeto lo encuentras!</b>
+        </h4>
+        <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal" data-target="#new-feed-modal">
+          Publica tu anuncio
+        </button>
+      </div>
+    </div>
+  </div>
+  <% end %>
+<div class="widget visible-md visible-lg">
+<%#= render "consults/questions/new", id: "1" %>
+</div>
+<div class="widget">
+  <%= render "landing/faces", users: User.profile_complete.order(created_at: :desc).first(8)  %>
+</div>
+<!-- widget -->
+<div class="widget">
+  <h4 class="widget-title">CATEGORÍAS</h4>
+  <ul class="list-unstyled category-list">
+    <% @categories.each do |category| %>
+    <li class="category-list">
+      <%= link_to blog_posts_path(category: category.id.to_s == params[:category] ? nil : category.id, subcategory: nil, tag: params[:tag]), class: "#{category.id.to_s == params[:category] ? 'active' : '' }" do %>
+        <% if category.id.to_s == params[:category] %>
+          <i class="fa fa-chevron-right"></i>
+        <% end %>
+        <i class="fa fa-chevron-down pull-right toggler"></i>
+        <%= category.name %>
+      <% end %>
+      <ul class="list-unstyled sub-category-list <%= category.id.to_s == params[:category] ? '' : 'hide' %>">
+        <% category.subcategories.each do |subcategory| %>
+        <li>
+          <%= link_to blog_posts_path(category: category.id, subcategory: subcategory.id.to_s == params[:subcategory] ? nil : subcategory.id, tag: params[:tag]), class: "#{subcategory.id.to_s == params[:subcategory] ? 'active' : '' }" do %>
+            <% if subcategory.id.to_s == params[:subcategory] %>
+              <i class="fa fa-chevron-right"></i>
+            <% end %>
+            <%= subcategory.name %>
+          <% end %>
+        </li>
+        <% end %>
+      </ul>
+    </li>
+    <% end %>
+  </ul>
+</div>
+<div class="widget visible-md visible-lg">
+  <%= render "ads/03"%>
+</div>
+<!-- end widget -->
+<!-- widget -->
+<!-- <div class="widget">
+  <h3 class="widget-title">
+    TAGS
+  </h3>
+  <ul class="list-inline tag-list">
+    <% @tags.each do |tag| %>
+    <li>
+      <%= link_to blog_posts_path(category: nil, subcategory: nil, tag: tag.id.to_s == params[:tag] ? nil : tag.id), class: "#{tag.id.to_s == params[:tag] ? 'active' : '' }" do %>
+        <% if tag.id.to_s == params[:tag] %>
+          <i class="fa fa-remove"></i>
+        <% end %>
+        <%= tag.name %>
+      <% end %>
+    </li>
+    <% end %>
+  </ul>
+</div> -->
+<!-- end widget -->
+</div>
+<div class="twitter" id="twitter-timeline-container" style="max-height: 600px; overflow-y: auto;">
+  <!-- <a id="" data-widget-id="twitter-timeline" href="https://twitter.com/AgroNetoOficial">Tweets by AgroNetoOficial</a> -->
+</div>
+<script>
+  // $(".category-list .toggler").click(function(event){
+  //   event.stopPropagation();
+  //   $(this).find("ul").toggle(200);
+  // });
+</script>

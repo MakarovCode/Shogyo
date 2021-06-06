@@ -1,0 +1,184 @@
+<%= nested_form_for [:account, @publication] do |f| %>
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-6">
+    <p class="green">
+      Condiciones de la publicación
+    </p>
+    <% if @publication.subject == Publication::SERVICIOS %>
+    <div class="input-group-radio">
+      <%= f.check_box :to_agree, class: "hide-toggler", :"data-toggle" => ".price-input-cont", :"data-inverse" => true %>
+      <%= f.label :to_agree, "Precio a convenir"%>
+    </div>
+    <% end %>
+    <% if @publication.subject == Publication::ANIMALES %>
+    <div class="input-group-radio">
+      <%= f.check_box :is_lot, class: "hide-toggler", :"data-toggle" => "#lot-size-input-cont" %>
+      <% unless @publication.in_need == true %>
+      <%= f.label :is_lot, "Solo vendo por lotes"%>
+      <% else %>
+      <%= f.label :is_lot, "Busco por lotes"%>
+      <% end %>
+    </div>
+    <div class="input-group" id="lot-size-input-cont" style="display: none;">
+      <span class="input-group-addon" style="width: 200px;">
+        Tamaño del lote:
+      </span>
+      <%= f.number_field :lot_size, placeholder: "Cuantos animales tiene el lote", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("lot_size") %>
+    <p class="error-message">
+      <%= @errors["lot_size"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group-radio">
+      <%= f.check_box :for_adoption, class: "hide-toggler", :"data-toggle" => ".price-input-cont", :"data-inverse" => true %>
+      <%= f.label :for_adoption, "Para adopción"%>
+    </div>
+    <% end %>
+    <% if @publication.subject == Publication::PRODUCTOS %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Cantidad:
+      </span>
+      <%= f.number_field :units, placeholder: "Cuantas unidades tienes del producto", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("units") %>
+    <p class="error-message">
+      <%= @errors["units"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Especificar Unidades:
+      </span>
+      <%= f.text_field :measure_unit, placeholder: "Ejemplo: Kg, Mts, Galones.", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("measure_unit") %>
+    <p class="error-message">
+      <%= @errors["measure_unit"].to_sentence %>
+    </p>
+    <% end %>
+    <% end %>
+    <% unless @publication.in_need == true %>
+      <div class="input-group price-input-cont">
+        <span class="input-group-addon" style="width: 200px;">
+          Precio:
+        </span>
+        <%= f.number_field :price, placeholder: "Cual es el precio final de tu publicación", class: "form-control currency", :"data-target" => "#price-currency" %>
+        <span class="input-group-addon" id="price-currency">
+          <%= @publication.get_currency_unit %>
+        </span>
+        <span class="input-group-addon">
+          <i class="fa fa-asterisk"></i>
+        </span>
+      </div>
+      <p class="price-input-cont">Escribe el precio sin separadores de miles, comas o puntos.</p>
+      <% if !@errors.nil? && @errors.include?("price") %>
+      <p class="error-message">
+        <%= @errors["price"].to_sentence %>
+      </p>
+      <% end %>
+    <% end %>
+    <p class="green">
+      Fecha de inicio de la publicación (Por defecto hoy)
+    </p>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Fecha:
+      </span>
+      <%= f.text_field :start_date, placeholder: "Selecciona una fecha para publicar", value: @publication.start_date.nil? ? Date.today.strftime("%Y-%m-%d") : @publication.start_date.strftime("%Y-%m-%d"), class: "form-control datepicker", "data-provide" => "datepicker", "data-date-format" => "yyyy-mm-dd", "data-date-start-date" => Date.today.strftime("%Y-%m-%d"), "data-date-end-date" => (Date.today + 1.month).strftime("%Y-%m-%d"), "data-auto-close" => true%>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("start_date") %>
+    <p class="error-message">
+      <%= @errors["start_date"].to_sentence %>
+    </p>
+    <% end %>
+  </div>
+  <div class="col-md-6">
+    <% if @publication.subject == Publication::PRODUCTOS && @publication.in_need != true %>
+    <p class="green">
+      Formas de entrega
+    </p>
+    <div class="input-group-radio">
+      <%= f.check_box :shipping, :checked => @publication.shipping.nil? ? true : @publication.shipping, class: "hide-toggler", :"data-toggle" => "#shipping-price-input-cont" %>
+      <%= f.label :shipping, "Se realizan envío"  %>
+    </div>
+    <div class="input-group" id="shipping-price-input-cont">
+      <span class="input-group-addon" style="width: 200px;">
+        Precio del envío:
+      </span>
+      <%= f.number_field :shipping_price, placeholder: "Valor promedio de envío", class: "form-control currency", :"data-target" => "#shipping-price-currency" %>
+      <span class="input-group-addon" id="shipping-price-currency">$</span>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("shipping_price") %>
+    <p class="error-message">
+      <%= @errors["shipping_price"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group-radio">
+      <%= f.check_box :pickup %>
+      <%= f.label :pickup, "También se puede retirar en persona"%>
+    </div>
+    <% if !@errors.nil? && @errors.include?("pickup") %>
+    <p class="error-message">
+      <%= @errors["pickup"].to_sentence %>
+    </p>
+    <% end %>
+    <p class="green">
+      Garantía
+    </p>
+    <div class="input-group-radio">
+      <%= f.radio_button :warranty, true, :checked => true, class: "hide-toggler", :"data-toggle" => "#warranty-description-price-input-cont" %>
+      <%= f.label :warranty, "Con garantía", value: true %>
+    </div>
+    <div class="input-group" id="warranty-description-price-input-cont">
+      <span class="input-group-addon" style="width: 200px;">
+        Garantía:
+      </span>
+      <%= f.text_area :warranty_description, placeholder: "Explica los términos de la garantía", class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@errors.nil? && @errors.include?("warranty_description") %>
+    <p class="error-message">
+      <%= @errors["warranty_description"].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group-radio">
+      <%= f.radio_button :warranty, false, :checked => false, class: "hide-toggler", :"data-toggle" => "#warranty-description-price-input-cont", :"data-inverse" => true %>
+      <%= f.label :warranty, "Sin garantía", value: false  %>
+    </div>
+    <% if !@errors.nil? && @errors.include?("warranty") %>
+    <p class="error-message">
+      <%= @errors["warranty"].to_sentence %>
+    </p>
+    <% end %>
+    <% end %>
+  </div>
+</div>
+<div class="row" style="margin-top: 20px">
+  <%= hidden_field_tag :step, "", value: 3%>
+  <div class="col-md-12">
+    <button type="submit" class="btn btn-primary">
+      Continuar
+    </button>
+    <%= link_to "Volver", edit_account_publication_path(@publication, step: 2), class: "btn btn-default" %>
+  </div>
+</div>
+<% end %>

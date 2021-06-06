@@ -1,0 +1,158 @@
+<div class="sidebar sidebar-market">
+  <div class="widget">
+    <%= render "ads/02"%>
+  </div>
+  <div class="widget" style="margin-bottom: 30px;">
+    <h2 class="widget-title">
+      <%= params[:search_term] %>
+      <br>
+      <small>
+        <%= @publications.count %> resultados
+        <% unless @publications.suggestions.empty? %>
+        <br>
+        Quisiste decir:
+        <ul>
+          <% @publications.suggestions.each do |suggestion| %>
+          <li>
+            <%= link_to market_publications_path(search_term: suggestion, view: params[:view], kind: params[:kind], city: params[:city], order: params[:order], min: params[:min], max: params[:max]) do %>
+            <%= suggestion %>
+            <% end %>
+          </li>
+          <% end %>
+        </ul>
+        <% end %>
+      </small>
+    </h2>
+  </div>
+  <div class="widget" style="margin-bottom: 30px;">
+    <h4 class="widget-title">
+      Ordenar publicaciones
+    </h4>
+    <div class="btn-group">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <% if params[:order] == "1" %>
+        Más relevantes
+        <% elsif params[:order] == "2" %>
+        Menor precio
+        <% elsif params[:order] == "3" %>
+        Mayor precio
+        <% else %>
+        Más relevantes
+        <% end %>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li>
+          <%= link_to market_publications_path(view: "list", search_term: params[:search_term], kind: params[:kind], city: params[:city], order: 1, min: params[:min], max: params[:max]) do %>
+          Más relevantes
+          <% end %>
+        </li>
+        <li>
+          <%= link_to market_publications_path(view: "list", search_term: params[:search_term], kind: params[:kind], city: params[:city], order: 2, min: params[:min], max: params[:max]) do %>
+          Menor precio
+          <% end %>
+        </li>
+        <li>
+          <%= link_to market_publications_path(view: "list", search_term: params[:search_term], kind: params[:kind], city: params[:city], order: 3, min: params[:min], max: params[:max]) do %>
+          Mayor precio
+          <% end %>
+        </li>
+      </ul>
+    </div>
+    <%= link_to market_publications_path(view: "list", search_term: params[:search_term], kind: params[:kind], city: params[:city], order: params[:order], min: params[:min], max: params[:max]), class: "btn btn-default" do %>
+    <i class="fa fa-list"></i>
+    <% end %>
+    <%= link_to market_publications_path(view: "grid", search_term: params[:search_term], kind: params[:kind], city: params[:city], order: params[:order], min: params[:min], max: params[:max]), class: "btn btn-default" do %>
+    <i class="fa fa-th"></i>
+    <% end %>
+  </div>
+  <% if @publications.aggs.include?("category_name") || @publications.aggs.include?("subcategory_name") %>
+  <div class="widget" style="margin-bottom: 30px;">
+    <h4 class="widget-title">
+      Categorías
+    </h4>
+    <% if @publications.aggs.include?("subcategory_name") %>
+    <ul>
+      <% @publications.aggs["subcategory_name"]["buckets"].each do |subcategory| %>
+      <li class="<%= subcategory['key'] == params[:search_term] ? 'active' : '' %>">
+        <%= link_to market_publications_path(search_term: subcategory["key"], view: params[:view], kind: params[:kind], city: params[:city], order: params[:order], min: params[:min], max: params[:max]) do %>
+        <%= subcategory["key"] %> (<%= subcategory["doc_count"] %>)
+        <% end %>
+      </li>
+      <% end %>
+    </ul>
+    <% end %>
+    <% if @publications.aggs.include?("category_name") %>
+    <ul>
+      <% @publications.aggs["category_name"]["buckets"].each do |category| %>
+      <li class="<%= category['key'] == params[:search_term] ? 'active' : '' %>">
+        <%= link_to market_publications_path(search_term: category["key"], view: params[:view], kind: params[:kind], city: params[:city], order: params[:order], min: params[:min], max: params[:max]) do %>
+        <%= category["key"] %> (<%= category["doc_count"] %>)
+        <% end %>
+      </li>
+      <% end %>
+    </ul>
+    <% end %>
+  </div>
+  <% end %>
+  <% if @publications.aggs.include?("kind") %>
+  <div class="widget" style="margin-bottom: 30px;">
+    <h4 class="widget-title">
+      Condición
+    </h4>
+    <ul>
+      <% @publications.aggs["kind"]["buckets"].each do |kind| %>
+      <li class="<%= kind['key'] == params[:kind] ? 'active' : '' %>">
+        <%= link_to market_publications_path(search_term: params[:search_term], view: params[:view], kind: kind["key"], city: params[:city], order: params[:order], min: params[:min], max: params[:max]) do %>
+        <%= kind["key"] %> (<%= kind["doc_count"] %>)
+        <% end %>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+  <% if @publications.aggs.include?("kind") %>
+  <div class="widget" style="margin-bottom: 30px;">
+    <h4 class="widget-title">
+      Ubicación
+    </h4>
+    <ul>
+      <% @publications.aggs["city_name"]["buckets"].each do |city| %>
+      <li class="<%= city['key'] == params[:city] ? 'active' : '' %>">
+        <%= link_to market_publications_path(search_term: params[:search_term], view: params[:view], kind: params[:kind], city: city["key"], order: params[:order], min: params[:min], max: params[:max]) do %>
+        <%= city["key"] %> (<%= city["doc_count"] %>)
+        <% end %>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+  <div class="widget" style="margin-bottom: 30px;">
+    <h4 class="widget-title">
+      Precio
+    </h4>
+    <form method="get" action="<%= market_publications_path %>">
+      <div class="input-group">
+        <span class="input-group-addon">Desde</span>
+        <input type="number" placeholder="min" class="form-control" name="min" value="<%= params[:min]%>"/>
+      </div>
+      <br>
+      <div class="input-group">
+        <span class="input-group-addon">Hasta</span>
+        <input type="number" placeholder="max" class="form-control" name="max" value="<%= params[:max]%>"/>
+      </div>
+      <input type="hidden" name="search_term" value="<%= params[:search_term]%>">
+      <input type="hidden" name="view" value="<%= params[:view]%>">
+      <input type="hidden" name="kind" value="<%= params[:kind]%>">
+      <input type="hidden" name="city" value="<%= params[:city]%>">
+      <input type="hidden" name="order" value="<%= params[:order]%>">
+      <br>
+      <button type="submit" class="btn btn-default">
+        Filtrar por precio
+      </button>
+    </form>
+  </div>
+  <div class="widget">
+    <%= render "ads/03"%>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<% unless @user.user_achivements.empty? %>
+<ul class="timeline">
+  <% @user.user_achivements.order(created_at: :desc).first(8).each do |au| %>
+    <li>
+      <div class="timeline-badge">
+        <i class="fa fa-bullseye"></i>
+      </div>
+      <div class="timeline-panel">
+        <div class="timeline-body">
+          <%= au.achivement.name %>
+        </div>
+        <div class="timeline-heading">
+          <p>
+            <small class="text-muted">
+              <%= au.created_at.strftime("%d/%b") %>
+              <span class="green pull-right">
+                <strong>+ <%= au.points%> puntos</strong>
+              </span>
+            </small>
+          </p>
+        </div>
+      </div>
+    </li>
+  <% end %>
+</ul>
+<% else %>
+<div class="alert alert-warning">
+  Aún no has completado ningún logro.
+</div>
+<% end %>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-link" data-toggle="modal" data-target="#timeline-modal">
+  Ver todos
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="timeline-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Historico de logros</h4>
+      </div>
+      <div class="modal-body">
+        <ul class="timeline">
+          <% if @user.user_achivements.empty? %>
+          <div class="alert alert-warning">
+            Aún no has completado ningún logro.
+          </div>
+          <% end %>
+          <% @user.user_achivements.order(created_at: :desc).each do |au| %>
+            <li>
+              <div class="timeline-badge">
+                <i class="fa fa-bullseye"></i>
+              </div>
+              <div class="timeline-panel">
+                <div class="timeline-body">
+                  <%= au.achivement.name %>
+                </div>
+                <div class="timeline-heading">
+                  <p>
+                    <small class="text-muted">
+                      <%= au.created_at.strftime("%d/%b") %>
+                      <span class="green pull-right">
+                        <strong>+ <%= au.points%> puntos</strong>
+                      </span>
+                    </small>
+                  </p>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

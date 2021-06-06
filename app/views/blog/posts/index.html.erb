@@ -1,0 +1,65 @@
+<%
+meta title: "AgroNeto | #{@info.blog_tab_title}",
+description: @info.meta_description,
+keywords: !@info.meta_keywords.nil? ? @info.meta_keywords.split(",") : []
+%>
+
+<% unless @info.meta_image.nil?
+
+  meta og: {
+    image: "#{@info.meta_image.url}"
+  }
+
+end %>
+
+<%
+meta twitter: {
+  card: "AgroNeto | #{@info.blog_tab_title}",
+  site: "@AgroNetoOficial"
+}
+%>
+
+<div class="row" ng-controller="BlogController as bCtrl" ng-init="bCtrl.initialize(<%= @categories.to_json(include: :subcategories)%>, <%= @tags.to_json%>, true, true)">
+  <!-- MAIN CONTENT -->
+  <div class="col-md-12">
+    <h3 class="widget-title">NOTICIAS</h3>
+  </div>
+  <div class="col-md-12 visible-xs visible-sm">
+    <%= render "ads/02"%>
+  </div>
+  <div class="col-md-8 col-lg-9">
+    <!-- latest posts -->
+    <section class="no-padding-top">
+      <% if @posts.count == 0 %>
+      <div class="alert alert-info">
+        No se encontraron resultados.
+        <%= link_to blog_posts_path, class: "btn btn-default" do %>
+        <i class="fa fa-refresh"></i>
+        Recargar...
+        <% end %>
+      </div>
+      <% else %>
+      <div class="grid blog-masonry">
+        <div class="grid-sizer"></div>
+        <% @posts.each_with_index do |post, i| %>
+          <%= render "blog/posts/item", post: post %>
+        <% end %>
+      </div>
+      <% end %>
+
+      <div class="text-center">
+        <%= paginate @posts %>
+      </div>
+    </section>
+    <!-- end latest posts -->
+  </div>
+  <div class="col-md-12 visible-xs visible-sm">
+    <%= render "ads/03"%>
+  </div>
+  <!-- END MAIN CONTENT -->
+  <!-- SIDEBAR CONTENT -->
+  <div class="col-md-4 col-lg-3">
+    <%= render "sidebar" %>
+  </div>
+  <!-- END SIDEBAR CONTENT -->
+</div>

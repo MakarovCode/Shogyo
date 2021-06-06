@@ -1,0 +1,241 @@
+(function () {
+
+	var module = angular.module("new-feed-module", ['ngSanitize', 'angularFileUpload']);
+
+	module.controller('NewFeedController', ['$http', '$scope', '$rootScope', 'FileUploader', function ($http, $scope, $rootScope, FileUploader) {
+		var self = this;
+		this.step = 1;
+		this.price_type = 1;
+		this.current_id = null;
+		this.is_native = false;
+		this.image_uploaded = false;
+
+		this.uploader = new FileUploader({url: "/api/blog/v1/feed/upload_images.json", autoUpload: true});
+
+		this.subjects = [
+			"Servicios",
+			"Vehiculos y Remolques",
+			"Inmuebles y Terrenos",
+			"Animales",
+			"Productos y Otros"
+		];
+
+		this.categories = [];
+
+		this.type_selected = null;
+		this.subject_selected = null;
+		this.category_selected = null;
+		this.subcategory_selected = null;
+
+		this.init = function (uuid, token, categories, is_native) {
+			this.user_uuid = uuid;
+			this.user_token = token;
+			this.categories = categories;
+			this.is_native = is_native;
+			this.InitFields();
+
+			$("#new-feed-modal").on('hidden.bs.modal', function (e) {
+				$scope.$apply(function(){
+					self.type_selected = null;
+					self.subject_selected = null;
+					self.category_selected = null;
+					self.subcategory_selected = null;
+					self.step = 1;
+					self.InitFields();
+				});
+			})
+		}
+
+		this.SetCurrentId = function(id){
+			this.current_id = id;
+		}
+
+		this.InitFields = function(){
+			this.publication = {
+				title: null,
+				description: null,
+				price: 0,
+				subject: null,
+				kind: 1,
+				in_need: false,
+				for_adoption: false,
+				to_agree: false
+			}
+
+			this.question = {
+				text: null
+			}
+			this.image_uploaded = false;
+		}
+
+		this.GoToStep1 = function(){
+			if (this.current_id != null){
+				return;
+			}
+			this.step = 1;
+		}
+
+		this.GoToStep2 = function(type){
+
+			if (this.current_id != null){
+				return;
+			}
+
+			this.type_selected = type;
+			this.subject_selected = null;
+			this.category_selected = null;
+			this.subcategory_selected = null;
+
+			if (this.type_selected == null){
+				return;
+			}
+
+			if (type == 1){
+				this.step = 3;
+			}
+			else{
+				this.step = 2;
+			}
+			this.InitFields();
+		}
+
+		this.SelectSubject = function(subject){
+			this.subject_selected = subject;
+		}
+
+		this.SelectCategory = function(category){
+			this.category_selected = category;
+		}
+
+		this.SelectSubcategory = function(subcategory){
+			this.subcategory_selected = subcategory;
+			this.GoToStep3();
+		}
+
+		this.GoToStep3 = function(){
+			if (this.subcategory_selected == null){
+				return;
+			}
+			this.step = 3;
+		}
+
+		this.SetPriceType = function(price_type){
+			this.price_type = price_type;
+			if (this.price_type == 2){
+				this.publication.for_adoption = true;
+				this.publication.to_agree = false;
+			}
+			else if (this.price_type == 3){
+				this.publication.for_adoption = false;
+				this.publication.to_agree = true;
+			}
+			else{
+				this.publication.for_adoption = false;
+				this.publication.to_agree = false;
+			}
+		}
+
+		this.SetKind = function(kind){
+			this.publication.kind = kind;
+		}
+
+		this.GoToStep4 = function(){
+			if (this.CheckStep3() == true){
+				this.Save();
+			}
+		}
+
+		this.CheckStep3 = function(){
+
+			if (this.type_selected != 1 && this.publication.title && this.publication.description && this.publication.kind && this.publication.kind && (this.publication.price || this.price_type != 1)){
+				return true;
+			}
+			else if (this.type_selected == 1 && this.question.text.length > 20){
+				return true;
+			}
+			return false;
+		}
+
+		this.Save = function(){
+
+			var params = {
+				user_email: this.user_uuid,
+				user_token: this.user_token,
+				publication: this.publication,
+				question: this.question,
+				type: this.type_selected
+			};
+
+			if (this.type_selected != 1){
+				params.publication["subcategory_id"] = this.subcategory_selected.id;
+				params.publication["subject"] = this.subject_selected;
+			}
+
+			$("#http-loader").show();
+			if (this.current_id == null){
+				$http.post("/api/blog/v1/feed.json", params).then(
+					function(res, status){
+						self.step = 4;
+						self.SetCurrentId(res.data.id);
+						$("#http-loader").hide();
+					},
+					function(res, status){
+						$("#http-loader").hide();
+					}
+				);
+			}
+			else{
+				$http.put("/api/blog/v1/feed/"+this.current_id+".json", params).then(
+					function(res, status){
+						self.step = 4;
+						$("#http-loader").hide();
+					},
+					function(res, status){
+						$("#http-loader").hide();
+					}
+				);
+			}
+		}
+
+		this.uploader.onBeforeUploadItem = function(item){
+			var params = {
+				user_email: self.user_uuid,
+				user_token: self.user_token,
+				id: self.current_id,
+				type: self.type_selected
+			}
+
+			item.formData.push(params);
+			self.uploader.uploadAll();
+		}
+
+		this.uploader.onProgressItem = function(item, progress){
+			self.upload_progress = progress;
+		}
+
+		this.uploader.onProgressAll = function(progress){
+			self.upload_progress = progress;
+		}
+
+		this.uploader.onSuccessItem = function(item, response, status, headers){
+			self.image_uploaded = true;
+			self.upload_progress = null;
+		}
+
+		this.uploader.onErrorItem = function(item, response, status, headers){
+			self.upload_progress = null;
+		}
+
+		this.Finish = function(){
+			if (this.image_uploaded == true || this.type_selected == 1){
+				if (this.is_native == 'true' || this.is_native == true){
+					alert("NewCompleted|done");
+				}
+				else{
+					$("#new-feed-modal").modal("hide");
+				}
+			}
+		}
+
+	}]);
+})();

@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-md-2">
+    <%= render "account/shared/sidebar" %>
+  </div>
+  <div class="col-md-7 dashboard-links">
+    <h2 class="green">
+      Resumen
+    </h2>
+    <h3>
+      <i class="fa fa-comments"></i> Preguntas
+    </h3>
+    <hr>
+    <div>
+      <span class="label label-default">
+        <%= @questions.count %>
+      </span>
+      <%= link_to "Que aún no respondiste", account_questions_path %>
+    </div>
+    <br><br>
+    <h3>
+      <i class="fa fa-bookmark-o"></i> Publicaciones
+    </h3>
+    <hr>
+    <div>
+      <span class="label label-default">
+        <%= @publications.actives.count %>
+      </span>
+      <%= link_to "Activas", account_publications_path(scope: "actives") %>
+    </div>
+    <hr>
+    <div>
+      <span class="label label-default">
+        <%= @publications.paused.count %>
+      </span>
+      <%= link_to "Pausadas", account_publications_path(scope: "paused") %>
+    </div>
+    <hr>
+    <div>
+      <span class="label label-default">
+        <%= @publications.finished.count %>
+      </span>
+      <%= link_to "Finalizadas", account_publications_path(scope: "finished") %>
+    </div>
+    <br><br>
+    <h3>
+      <i class="fa fa-shopping-cart"></i> Operaciones
+    </h3>
+    <hr>
+    <div>
+      <span class="label label-default">
+        <%= @purchases.count %>
+      </span>
+      <%= link_to "Compras sin calificar", account_purchases_path(as: "buyer", only_not_reviewd: true) %>
+    </div>
+    <hr>
+    <div>
+      <span class="label label-default">
+        <%= @sells.count %>
+      </span>
+      <%= link_to "Ventas sin calificar", account_purchases_path(as: "seller", only_not_reviewd: true) %>
+    </div>
+    <hr>
+  </div>
+  <div class="col-md-3">
+    <%= render "account/achivements/level", user: current_user, left: 4, right: 8, id: 1 %>
+    <br>
+    <br>
+    <h4>
+      Mejora en AgroNeto
+    </h4>
+    <p>
+      <% if current_user.get_profile_percent < 100 %>
+        <%= link_to edit_account_user_path(current_user), class: "btn btn-link" do%>
+        <i class="fa fa-user"></i> Completa tu cuenta
+        <% end %>
+      <% end %>
+    </p>
+    <%= render "account/users/profile_percent", percent: current_user.get_profile_percent %>

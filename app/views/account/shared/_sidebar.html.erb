@@ -1,0 +1,124 @@
+<% if session[:native_app].nil? %>
+<div class="panel-group" id="accordion-account" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <h4 class="panel-title">
+        <a role="button" href="<%= dashboard_account_users_path %>">
+          Resumen
+          <i class="fa fa-chevron-right pull-right"></i>
+        </a>
+      </h4>
+    </div>
+    <!-- <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+
+      </div>
+    </div> -->
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <h4 class="panel-title">
+        <a role="button" href="<%= account_reputations_path %>">
+          Reputación
+          <i class="fa fa-chevron-right pull-right"></i>
+        </a>
+      </h4>
+    </div>
+    <!-- <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+
+      </div>
+    </div> -->
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <h4 class="panel-title">
+        <a role="button" href="<%= account_user_contacts_path(current_user) %>">
+          Conversaciones
+          <i class="fa fa-chevron-right pull-right"></i>
+        </a>
+      </h4>
+    </div>
+    <!-- <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+
+      </div>
+    </div> -->
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-account" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Compras
+          <i class="fa fa-chevron-down pull-right"></i>
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <%= link_to "Favoritos", favorites_account_publications_path %>
+          </li>
+          <li class="list-group-item">
+            <%= link_to "Preguntas", account_questions_path %>
+          </li>
+          <li class="list-group-item">
+            <%= link_to "Compras", account_purchases_path(as: "buyer") %>
+          </li>
+          <li class="list-group-item">
+            <%= link_to "Denuncias", account_feedbacks_path %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-account" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Ventas
+          <i class="fa fa-chevron-down pull-right"></i>
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <%= link_to "Publicaciones", account_publications_path %>
+          </li>
+          <li class="list-group-item">
+            <%= link_to "Preguntas", account_questions_path %>
+          </li>
+          <li class="list-group-item">
+            <%= link_to "Ventas", account_purchases_path(as: "seller") %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingFour">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-account" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+          Configuración
+          <i class="fa fa-chevron-down pull-right"></i>
+        </a>
+      </h4>
+    </div>
+    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+      <div class="panel-body">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <%= link_to "Datos personales", edit_account_user_path(current_user) %>
+          </li>
+          <li class="list-group-item">
+            <%= link_to "Notificaciones", "#" %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

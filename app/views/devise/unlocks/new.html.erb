@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <h2>Desbloquear cuenta</h2>
+
+    <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+    <%= devise_error_messages! %>
+
+    <div class="field" style="margin-bottom: 20px;">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true, class: "form-control input-lg" %>
+    </div>
+
+    <div class="actions" style="margin-bottom: 20px;">
+      <%= f.submit "Enviar instrucciones", class: "btn btn-primary btn-block btn-lg" %>
+    </div>
+    <% end %>
+
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

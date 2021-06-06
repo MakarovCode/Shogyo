@@ -1,0 +1,56 @@
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRHK3XjGMs-QNwFHWZtyIPYHMtvpwk90c&callback=initMap">
+</script>
+<div class="container" ng-controller="WeatherController as wCtrl" ng-init="wCtrl.initialize('<%= @country.nil? ? '' : @country.name%>', '<%= params[:lat]%>', '<%= params[:lng]%>');">
+  <div class="row" style="margin-top: 20px;">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Latitud</span>
+            <input type="text" class="form-control" placeholder="5.900231" ng-model="wCtrl.lat" id="lat">
+            <span class="input-group-addon" id="basic-addon1">Longitud</span>
+            <input type="text" class="form-control" placeholder="-25.900231" ng-model="wCtrl.lng" id="lng">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-primary" ng-click="wCtrl.searchCoords();" id="search">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Ciudad</span>
+            <input type="text" class="form-control" placeholder="Tu ciudad" ng-model="wCtrl.city">
+            <span class="input-group-addon" id="basic-addon1">País</span>
+            <input type="text" class="form-control" placeholder="Tu país" ng-model="wCtrl.country">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-primary" ng-click="wCtrl.search();" id="search">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <button type="button" class="btn btn-secondary" ng-click="wCtrl.currentPosition();">
+            Ubicacion Actual
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 20px;">
+    <div class="col-md-12" ng-show="wCtrl.no_data == true">
+      <div class="alert alert-warning">
+        No pudimos acceder a tu ubicación actual, utiliza los campos en la parte de arriba y da click en buscar!
+      </div>
+    </div>
+    <div class="col-md-12">
+      <%= render "consults/weather/data" %>
+    </div>
+  </div>
+</div>

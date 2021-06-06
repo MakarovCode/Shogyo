@@ -1,0 +1,15 @@
+<% if @ads_settings.use_adsense == true %>
+  <%= render "ads/adsense/adaptable" %>
+<% else %>
+  <% ad = AdsHelper.load_ad("02") %>
+  <% unless ad.nil? %>
+    <% ahoy.track "Viewed ad", title: "#{ad.title}", ad_id: ad.id %>
+    <div style="position:relative;">
+      <div>
+        <%= link_to main_app.awesome_path(ad), target: "_blank", method: :put do %>
+        <%= image_tag ad.image.square.url, class: "img-responsive", alt: ad.title %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

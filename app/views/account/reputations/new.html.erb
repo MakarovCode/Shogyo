@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-md-5 col-md-offset-2" style="border-right: 1px solid #f2f2f2;">
+    <% if params[:as] == "buyer" %>
+      <%= render "account/reputations/buyer_form" %>
+    <% else %>
+    <%= render "account/reputations/seller_form" %>
+    <% end %>
+  </div>
+  <div class="col-md-3">
+    <div class="post-entry-card">
+      <%= image_tag @purchase.publication.get_image("mid"), class: "img-responsive" %>
+      <hr style="margin-bottom: -5px; ">
+      <div class="post-info">
+        <p class="green" style="font-size: 25px; font-weight: bold;">
+          <%= number_to_currency @purchase.publication.price, precision: @purchase.publication.get_currency_precision, unit: @purchase.publication.get_currency_unit, delimiter: "." %>
+        </p>
+        <p style="color: #777; height: 60px;">
+          <%= @purchase.publication.title %>
+        </p>
+        <span class="label label-primary">
+          <%= @purchase.publication.subject %>
+        </span>
+        <span class="label label-default">
+          <%= @purchase.publication.get_kind %>
+        </span>
+        <br>
+        <span class="post-meta">
+          <% if params[:as] == "buyer" %>
+            <b>Vendedor: </b> <%= @purchase.publication.user.name %>
+          <% else %>
+            <b>Comprador: </b> <%= @purchase.user.name %>
+          <% end %>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<form action="<%= main_app.market_publications_path %>" method="get" class="<%= classs%> hidden-xs hidden-sm" id="search_form">
+  <div class="input-group">
+    <%= autocomplete_field_tag 'search_term', '', main_app.api_market_v1_subcategories_path(format: :json), class: "form-control input-lg", placeholder: "Que estás buscando..." %>
+    <span class="input-group-btn">
+      <button class="btn btn-primary btn-lg" type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
+  </div>
+</form>
+<form action="<%= main_app.market_publications_path %>" method="get" class="<%= classs%> visible-xs visible-md" id="search_form2">
+  <div class="input-group">
+    <%= autocomplete_field_tag 'search_term2', '', main_app.api_market_v1_subcategories_path(format: :json), class: "form-control input-lg", placeholder: "Que estás buscando..." %>
+    <span class="input-group-btn">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
+  </div>
+</form>
+
+<script>
+  $('#search_term, #search_term2').bind('railsAutocomplete.select', function(event, data){
+    var term = $('#search_term').val();
+    if (term == ""){
+      term = $('#search_term2').val();
+    }
+    window.location.href = "/market/publications?search_term="+term
+    // angular.element(document.getElementById('fCtrl')).injector().get('$rootScope').GetFeed('', term);
+  });
+  $("#search_form, #search_form2").submit(function(e){
+    e.preventDefault();
+    var term = $('#search_term').val();
+    if (term == ""){
+      term = $('#search_term2').val();
+    }
+    window.location.href = "/market/publications?search_term="+term
+    // angular.element(document.getElementById('fCtrl')).injector().get('$rootScope').GetFeed('', term);
+  });
+</script>

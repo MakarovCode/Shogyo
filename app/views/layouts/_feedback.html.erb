@@ -1,0 +1,33 @@
+<% if user_signed_in? %>
+<ul class="nav navbar-nav secondary-navbar-nav pull-left visible-lg visible-md">
+  <li class="dropdown dropdown-cart">
+    <a href="javascript:void(0);" class="as-icon dropdown-toggle" data-toggle="dropdown">
+      <i class="fa fa-question-circle"></i>
+      <!-- <span class="cart-count"></span> -->
+    </a>
+    <ul class="dropdown-menu dropdown-menu-left" id="feedback-dd">
+      <li>
+        <div class="shopping-cart-widget" style="max-height: 350px; overflow-y: auto;">
+          <strong>¿Tienes alguna <span class="text-primary">sugerencia, duda, o inquietud</span>?.</strong>
+          <%= form_for Feedback.new, url: main_app.market_feedbacks_path, method: :post  do |f| %>
+          <div class="cart-footer">
+            <%= f.text_field :subject, class: "form-control", placeholder: "Asunto"%>
+            <br>
+            <%= f.text_area :details, class: "form-control", placeholder: "Escribe tu mensaje..."%>
+            <!-- <strong class="total">Total: $215</strong> -->
+            <br>
+            <input type="hidden" value="<%= request.original_url%>" name="redirect_to">
+            <button type="submit" class="btn btn-primary">
+              <i class="fa fa-envelope-o"></i>
+              Enviar
+            </button>
+            <div class="clearfix"></div>
+            <!-- <p class="continue-shopping"><a href="index-shop.html">Continue shopping</a></p> -->
+          </div>
+          <% end %>
+        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+<% end %>

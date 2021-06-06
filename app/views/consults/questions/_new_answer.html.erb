@@ -1,0 +1,111 @@
+<% unless user_signed_in? %>
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#subscribe-modal">
+  Responder
+</button>
+<% else %>
+<% if direct == false %>
+<%= link_to "Responder", consults_question_path(question, answer: true), class:"btn btn-primary btn-lg"%>
+<% else %>
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#new-consult-answer">
+  Responder
+</button>
+<!-- Modal -->
+<div class="modal fade" id="new-consult-answer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <% @new_answer = question.answers.new
+      if @new_answer.consult_answer_images.count == 0
+        @new_answer.consult_answer_images.new
+      end
+      %>
+      <%= nested_form_for @new_answer, as: :answer, url: consults_question_answers_path(question), method: :post do |f| %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Responder consulta en AgroNeto</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <label for="image">Adjunta una imagen o foto:</label>
+            <% i = 0 %>
+            <%= f.fields_for :consult_answer_images do |p_images_form| %>
+            <div class="">
+              <div style="margin-top: 20px;">
+                <%= image_tag "no-image.png", class: "img-responsive preview-target" %>
+              </div>
+              <label class="btn btn-primary btn-file pull-right btn-block">
+                <i class="fa fa-picture-o"></i>
+                Seleccionar
+                <%= p_images_form.file_field :source, value: nil, style: "display: none;", :"data-target" => "#preview-#{i}", class: "preview-file" %>
+              </label>
+              <br>
+
+
+            </div>
+            <% i += 1 %>
+            <% end %>
+          </div>
+          <div class="col-sm-8">
+            <label for="image">Respuesta:</label>
+            <%= f.text_area :text, class: "form-control input-lg", placeholder: "Escribe aquí tu respuesta...", style: "height: 300px;" %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" value="<%= request.path%>" name="redirect_to">
+        <button type="submit" class="btn btn-primary">Guardar y Responder</button>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+$(function() {
+  var fieldsCount,
+  maxFieldsCount = 4,
+  $addLink = $('a.add_nested_fields');
+
+  function toggleAddLink() {
+    $addLink.toggle(fieldsCount <= maxFieldsCount)
+  }
+
+  $(document).on('nested:fieldAdded', function() {
+    fieldsCount += 1;
+    toggleAddLink();
+    $(".preview-file").change(function(){
+  		readURL(this);
+  	});
+  });
+
+  $(document).on('nested:fieldRemoved', function() {
+    fieldsCount -= 1;
+    toggleAddLink();
+  });
+
+  // count existing nested fields after page was loaded
+  fieldsCount = $('form .fields').length;
+  toggleAddLink();
+
+  function readURL(input) {
+
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			var element = $(input);
+
+			reader.onload = function (e) {
+				$(element.parent().parent().find(".preview-target")).attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+	$(".preview-file").change(function(){
+		readURL(this);
+	});
+
+});
+</script>
+<% end %>
+<% end %>

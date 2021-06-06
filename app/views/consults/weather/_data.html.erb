@@ -1,0 +1,99 @@
+<%= javascript_include_tag "https://www.google.com/jsapi", "chartkick" %>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <i class="{{wCtrl.getIcon(wCtrl.actual)}} fa-3x"></i>
+    <br>
+    <span style="font-size: 40px;">
+      {{wCtrl.actual.main.temp}} Cº
+    </span>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <td>
+          Vientos de
+        </td>
+        <th>
+          {{wCtrl.actual.wind.speed}} m/s
+        </th>
+      </tr>
+      <tr>
+        <td>
+          Humedad
+        </td>
+        <th>
+          {{wCtrl.actual.main.humidity}}%
+        </th>
+      </tr>
+      <tr>
+        <td>
+          Presión
+        </td>
+        <th>
+          {{wCtrl.actual.main.pressure}} hPa
+        </th>
+      </tr>
+      <tr ng-hide="wCtrl.actual.main.sea_level == null">
+        <td>
+          Nivel del mar
+        </td>
+        <th>
+          {{wCtrl.actual.main.sea_level}} m
+        </th>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <div class="btn-group">
+      <button type="button" class="btn" ng-class="{'btn-secondary': wCtrl.graph_section == 'weather', 'btn-default': wCtrl.graph_section != 'weather'}" ng-click="wCtrl.graph_section = 'weather'">
+        Clima
+      </button>
+      <button type="button" class="btn btn-default" ng-class="{'btn-secondary': wCtrl.graph_section == 'temp', 'btn-default': wCtrl.graph_section != 'temp'}" ng-click="wCtrl.drawGraph(wCtrl.forecast.list, 'temp')">
+        Cº
+      </button>
+      <button type="button" class="btn btn-default" ng-class="{'btn-secondary': wCtrl.graph_section == 'wind', 'btn-default': wCtrl.graph_section != 'wind'}" ng-click="wCtrl.drawGraph(wCtrl.forecast.list, 'wind')">
+        Viento
+      </button>
+      <button type="button" class="btn btn-default" ng-class="{'btn-secondary': wCtrl.graph_section == 'humidity', 'btn-default': wCtrl.graph_section != 'humidity'}" ng-click="wCtrl.drawGraph(wCtrl.forecast.list, 'humidity')">
+        Humedad
+      </button>
+      <button type="button" class="btn btn-default" ng-class="{'btn-secondary': wCtrl.graph_section == 'maps', 'btn-default': wCtrl.graph_section != 'maps'}" ng-click="wCtrl.graph_section = 'maps'">
+        Mapas
+      </button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12" ng-show="wCtrl.graph_section == 'weather'">
+    <table class="table" style="margin-top: 20px;">
+      <tr>
+        <td colspan="2">
+          <div class="alert alert-warning">
+            Pronósticos del clima de los siguientes 5 días cada 3 horas.
+          </div>
+        </td>
+      </tr>
+      <tr ng-repeat="item in wCtrl.forecast.list">
+        <th>
+          {{wCtrl.formatDate(item.dt_txt)}}
+        </th>
+        <td>
+          <i class="{{wCtrl.getIcon(item)}} fa-2x"></i>
+          <span style="font-size: 20px;">
+            {{item.main.temp}} Cº
+          </span>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-12" ng-hide="wCtrl.graph_section == 'weather' || wCtrl.graph_section == 'maps'">
+    <div id="chart-1" style="height: 300px"></div>
+  </div>
+  <div class="col-md-12" ng-show="wCtrl.graph_section == 'maps'">
+    <%= render "consults/weather/maps" %>
+  </div>
+</div>

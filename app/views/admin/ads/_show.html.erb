@@ -1,0 +1,21 @@
+<%= javascript_include_tag "https://www.google.com/jsapi", "chartkick"%>
+<div class="columns">
+  <div class="column" style="width: 100%;">
+    <div class="panel">
+      <h3>Visitas diarias</h3>
+      <div class="panel_contents">
+        <%= area_chart @views.where({visits: {started_at: (Date.today - 1.month)..Date.today+1.days}}).group_by_day(:started_at).count %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="columns">
+  <div class="column" style="width: 100%;">
+    <div class="panel">
+      <h3>Clicks diarios</h3>
+      <div class="panel_contents">
+        <%= area_chart @clicks.where({visits: {started_at: (Date.today - 1.month)..Date.today+1.days}}).group_by_day(:started_at).count %>
+      </div>
+    </div>
+  </div>
+</div>

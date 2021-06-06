@@ -1,0 +1,100 @@
+
+<% if user_signed_in? %>
+  <% @purchase = current_user.purchases.new %>
+  <button type="button" class="btn btn-secondary <%= btn %>" data-toggle="modal" data-target="#buy-modal">
+    <% if publication.subject == Publication::PRODUCTOS %>
+    Contactar
+    <% else %>
+    Contactar
+    <% end %>
+  </button>
+  <!-- Modal -->
+  <div class="modal fade" id="buy-modal" tabindex="-1" role="dialog" aria-labelledby="buy-modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+      <%= form_for [:market, publication, @purchase] do |f| %>
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="buy-modalLabel">
+              <% if publication.subject == Publication::PRODUCTOS %>
+              Contactar al vendedor
+              <% else %>
+              Contactar al
+                <% if publication.subject == Publication::SERVICIOS %>
+                  proveedor del servicio
+                <% else %>
+                  vendedor
+                <% end %>
+              <% end %>
+            </h4>
+          </div>
+          <div class="modal-body">
+            <% if current_user.already_contacted(publication) %>
+            <div class="alert alert-warning">
+              Ya te has puesto en contacto con el vendedor de esta publicación, ¿quieres volver a contactarlo?
+            </div>
+            <% end %>
+            <% if publication.subject == Publication::PRODUCTOS %>
+            <p class="green">
+              ¿Cuantas unidades quieres?
+            </p>
+            <div class="input-group">
+              <span class="input-group-addon" style="width: 200px;">
+                Unidades:
+              </span>
+              <%= f.select :units, (1..10).map{|i| [i,i]}, class: "form-control" %>
+              <span class="input-group-addon">
+                <i class="fa fa-asterisk"></i>
+              </span>
+            </div>
+            <!-- <p class="green">
+              No olvides que dar click en comprar es un compromiso de compra.
+            </p> -->
+            <p class="green">
+              Al dar click en comprar estas aceptando nuestros términos y condiciones.
+              <br>
+              <br>
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-seconday btn-block" data-toggle="modal" data-target="#terms-modal">
+                Ver términos y condiciones
+              </button>
+            </p>
+            <% else %>
+            <p class="green">
+              Escribe todas las preguntas que tengas para el vendedor.
+            </p>
+            <div class="">
+
+              <%= f.text_area :consult, class: "form-control", placeholder: "Escribe tu consulta...", style: "width: 100%; height: 200px;" %>
+
+            </div>
+            <p class="green">
+              Al dar click en contactar estas aceptando nuestros términos y condiciones.
+            </p>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <%= f.hidden_field :publication_id, value: publication.id%>
+            <button type="button" class="btn btn-link" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary btn-lg">
+              <% if publication.subject == Publication::PRODUCTOS %>
+              Contactar
+              <% else %>
+              Contactar
+              <% end %>
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+<% else %>
+<button type="button" class="btn btn-secondary <%= btn %>" data-toggle="modal" data-target="#subscribe-modal">
+  <% if publication.subject == Publication::PRODUCTOS %>
+  Contactar
+  <% else %>
+  Contactar
+  <% end %>
+</button>
+<% end %>

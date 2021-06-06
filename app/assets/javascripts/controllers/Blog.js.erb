@@ -1,0 +1,172 @@
+(function () {
+
+	var module = angular.module("blog-module", []);
+
+	module.controller('BlogController', ['$http', '$scope', function ($http, $scope) {
+		var self = this;
+
+		this.posts = [];
+		this.hot = [];
+		this.last_post = null;
+		this.categories = [];
+		this.tags = [];
+
+		this.search_by_tag = null;
+		this.search_by_category = null;
+		this.search_by_subcategory = null;
+
+		this.load_posts = true;
+		this.redirect_actions = true;
+
+		/* Autor: Simon Correa
+		*
+		* Fecha creacion: 2016-11-21
+		*
+		* Autor actualizacion:
+		*
+		* Fecha actualizacion:
+		*
+		*
+		*/
+
+		this.initialize = function (categories, tags, load_posts, redirect_actions) {
+			this.categories = categories;
+			this.tags = tags;
+			this.load_posts = load_posts;
+			this.redirect_actions = redirect_actions;
+
+			if (this.load_posts == true){
+				this.getPosts();
+			}
+
+			this.getHotPosts();
+
+		}
+
+		this.reloadAll = function(){
+			this.search_by_category = null;
+			this.search_by_subcategory = null;
+			this.search_by_tag = null;
+			this.getPosts();
+		}
+
+		this.getPosts = function(){
+
+			var params = {};
+
+			if (this.search_by_tag != null){
+				params["tag"] = this.search_by_tag;
+			}
+			if (this.search_by_category != null){
+				params["category"] = this.search_by_category;
+			}
+			if (this.search_by_subcategory != null){
+				params["subcategory"] = this.search_by_subcategory;
+			}
+
+			$("#http-loader2").show();
+			$http.get("/api/blog/v1/posts.json", {params: params}).then(
+				function(res, status){
+					self.posts = res.data;
+					if (self.posts.length > 0){
+						self.last_post = self.posts[0];
+					}$("#http-loader2").hide();
+				},
+				function(res, status){
+					$("#http-loader2").hide();
+				}
+			);
+		}
+
+		this.getHotPosts = function(){
+
+			$http.get("/api/blog/v1/posts/hot.json").then(
+				function(res, status){
+					self.hot = res.data;
+				},
+				function(res, status){
+
+				}
+			);
+		}
+
+		this.searchByTag = function($event, tag){
+			$event.stopPropagation();
+
+			if (tag.id == this.search_by_tag){
+				this.search_by_tag = null;
+			}
+			else{
+				this.search_by_tag = tag.id;
+			}
+
+			if (this.redirect_actions == true){
+				this.getPosts();
+			}
+			else{
+				window.location.href = "/blog/posts?tag_id="+tag.id;
+			}
+			this.search_by_category = null;
+			this.search_by_subcategory = null;
+		}
+
+		this.searchByCategory = function($event, category){
+			$event.stopPropagation();
+
+			if (category.id == this.search_by_category){
+				this.search_by_category = null;
+			}
+			else{
+				this.search_by_category = category.id;
+			}
+
+			if (this.redirect_actions == true){
+				this.getPosts();
+			}
+			else{
+				window.location.href = "/blog/posts?category_id="+category.id;
+			}
+
+			this.search_by_tag = null;
+			this.search_by_subcategory = null;
+		}
+
+		this.searchBySubCategory = function($event, subcategory){
+			$event.stopPropagation();
+
+			if (subcategory.id == this.search_by_subcategory){
+				this.search_by_subcategory = null;
+			}
+			else{
+				this.search_by_subcategory = subcategory.id;
+			}
+
+			if (this.redirect_actions == true){
+				this.getPosts();
+			}
+			else{
+				window.location.href = "/blog/posts?subcategory_id="+subcategory.id;
+			}
+
+			this.search_by_tag = null;
+			this.search_by_category = null;
+		}
+
+
+		// $scope.$on('onRepeatLast', function(scope, element, attrs) {
+		// 	if($('.blog-masonry').length > 0) {
+		// 		var $container = $('.blog-masonry');
+		// 		$container.imagesLoaded(function() {
+		// 			$container.isotope({
+		// 				itemSelector: '.grid-item',
+		// 				percentPosition: true,
+		// 				masonry: {
+		// 					columnWidth: '.grid-sizer',
+		// 				}
+		// 			});
+		// 		});
+		// 	}
+		// });
+
+	}]);
+})();

@@ -1,0 +1,85 @@
+<!-- FOOTER -->
+<footer class="footer-newsletter">
+  <div class="container">
+
+    <div class="row visible-lg visible-md">
+      <div class="col-md-6">
+        <h4 class="footer-heading">Acerca de nosotros</h4>
+        <p class="copytext">
+          Somos AgroNeto, simplificando el Agro en el Mundo.
+          <br>Nos puedes contactar directamente al siguiente correo
+          <a href="mailto:contacto@agroneto.com">contacto@agroneto.com</a>
+          estamos atentos para atenderte.
+        </p>
+        <h4 class="footer-heading">Información empresarial</h4>
+        <p class="copytext">
+          <b>Correo electrónico: </b> <%= @info.contact_email %>
+          <br>
+          <b>Dirección:</b> <%= @info.contact_address %>
+          <br>
+          <b>Teléfono:</b> <%= @info.contact_phone %>
+        </p>
+      </div>
+      <div class="col-md-6">
+        <h4 class="footer-heading">Nuestra base de operaciones</h4>
+        <div class=" maps embed-container" style="width: 100%; height: 300px;">
+          <iframe style="pointer-events: none; height: 300px; width: 100%;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3974.324939942421!2d-75.48719338551703!3d5.050970139927797!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e476579dbe20d45%3A0x86cc7b27b4d892ad!2sAgroNeto!5e0!3m2!1sen!2sco!4v1512168425649" height="300" class="embed-responsive-item" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </p>
+
+  <div class="footer-bottom">
+    <div class="left visible-lg visible-md">
+      <nav class="clearfix">
+        <ul class="list-inline">
+          <li>
+            <%= link_to "NOTICIAS", main_app.blog_posts_path%>
+          </li>
+          <li>
+            <%= link_to "EL MERCADO", main_app.market_publications_path%>
+          </li>
+          <li>
+            <%= link_to "CONSULTAS", "/consults/questions?scope=hot"%>
+          </li>
+          <li>
+            <%= link_to "TÉRMINOS Y CONDICIONES", main_app.terms_path %>
+          </li>
+          <li>
+            <a href='https://play.google.com/store/apps/details?id=co.devpenguin.agronetoapp&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' style="width: 200px;" target="_blank">
+              <img alt='Disponible en Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/es_badge_web_generic.png' style="width: 200px;"/>
+            </a>
+          </li>
+          <li>
+            <a href="https://itunes.apple.com/us/app/agroneto/id1355955630?mt=8" style="width: 200px;" target="_blank">
+              <img alt='Disponible en Apple Store' src='https://linkmaker.itunes.apple.com/assets/shared/badges/en-us/appstore-lrg.svg' style="width: 180px;"/>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <p class="copyright-text">&copy;<%= raw @info.copyrights_text %></p>
+    </div>
+    <ul class="right list-inline social-icons social-icons-bordered social-icons-small social-icons-fullrounded">
+      <% if !@info.facebook_link.nil? && @info.facebook_link != "" %>
+      <li><a href="<%= @info.facebook_link%>" target="_blank"><i class="fa fa-facebook"></i></a></li>
+      <% end %>
+      <% if !@info.twitter_link.nil? && @info.twitter_link != "" %>
+      <li><a href="<%= @info.twitter_link%>" target="_blank"><i class="fa fa-twitter"></i></a></li>
+      <% end %>
+      <% if !@info.linkedin_link.nil? && @info.linkedin_link != "" %>
+      <li><a href="<%= @info.linkedin_link%>" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      <% end %>
+      <% if !@info.instagram_link.nil? && @info.instagram_link != "" %>
+      <li><a href="<%= @info.instagram_link%>" target="_blank"><i class="fa fa-instagram"></i></a></li>
+      <% end %>
+      <% if !@info.youtube_link.nil? && @info.youtube_link != "" %>
+      <li><a href="<%= @info.youtube_link%>" target="_blank"><i class="fa fa-youtube"></i></a></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+</footer>
+<!-- END FOOTER -->
+<div class="back-to-top">
+  <a href="#top"><i class="fa fa-chevron-up"></i></a>
+</div>

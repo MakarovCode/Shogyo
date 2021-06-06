@@ -1,0 +1,42 @@
+<%= form_for [:market, @feedback] do |f| %>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <h2 class="green text-center">
+      ¿Por qué quieres denunciar esta publicación?
+    </h2>
+    <div class="input-group" style="margin-top: 40px;">
+      <span class="input-group-addon" style="width: 200px;">
+        Asunto:
+      </span>
+      <%= f.select :subject, [["Publica a un precio menor que el que cobra realmente", "Publica a un precio menor que el que cobra realmente"], ["Ofrece un servicio que no cumple con los Términos y Condiciones del sitio.", "Ofrece un servicio que no cumple con los Términos y Condiciones del sitio."], ["Ofrece varios servicios de distinto precio en la misma publicación.", "Ofrece varios servicios de distinto precio en la misma publicación."], ["Creo que es un intento de fraude", "Creo que es un intento de fraude"], ["Incluye palabras que no tienen que ver con lo que vende", "Incluye palabras que no tienen que ver con lo que vende"], ["Tiene contenido ofencivo, de naturaleza racista, sexual u obsceno", "Tiene contenido ofencivo, de naturaleza racista, sexual u obsceno"], ["Infringe tus derechos de propiedad intelectual", "Infringe tus derechos de propiedad intelectual"]], class: "form-control" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@feedback.errors.nil? && @feedback.errors.include?(:subject) %>
+    <p class="error-message">
+      <%= @feedback.errors[:subject].to_sentence %>
+    </p>
+    <% end %>
+    <div class="input-group">
+      <span class="input-group-addon" style="width: 200px;">
+        Detalles:
+      </span>
+      <%= f.text_area :details, class: "form-control", placeholder: "Danos más detalles de tu denuncia.", style: "height: 300px;" %>
+      <span class="input-group-addon">
+        <i class="fa fa-asterisk"></i>
+      </span>
+    </div>
+    <% if !@feedback.errors.nil? && @feedback.errors.include?(:details) %>
+    <p class="error-message">
+      <%= @feedback.errors[:details].to_sentence %>
+    </p>
+    <% end %>
+  </div>
+  <div class="col-md-8 col-md-offset-2">
+    <%= f.hidden_field :publication_id, value: @publication_id %>
+    <button type="submit" class="btn btn-primary">Denunciar</button>
+    <%= link_to "Cancelar", market_publication_path(@publication_id), class: "btn btn-default" %>
+  </div>
+</div>
+<% end %>

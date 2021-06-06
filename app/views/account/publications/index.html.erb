@@ -1,0 +1,165 @@
+
+<div class="row">
+  <div class="col-md-2">
+    <%= render "account/shared/sidebar" %>
+  </div>
+  <div class="col-md-10">
+    <div class="custom-tabs-line tabs-line-bottom left-aligned">
+      <ul class="nav" role="tablist">
+        <% if params[:scope].nil? || params[:scope] == "actives" %>
+        <li class="active">
+          <%= link_to account_publications_path(scope: "actives") do %>
+          Activas
+          <span class="badge">
+            <%= @all_publications.actives.count %>
+          </span>
+          <% end %>
+        </li>
+        <% else %>
+        <li>
+          <%= link_to account_publications_path(scope: "actives") do %>
+          Activas
+          <span class="badge">
+            <%= @all_publications.actives.count %>
+          </span>
+          <% end %>
+        </li>
+        <% end %>
+        <% if params[:scope] == "paused" %>
+        <li class="active">
+          <%= link_to account_publications_path(scope: "paused") do %>
+          Pausadas
+          <span class="badge">
+            <%= @all_publications.paused.count %>
+          </span>
+          <% end %>
+        </li>
+        <% else %>
+        <li>
+          <%= link_to account_publications_path(scope: "paused") do %>
+          Pausadas
+          <span class="badge">
+            <%= @all_publications.paused.count %>
+          </span>
+          <% end %>
+        </li>
+        <% end %>
+        <% if params[:scope] == "finished" %>
+        <li class="active">
+          <%= link_to account_publications_path(scope: "finished") do %>
+          Finalizadas
+          <span class="badge">
+            <%= @all_publications.finished.count %>
+          </span>
+          <% end %>
+        </li>
+        <% else %>
+        <li>
+          <%= link_to account_publications_path(scope: "finished") do %>
+          Finalizadas
+          <span class="badge">
+            <%= @all_publications.finished.count %>
+          </span>
+          <% end %>
+        </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="">
+      <div class="tab-pane fade in active" id="tab-publications">
+        <table class="table table-responsive" style="border: none;">
+          <% if @publications.count == 0%>
+          <%= render "layouts/no_results", namespace: "Publicaciones" %>
+          <% end %>
+          <% @publications.each do |publication| %>
+          <tr>
+            <!-- <td></td> -->
+            <td class="text-left" style="width: 100px;">
+              <%= image_tag publication.get_image("low"), style: "width: 100px;" %>
+            </td>
+            <td>
+              <%= link_to market_publication_path(publication) do %>
+              <h4 class="green">
+                <%= publication.title %>
+              </h4>
+              <% end %>
+              <p>
+                #<%= current_user.id %>-<%= publication.id %>
+              </p>
+            </td>
+            <td>
+              <h4 class="green">
+                <% unless publication.in_need == true %>
+                <%= number_to_currency publication.price, delimiter: ".", precision: publication.get_currency_precision, unit: publication.get_currency_unit %>
+                <% else %>
+                <span class="label label-secondary">Se busca</span>
+                <% end %>
+                <% if publication.subject == Publication::PRODUCTOS %>
+                <small>x <%= pluralize( publication.units, 'disponible' )%></small>
+                <% end %>
+              </h4>
+              <%= publication.visits_count %> visitas
+            </td>
+            <td class="text-right">
+              <% if current_user.is_official != true %>
+                <% if publication.start_date > Date.today %>
+                <p>
+                  Empieza en <%= distance_of_time_in_words publication.start_date, Time.now %>
+                </p>
+                <% else %>
+                <p>
+                  Finaliza en <%= distance_of_time_in_words Time.now, publication.end_date %>
+                </p>
+                <% end %>
+              <% end %>
+              <% if publication.status != 3 %>
+              <%= render "change_plan", publication: publication %>
+              <% end %>
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-cog"></i> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <% if publication.status != 3 %>
+                  <li>
+                    <%= link_to "Modificar", edit_account_publication_path(publication) %>
+                  </li>
+                  <% end %>
+                  <% if publication.status != 1 && publication.status != 3 %>
+                    <li>
+                      <%= link_to "Activar", change_status_account_publication_path(publication, status: 1), method: :post %>
+                    </li>
+                  <% end %>
+                  <% if publication.status != 2 && publication.status != 3 %>
+                    <li>
+                      <%= link_to "Pausar", change_status_account_publication_path(publication, status: 2), method: :post %>
+                    </li>
+                  <% end %>
+                  <% if publication.status != 3 %>
+                    <li>
+                      <%= link_to "Finalizar", change_status_account_publication_path(publication, status: 3), method: :post %>
+                    </li>
+                  <% end %>
+                  <% if publication.status == 3 %>
+                    <li>
+                      <%= link_to "Eliminar", change_status_account_publication_path(publication, status: 4), method: :post %>
+                    </li>
+                  <% end %>
+                  <li role="separator" class="divider"></li>
+                  <li>
+                    <%= link_to "Publicar similar", new_account_publication_path(sample_id: publication.id) %>
+                  </li>
+                  <!-- <li>
+                    <%#= link_to "Tengo un problema", edit_account_publication_path(publication) %>
+                  </li> -->
+                </ul>
+              </div>
+
+            </td>
+          </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

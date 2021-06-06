@@ -1,0 +1,14 @@
+<% if percent < 100 %>
+<div class="progress">
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<%= percent %>" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: <%= percent %>%;">
+      <%= percent %>%
+    </div>
+  </div>
+</div>
+<% else %>
+<button type="button" class="btn btn-secondary btn-lg btn-block">
+  <i class="fa fa-check"></i>
+  Perfil completo (100%)
+</button>
+<% end %>

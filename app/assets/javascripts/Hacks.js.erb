@@ -1,0 +1,46 @@
+var Hacks = {
+	init: function(){
+
+		var w = $(window).width();
+		var h = $(window).height();
+		var loading = "<%= asset_path('loading.gif')%>";
+		var loader = "<div id='http-loader' style='background-color: rgba(0,0,0,0.75); display:none; color: white; text-align:center; position:fixed; top:0;left:0; width: "+w+"px; height: "+h+"px; z-index: 100000;'><h2 style='margin-top: "+(w/5)+"px; color: white;'><label style='border-radius: 500px; background-color: white; height: 250px;'><img src='"+loading+"' style='height: 250px;'/></label><br />Cargando, espera por favor...</h2></div>";
+		$("body").append(loader);
+
+		var loading2 = "<%= asset_path('loading1.gif')%>";
+		var loader2 = "<div id='http-loader2' style='background-color: rgba(0,0,0,0); display:none; color: white; text-align:center; position:fixed; top:0;left:45%; width: 10px; height: 100px; z-index: 100000;'><img src='"+loading+"' style='height: 70px;'/></div>";
+		$("body").append(loader2);
+
+		window.addEventListener("beforeunload", function (e) {
+			console.log("redirecting");
+			$("#http-loader").show();
+			return null;
+		});
+
+		document.addEventListener("turbolinks:request-start", function(event) {
+			console.log("Loading..");
+			$("#http-loader2").show();
+		});
+
+	}
+}
+
+function getId(url) {
+	var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+	var match = url.match(regExp);
+
+	if (match && match[2].length == 11) {
+		return match[2];
+	} else {
+		return 'error';
+	}
+}
+
+function loadYoutubeVideo(element, source){
+	debugger;
+	var videoId = getId(source);
+
+	var iframeMarkup = '<iframe class="embed-responsive-item" src="//www.youtube.com/embed/'
+	+ videoId + '" frameborder="0" allowfullscreen></iframe>';
+	$(element).append(iframeMarkup);
+}

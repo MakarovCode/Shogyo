@@ -1,0 +1,79 @@
+<div class="sidebar">
+  <!-- <div class="widget">
+  <h4 class="widget-title"><%= @info.blog_sidebar_title%></h4>
+  <ul class="list-unstyled recommended-posts">
+  <li ng-repeat="post in bCtrl.hot">
+  <div class="post-entry-sidebar clearfix">
+  <a href="/blog/posts/{{post.slug}}" class="left">
+  <img ng-src="{{post.image}}" style="width: 80px;" alt="Imagen">
+</a>
+<div class="right">
+<h4 class="media-heading post-title">
+<a href="/blog/posts/{{post.slug}}">
+{{ post.title | limitTo: 100 }}{{ post.title.length > 100 ? '...' : '' }}
+</a>
+</h4>
+<span class="timestamp">
+{{post.date}}
+</span>
+</div>
+</div>
+</li>
+</ul>
+</div> -->
+<!-- end widget -->
+<% unless user_signed_in? %>
+<div class="widget">
+  <div class="post-entry-card">
+    <%= image_tag "construction.jpg", class: "img-responsive" %>
+    <div class="post-info">
+      <h4 class="post-excerpt text-center">
+        Subscríbete y haz parte de la red del Agro en Colombia, Latinoamérica y el Mundo
+      </h4>
+      <button type="button" data-toggle="modal" data-target="#subscribe-modal" class="btn btn-primary btn-lg btn-block">
+        Subscríbete grátis
+      </button>
+    </div>
+  </div>
+</div>
+<% end %>
+<div class="widget visible-md visible-lg">
+<%= render "consults/questions/new", id: "1" %>
+</div>
+<!-- widget -->
+<div class="widget">
+  <h4 class="widget-title">CATEGORÍAS</h4>
+  <ul class="list-unstyled category-list">
+    <li ng-repeat="category in bCtrl.categories">
+      <a ng-click="bCtrl.searchByCategory($event, category)" href="javascript:void(0)">
+        <i class="fa fa-chevron-right" ng-show="category.id == bCtrl.search_by_category"></i> {{category.name}}
+      </a>
+      <ul class="list-unstyled sub-category-list">
+        <li ng-repeat="subcategory in category.subcategories">
+          <a ng-click="bCtrl.searchBySubCategory($event, subcategory)" href="javascript:void(0)">
+            <i class="fa fa-chevron-right" ng-show="subcategory.id == bCtrl.search_by_subcategory"></i> {{subcategory.name}}
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- end widget -->
+<!-- widget -->
+<div class="widget">
+  <h3 class="widget-title">
+    TAGS
+  </h3>
+  <ul class="list-inline tag-list">
+    <li ng-repeat="tag in bCtrl.tags">
+      <a ng-class="{'active': tag.id == bCtrl.search_by_tag}" ng-click="bCtrl.searchByTag($event, tag)" href="javascript:void(0)">
+        <i class="fa fa-chevron-right" ng-show="tag.id == bCtrl.search_by_tag"></i> {{tag.name}}
+      </a>
+    </li>
+  </ul>
+</div>
+<!-- end widget -->
+</div>
+<div class="twitter">
+  <a class="twitter-timeline" href="https://twitter.com/AgroNetoOficial">Tweets by AgroNetoOficial</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>

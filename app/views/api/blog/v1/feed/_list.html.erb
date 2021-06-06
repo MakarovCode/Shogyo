@@ -1,0 +1,80 @@
+<div id="fCtrl" ng-controller="FeedController as fCtrl" ng-init="fCtrl.init('<%= params[:native_app]%>', '<%= params[:scope]%>')" style="margin-top: {{fCtrl.margin}}px;">
+  <% if params[:native_app].blank? %>
+  <div class="text-center row visible-xs visible-sm" style="position: fixed; bottom: 10px; background-color: rgba(0,0,0,0.75); z-index: 100; padding-top: 5px; padding-bottom: 5px;" id="main-buttons-list">
+    <div class="btn-group">
+      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#new-feed-modal">
+        Publicar
+      </button>
+      <button type="button" class="btn" ng-class="{'btn-primary': fCtrl.scope == 'all' || fCtrl.scope == '', 'btn-default': fCtrl.scope != 'all' || fCtrl.scope != ''}" ng-click="GetFeed('')">
+        Todos
+      </button>
+      <button type="button" class="btn" ng-class="{'btn-primary': fCtrl.scope == 'consults', 'btn-default': fCtrl.scope != 'consults'}" ng-click="GetFeed('consults')">
+        Consultas
+      </button>
+      <button type="button" class="btn" ng-class="{'btn-primary': fCtrl.scope == 'market', 'btn-default': fCtrl.scope != 'market'}" ng-click="GetFeed('market')">
+        Mercado
+      </button>
+      <button type="button" class="btn" ng-class="{'btn-primary': fCtrl.scope == 'posts', 'btn-default': fCtrl.scope != 'posts'}" ng-click="GetFeed('posts')">
+        Noticias
+      </button>
+    </div>
+  </div>
+  <%= render "api/blog/v1/feed/new_modal" %>
+  <% end %>
+  <div class="blog-card" ng-class="{'alt': feed.type == 'Post'}" ng-repeat="feed in fCtrl.feeds" ng-click="fCtrl.GoTo(feed);">
+    <div ng-if="feed.type == 'Ad'" style="width: 100%;">
+      <img ng-src="{{fCtrl.GetImageUrl(feed)}}" style="width: 100%;">
+    </div>
+    <div class="meta" ng-if="feed.type != 'Ad'" ng-class="{'feed-no-image-meta': fCtrl.GetImageUrl(feed) == 'none'}">
+      <div class="photo" style="background-image: url({{fCtrl.GetImageUrl(feed)}})"></div>
+      <ul class="details">
+        <li>Ver más...</li>
+      </ul>
+    </div>
+    <div class="description" ng-if="feed.type != 'Ad'" ng-class="{'feed-no-image-description': fCtrl.GetImageUrl(feed) == 'none'}">
+      <h1>
+        {{fCtrl.GetTitle(feed)}}
+        <br ng-if="feed.type == 'Publication'">
+      </h1>
+      <h2>
+        <img ng-src="{{fCtrl.GetUser(feed).image}}" style="width: 40px; border-radius: 40px; margin-right: 15px;" class="pull-left">
+        <span>
+          {{fCtrl.GetUser(feed).name}}
+        </span>
+        <span ng-if="feed.type == 'Publication' || feed.type == 'ConsultQuestion'" class="label label-secondary pull-right">
+          <h1 style="color: black !important; font-weight: bold !important;" ng-if="feed.type == 'Publication' && feed.publication.for_adoption == false && feed.publication.to_agree == false">
+            {{feed.publication.price}}
+          </h1>
+          <h1 style="color: black !important; font-weight: bold !important;" ng-if="feed.type == 'Publication' && feed.publication.for_adoption == true">
+            Adopción
+          </h1>
+          <h1 style="color: black !important; font-weight: bold !important;" ng-if="feed.type == 'Publication' && feed.publication.to_agree == true">
+            A convenir
+          </h1>
+          <h1 style="color: black !important; font-weight: bold !important;" ng-if="feed.type == 'ConsultQuestion'">
+            Responder
+          </h1>
+        </span>
+      </h2>
+      <p>
+        {{fCtrl.GetDescription(feed) | limitTo:250}}...
+      </p>
+      <p>
+        <span class="pull-left label label-primary" style="font-size: 14px;" ng-if="fCtrl.GetVisitsCount(feed) != null && fCtrl.GetVisitsCount(feed) > 0">
+          <i class="fa fa-eye"></i> {{fCtrl.GetVisitsCount(feed)}}
+        </span>
+        <span class="pull-left label label-secondary" style="font-size: 14px;" ng-if="feed.type == 'Publication' && feed.publication.in_need == false">
+          Se vende
+        </span>
+        <span class="pull-left label label-secondary" style="font-size: 14px;" ng-if="feed.type == 'Publication' && feed.publication.in_need == true">
+          Se busca
+        </span>
+        <p class="read-more">
+          <a click="javascript:void(0);" href="#" style="font-weight: bold;">
+            {{fCtrl.GetDate(feed)}}
+          </a>
+        </p>
+      </p>
+    </div>
+  </div>
+</div>

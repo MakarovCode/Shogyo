@@ -1,0 +1,46 @@
+
+<div id="carousel-commodities-<%= id%>" class="carousel slide carousel-commodities <%= visible %>" data-ride="carousel">
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <% j = 1 %>
+    <% (1..commodities.count).step(step).each do |i| %>
+      <% commodities_aux = commodities.page(j).per(step) %>
+      <% if commodities_aux.count > 0 %>
+        <div class="item <%= i == 1 ? 'active' : ''%>">
+          <ol class="breadcrumb link-accent text-center">
+            <% commodities.page(j).per(step).each do |commodity| %>
+              <% variation = commodity.variations.order("created_at DESC").first %>
+              <% unless variation.nil? %>
+                <% clas = 'stable' %>
+                <% if variation.status == 1 %>
+                <% clas = 'up' %>
+                <% elsif variation.status == 2 %>
+                <% clas = 'down' %>
+                <% end %>
+                <li class="values-<%= clas %>">
+                  <i class="<%= commodity.icon %>"></i> <%= commodity.name %>: <%= number_to_currency variation.value %> <%= variation.currency %>
+                  <% if variation.status == 1 %>
+                    <i class="fa fa-angle-up"></i>
+                  <% elsif variation.status == 2 %>
+                    <i class="fa fa-angle-down"></i>
+                  <% end %>
+                </li>
+              <% end %>
+            <% end %>
+          </ol>
+        </div>
+      <% end %>
+      <% j += 1 %>
+    <% end %>
+  </div>
+
+  <!-- Controls -->
+  <a class="left carousel-control" href="#carousel-commodities-<%= id%>" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#carousel-commodities-<%= id%>" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>

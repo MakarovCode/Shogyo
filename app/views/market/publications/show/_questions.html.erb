@@ -1,0 +1,54 @@
+<% if publication.subject == Publication::PRODUCTOS %>
+<div class="row" style="margin-top: 40px;">
+  <div class="col-md-8 col-md-offset-2">
+    <h2 class="green text-center">
+      Preguntas al vendedor
+    </h2>
+    <hr>
+  </div>
+  <div class="col-md-8 col-md-offset-2">
+    <table class="table">
+      <tr>
+        <td class="alert alert-info">
+          <% if user_signed_in? %>
+            <%= nested_form_for [:market, publication], url: ask_market_publication_path(id: publication.id), html: {method: :post} do |f| %>
+            <!-- <i class="fa fa-comment"></i> -->
+            <textarea class="form-control" placeholder="Escribe una pregunta" height=100 name="question"></textarea>
+            <br>
+            <button type="submit" class="btn btn-primary">
+              Preguntar
+            </button>
+            <small style="margin-left: 20px;">No ingreses datos de contacto, no uses lenguaje vulgar ni ofertes o preguntes por otro artículo.</small>
+            <% end %>
+          <% else %>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#subscribe-modal">
+            Preguntar
+          </button>
+          <% end %>
+        </td>
+      </tr>
+      <% if publication.publication_questions.count == 0 %>
+      <tr>
+        <td>
+          <div class="alert alert-warning" style="margin-top: 20px;">
+            Esta publicación aún no tiene preguntas
+          </div>
+        </td>
+      </tr>
+      <% end %>
+      <% publication.publication_questions.order(created_at: :desc).each do |question| %>
+      <tr>
+        <td>
+          <i class="fa fa-comment"></i> <%= question.question %>
+          <% unless question.answer.nil? %>
+          <br>
+          <i class="fa fa-comments" style="margin-left: 40px;"></i> <%= question.answer %>
+          <hr>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+<% end %>

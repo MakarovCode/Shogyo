@@ -1,0 +1,64 @@
+<div class="header" style="text-align:center;">
+  <%= link_to root_path do %>
+    <%= image_tag @info.logo.url, class: "logo img-responsive", alt: "AgroNeto" %>
+  <% end %>
+  <h3 class="">
+    Subscríbete y haz parte de la red del Agro en Colombia, Latinoamérica y el Mundo.
+  </h3>
+  <%= render "devise/shared/main_links", controller_name: "registrations", resource_name: resource_name, resource_class: User %>
+</div>
+<div class="table-wrap">
+  <div class="table-cell">
+    <div class="auth-box">
+      <div class="">
+        <div class="left">
+          <div class="auth-social">
+            <%= render "devise/shared/social_links", controller_name: "registrations", resource_name: resource_name, resource_class: User %>
+          </div>
+          <p class="green text-center">
+            Al dar click en <b>Subscribirme</b> estas aceptando nuestros términos y condiciones.
+            <br>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#terms-modal">
+              Ver términos y condiciones
+            </button>
+          </p>
+        </div>
+        <span class="center-separator">O</span>
+        <div class="right">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: "form-auth-small") do |f| %>
+            <h3 class="">Subscríbete</h3>
+            <% unless no_error == true %>
+              <%= devise_error_messages! %>
+            <% end %>
+            <div class="form-group">
+              <label for="signup-email" class="control-label">País</label>
+              <%= f.select :country_id, options_from_collection_for_select(Country.all, "id", "name"), {}, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <label for="signup-email" class="control-label sr-only">Email</label>
+              <%= f.email_field :email, autofocus: true, class: "form-control", id: "signup-email", placeholder: "Email" %>
+            </div>
+            <div class="form-group">
+              <label for="signup-password" class="control-label sr-only">Contraseña</label>
+              <%= f.password_field :password, autocomplete: "off", class: "form-control", id: "signup-password", placeholder: "Contraseña" %>
+            </div>
+            <div class="form-group">
+              <label for="signup-password" class="control-label sr-only">Confirma tu contraseña</label>
+              <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control", id: "signup-password-confirmation", placeholder: "Confirma tu contraseña" %>
+            </div>
+            <div class="form-group clearfix">
+              <%= render "devise/shared/secondary_links", controller_name: "registrations", resource_name: resource_name, resource_class: User %>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Subscribirme</button>
+              <p class="margin-top-30 text-center">
+                <%= render "devise/shared/main_links", controller_name: "registrations", resource_name: resource_name, resource_class: User %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

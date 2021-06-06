@@ -1,0 +1,205 @@
+<%
+meta title: "AgroNeto | #{@publication.title}",
+description: "AgroNeto el mercado del Agro.",
+keywords: "AgroNeto,Agro,Productos,Mercado,#{@publication.subcategory.name},#{@publication.subcategory.category.name},#{@publication.subject}".split(",")
+%>
+
+<%
+
+meta og: {
+  image: "#{@publication.get_image('high')}",
+  url: market_publication_url(@publication),
+  title: @publication.title,
+  description: @publication.get_kind,
+  type: "website"
+}
+%>
+<%
+meta twitter: {
+  card: "AgroNeto | #{@publication.title}",
+  site: "@AgroNetoOficial"
+}
+%>
+
+<div class="row">
+  <div class="col-md-12 text-right">
+    <%= link_to "Denunciar", new_market_feedback_path(publication_id: @publication.id) %> |
+    <%= link_to "Publicar uno igual", new_account_publication_path(sample_id: @publication.id) %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 text-center">
+    <h2 class="green">
+      <%= @publication.title %>
+      <br>
+      <small>
+
+        <span class="label label-primary">
+          <%= @publication.subject %>
+        </span>
+        <span class="label label-secondary">
+          <%= @publication.subcategory.category.name %> <i class="fa fa-chevron-right"></i> <%= @publication.subcategory.name %>
+        </span>
+        <span class="label label-default">
+          <%= @publication.get_kind %>
+        </span>
+        <% if @publication.subject == Publication::INMUEBLES %>
+        <span class="label label-secondary">
+          <%= @publication.get_mode %>
+        </span>
+        <% end %>
+        <% unless @publication.city.nil? %>
+          <br>
+          <%= image_tag @publication.city.department.country.flag.url, style: "width: 30px; border-radius: 30px;" %>
+        <% end %>
+      </small>
+    </h2>
+    <hr>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <%= render "market/publications/show/images"%>
+  </div>
+  <div class="col-md-6">
+    <% if @publication.in_need == true %>
+    <h1 style="margin-top: -5px; margin-bottom: 20px;">
+      <span class="label label-secondary">
+        Se busca
+      </span>
+    </h1>
+    <% end %>
+    <% if @publication.user.is_official == true %>
+    <span class="label label-primary secondary-color-font pull-right" style="font-size: 25px;">
+      <i class="fa fa-star"></i> Tienda oficial
+    </span>
+    <% end %>
+    <% unless @publication.in_need == true %>
+    <p class="green" style="font-size: 40px;">
+      <%= number_to_currency @publication.price, precision: @publication.get_currency_precision, unit: @publication.get_currency_unit, delimiter: "." %>
+    </p>
+    <% end %>
+    <% unless @publication.city.nil? %>
+      <p>
+        <i class="fa fa-map-marker"></i>
+        Publicación ubicada en
+        <%= @publication.city.name %> - <%= @publication.city.department.name %>
+      </p>
+    <% end %>
+    <% if @publication.subject == Publication::PRODUCTOS %>
+    <% if @publication.shipping %>
+    <p>
+      <b>Envío: </b>
+    </p>
+    <p>
+      <%= @publication.get_shipping %>
+    </p>
+    <% end %>
+    <% if @publication.warranty %>
+    <p>
+      <b>Garantía: </b>
+    </p>
+    <p>
+      <%= @publication.warranty_description %>
+    </p>
+    <% end %>
+    <% end %>
+    <% if @publication.subject == Publication::VEHICULOS %>
+    <p>
+      <b>Año: </b> <%= @publication.year %>
+    </p>
+    <p>
+      <b>Marca: </b> <%= @publication.brand %>
+    </p>
+    <p>
+      <b>Kilómetros: </b> <%= number_with_delimiter(@publication.km, delimiter: ".") %>
+    </p>
+    <p>
+      <b>Modelo: </b> <%= @publication.model %> - <%= number_with_delimiter(@publication.cylinder, delimiter: ".") %> CC
+    </p>
+    <p>
+      <b>Características: </b> <%= @publication.transmission %> - <%= @publication.fuel_type %> - Color <%= @publication.color %>
+    </p>
+    <% end %>
+    <% if @publication.subject == Publication::INMUEBLES %>
+      <% if !@publication.total_mtr.nil? &&  @publication.total_mtr > 0 %>
+      <p>
+        <b>Metros terreno: </b> <%= @publication.total_mtr %>
+      </p>
+      <% end %>
+      <% unless @publication.builded_mtr.blank? %>
+      <p>
+        <b>Metros construidos: </b> <%= @publication.builded_mtr %>
+      </p>
+      <% end %>
+      <% unless @publication.estrato.blank? %>
+      <p>
+        <b>Estrato: </b> <%= @publication.estrato %>
+      </p>
+      <% end %>
+      <% unless @publication.admin_price.blank? %>
+      <p>
+        <b>Administración: </b> <%= number_to_currency @publication.admin_price,  precision: @publication.get_currency_precision, unit: @publication.get_currency_unit %>
+      </p>
+      <% end %>
+    <% end %>
+    <% if @publication.subject == Publication::ANIMALES %>
+
+      <% unless @publication.age.blank? %>
+      <p>
+        <b>Edad: </b> <%= @publication.age %>
+      </p>
+      <% end %>
+    <% end %>
+    <div>
+      <% if params[:native_app].blank? %>
+        <%= render "market/purchases/new", publication: @publication, btn: "btn-lg" %>
+        <% if user_signed_in? %>
+          <%= link_to mark_as_favorite_market_publication_path(@publication), class: "btn btn-link btn-lg", method: :post do %>
+
+            <% if @is_favorite %>
+              <i class="fa fa-heart fa-2x"></i>
+            <% else %>
+              <i class="fa fa-heart-o fa-2x"></i>
+            <% end %>
+          <% end %>
+        <% else %>
+          <button type="button" class="btn btn-link btn-lg" data-toggle="modal" data-target="#subscribe-modal">
+            <i class="fa fa-heart-o fa-2x"></i>
+          </button>
+        <% end %>
+      <% end %>
+    </div>
+    <p style="margin-top: 20px;">
+      <i class="fa fa-trophy"></i> Sumas <%= number_with_delimiter(@publication.get_points, delimiter: ".") %> PuntosAgro
+    </p>
+    <p>
+      Recibes tus puntos cuando te califiquen por la compra y califiques la venta
+    </p>
+    <div>
+      Comparte esta publicación en redes:
+      <br>
+      <%#= social_share_button_tag(@publication.title, :url => market_publication_url(@publication), :image => @publication.get_image("high"), desc: truncate(@publication.description, length: 200), via: "AgroNetoOficial") %>
+    </div>
+  </div>
+</div>
+
+<%= render "market/publications/show/seller_info" %>
+<%= render "market/publications/show/description" %>
+<%= render "market/publications/show/info_products" %>
+<%= render "market/publications/show/info_vehicles" %>
+<%= render "market/publications/show/info_services" %>
+<%= render "market/publications/show/info_animals" %>
+<%= render "market/publications/show/questions", publication: @publication %>
+
+<div class="row visible-md visible-lg" style="margin-top: 40px;">
+  <div class="col-md-8 col-md-offset-2">
+    <h2 class="green text-center">
+      Más publicaciones de vendedor
+    </h2>
+    <hr>
+  </div>
+  <div class="col-md-12">
+    <%= render "account/users/publications" %>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-md-2">
+    <%= render "account/shared/sidebar" %>
+  </div>
+  <div class="col-md-10">
+    <table class="table table-responsive" style="border: none;">
+      <% if @questions.count == 0%>
+      <%= render "layouts/no_results", namespace: "Preguntas" %>
+      <% end %>
+      <% @questions.each do |question| %>
+      <tr>
+        <!-- <td></td> -->
+        <td class="text-left" style="width: 100px;">
+          <%= image_tag question.publication.get_image("low"), style: "width: 100px;" %>
+        </td>
+        <td>
+          <%= link_to market_publication_path(question.publication) do %>
+          <h4 class="green">
+            <%= question.publication.title %>
+          </h4>
+          <% end %>
+          <p>
+            <i class="fa fa-comment"></i>
+            <%= question.question %>
+          </p>
+        </td>
+        <td class="text-right">
+          Hace <%= time_ago_in_words question.created_at %>
+          <br>
+          <% unless question.status == 1 %>
+          <br>
+          <%= render "account/questions/answer", question: question %>
+          <% else %>
+          Estado
+          <br>
+          <span class="label label-default">
+            <%= question.get_status %>
+          </span>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

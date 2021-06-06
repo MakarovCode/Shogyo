@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-md-offset-3 col-md-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">En que país te encuentras</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <%= image_tag @info.logo.url, style: "width: 100%;" %>
+          </div>
+          <% @countries.order(id: :asc).each do |country| %>
+            <%= link_to main_app.selected_country_landing_index_path(redirect_to: params[:redirect_to], country_id: country.id), method: :post do %>
+              <div class="col-xs-3 text-center" style="margin-top: 40px;">
+                <%= image_tag country.flag.square.url, alt: country.name, style: "width: 100%; border-radius: 100px;" %>
+                <br>
+                <b><%= country.name %></b>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

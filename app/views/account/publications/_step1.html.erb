@@ -1,0 +1,208 @@
+
+<%= nested_form_for [:account, @publication] do |f| %>
+<div class="row">
+  <div class="col-md-12">
+    <p class="green">
+      Tienes un producto, animal, inmueble, vehiculo o servicio para vender o ofertar, marca esta publicación como <b>Vender o Ofertar</b> y publícalo en nuestro Mercado grátis.
+    </p>
+    <p class="green">
+      ¿Necesitas algo en específico y no lo encuentras en nuestro Mercado?, marca esta publicación como una <b>Búsqueda o necesidad</b>, correremos la voz con todos nuestros usuarios y será contactado cuando alguien esté interesado.
+    </p>
+    <div class="btn-group" style="margin-bottom: 20px;">
+      <% if @in_need.nil? %>
+        <%= link_to new_or_edit_path(@publication,  1,  false,  @selected_subject,  @selected_category,  @selected_subcategory), class: "btn btn-default" do %>
+        <i class="fa fa-square-o"></i> Para vender u ofertar
+        <% end %>
+        <%= link_to new_or_edit_path(@publication,  1,  true,  @selected_subject,  @selected_category,  @selected_subcategory), class: "btn btn-default" do %>
+        <i class="fa fa-square-o"></i> Es una búsqueda o necesidad
+        <% end %>
+      <% elsif @in_need != true %>
+        <%= link_to new_or_edit_path(@publication,  1,  false,  @selected_subject,  @selected_category,  @selected_subcategory), class: "btn btn-secondary" do %>
+        <i class="fa fa-check-square"></i> Para vender u ofertar
+        <% end %>
+        <%= link_to new_or_edit_path(@publication,  1,  true,  @selected_subject,  @selected_category,  @selected_subcategory), class: "btn btn-default" do %>
+        <i class="fa fa-square-o"></i> Es una búsqueda o necesidad
+        <% end %>
+      <% else %>
+        <%= link_to new_or_edit_path(@publication,  1,  false,  @selected_subject,  @selected_category,  @selected_subcategory), class: "btn btn-default" do %>
+        <i class="fa fa-square-o"></i> Para vender u ofertar
+        <% end %>
+        <%= link_to new_or_edit_path(@publication,  1,  true,  @selected_subject,  @selected_category,  @selected_subcategory), class: "btn btn-secondary" do %>
+        <i class="fa fa-check-square"></i> Es una búsqueda o necesidad
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% unless @in_need.nil? %>
+<div class="row">
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <p class="green">
+      1. Selecciona el tipo de publicación que más corresponda
+    </p>
+    <ul class="list-group categories">
+      <% if @selected_subject == Publication::SERVICIOS %>
+        <li class="list-group-item text-center active">
+          <%= link_to new_or_edit_path(@publication,  1,  @in_need,  "Servicios") do %>
+          <h4>
+            Servicios
+          </h4>
+          <i class="fa fa-briefcase fa-3x"></i>
+          <% end %>
+        </li>
+      <% else %>
+        <li class="list-group-item text-center">
+          <%= link_to new_or_edit_path(@publication,  1,  @in_need,  "Servicios") do %>
+          <h4>
+            Servicios
+          </h4>
+          <i class="fa fa-briefcase fa-3x"></i>
+          <% end %>
+        </li>
+      <% end %>
+      <% if @selected_subject == Publication::VEHICULOS %>
+        <li class="list-group-item text-center active">
+          <%= link_to new_or_edit_path(@publication,  1,  @in_need,  "Vehiculos y Remolques") do %>
+          <h4>
+            Vehículos y Remolques
+          </h4>
+          <i class="fa fa-car fa-3x"></i>
+          <% end %>
+        </li>
+      <% else %>
+      <li class="list-group-item text-center">
+        <%= link_to new_or_edit_path(@publication,  1,  @in_need,  "Vehiculos y Remolques") do %>
+        <h4>
+          Vehículos y Remolques
+        </h4>
+        <i class="fa fa-car fa-3x"></i>
+        <% end %>
+      </li>
+      <% end %>
+      <% if @selected_subject == Publication::INMUEBLES %>
+        <li class="list-group-item text-center active">
+          <%= link_to new_or_edit_path(@publication,  1,  @in_need,  "Inmuebles y Terrenos") do %>
+          <h4>
+            Inmuebles y Terrenos
+          </h4>
+          <i class="fa fa-home fa-3x"></i>
+          <% end %>
+        </li>
+      <% else %>
+        <li class="list-group-item text-center">
+          <%= link_to new_or_edit_path(@publication,  1,  @in_need,  "Inmuebles y Terrenos") do %>
+          <h4>
+            Inmuebles y Terrenos
+          </h4>
+          <i class="fa fa-home fa-3x"></i>
+          <% end %>
+        </li>
+      <% end %>
+      <% if @selected_subject == Publication::ANIMALES %>
+        <li class="list-group-item text-center active">
+          <%= link_to new_or_edit_path(@publication,  1 ,  @in_need,  "Animales") do %>
+          <h4>
+            Animales
+          </h4>
+          <i class="fa fa-venus-mars fa-3x"></i>
+          <% end %>
+        </li>
+      <% else %>
+        <li class="list-group-item text-center">
+          <%= link_to new_or_edit_path(@publication,  1 ,  @in_need,  "Animales") do %>
+          <h4>
+            Animales
+          </h4>
+          <i class="fa fa-venus-mars fa-3x"></i>
+          <% end %>
+        </li>
+      <% end %>
+      <% if @selected_subject == Publication::PRODUCTOS %>
+        <li class="list-group-item text-center active">
+          <%= link_to new_or_edit_path(@publication,  1,  @in_need,  "Productos y Otros") do %>
+          <h4>
+            Productos y Otros
+          </h4>
+          <i class="fa fa-shopping-bag fa-3x"></i>
+          <% end %>
+        </li>
+      <% else %>
+        <li class="list-group-item text-center">
+          <%= link_to new_or_edit_path(@publication,  1,  @in_need,  "Productos y Otros") do %>
+          <h4>
+            Productos y Otros
+          </h4>
+          <i class="fa fa-shopping-bag fa-3x"></i>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <% unless @selected_subject.nil? %>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <p class="green">
+      2. Selecciona una categoría para tu publicación
+    </p>
+    <ul class="list-group categories">
+      <% @categories.each do |category| %>
+        <%= link_to new_or_edit_path(@publication, 1,  @in_need,  @selected_subject,  category.id) do %>
+          <% if category == @selected_category %>
+            <li class="list-group-item text-center active">
+              <%= category.name %>
+              <i class="fa fa-chevron-right pull-right"></i>
+            </li>
+          <% else %>
+            <li class="list-group-item text-center">
+              <%= category.name %>
+              <i class="fa fa-chevron-right pull-right"></i>
+            </li>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+  <% unless @selected_category.nil? %>
+    <div class="col-md-3 col-sm-4 col-xs-6">
+      <p class="green">
+        3. Selecciona una sub categoría para tu publicación
+      </p>
+      <ul class="list-group categories">
+        <% @subcategories.each do |subcategory| %>
+          <%= link_to new_or_edit_path(@publication, 1,  @in_need,  @selected_subject,  @selected_category.id,  subcategory.id) do %>
+            <% if subcategory == @selected_subcategory %>
+              <li class="list-group-item text-center active">
+                <%= subcategory.name %>
+                <i class="fa fa-chevron-right pull-right"></i>
+              </li>
+            <% else %>
+              <li class="list-group-item text-center">
+                <%= subcategory.name %>
+                <i class="fa fa-chevron-right pull-right"></i>
+              </li>
+            <% end %>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <% unless @selected_subcategory.nil? %>
+    <%= f.hidden_field :subcategory_id, value: @selected_subcategory.id %>
+    <%= f.hidden_field :subject, value: @selected_subject %>
+    <%= f.hidden_field :in_need, value: @in_need %>
+    <%= hidden_field_tag :step, "", value: 1%>
+    <div class="col-md-3 col-sm-4 col-xs-6">
+      <ul class="list-group categories" style="margin-top: 60px;">
+        <li class="list-group-item text-center">
+          <i class="fa fa-check-circle fa-5x green"></i>
+          <h4>Listo</h4>
+          <button type="submit" class="btn btn-primary">
+            Continuar
+          </button>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+</div>
+<% end %>
+<% end %>

@@ -1,0 +1,229 @@
+(function () {
+
+	var module = angular.module("feed-module", ['ngSanitize']);
+
+	module.controller('FeedController', ['$http', '$scope', '$rootScope', function ($http, $scope, $rootScope) {
+		var self = this;
+		this.feeds =[];
+		this.is_native = false;
+		this.scope = null;
+		$rootScope.scope = null;
+		this.page = 1;
+		this.last_page = 0;
+		this.lastScrollTop = 0;
+		this.search_term = null;
+		this.margin = "-30";
+
+		this.categories = [];
+
+		this.init = function (is_native, scope) {
+			// this.user_uuid = uuid;
+			// this.user_token = token;
+			this.scope = scope;
+			$rootScope.scope = scope;
+			this.is_native = is_native;
+
+			if (is_native != "true"){
+				this.margin = "-30;"
+			}
+
+			this.GetFeed();
+			this.CheckScrollEnd();
+
+			this.WebCallbacks();
+		}
+
+		this.WebCallbacks = function(){
+			$("#main-buttons-list").css("width", $(window).width());
+		}
+
+		this.getDocHeight = function() {
+			var D = document;
+			return Math.max(
+				D.body.scrollHeight, D.documentElement.scrollHeight,
+				D.body.offsetHeight, D.documentElement.offsetHeight,
+				D.body.clientHeight, D.documentElement.clientHeight
+			);
+		}
+
+		this.CheckScrollEnd = function(){
+			$(window).scroll(function() {
+				var st = $(this).scrollTop();
+				if (st > self.lastScrollTop){
+					// downscroll code
+					if($(window).scrollTop() + $(window).height() > self.getDocHeight()-50) {
+						$scope.$apply(function(){
+							self.GetFeed();
+						});
+					}
+				} else {
+					// upscroll code
+				}
+				self.lastScrollTop = st;
+			});
+		}
+
+		$rootScope.GetFeed = function(scope, term){
+			self.page = 1;
+			self.last_page = 0;
+			self.scope = scope;
+			$rootScope.scope = scope;
+			self.search_term = term;
+			self.GetFeed();
+		}
+
+		this.GetFeed = function(){
+			if (this.last_page >= this.page){
+				return;
+			}
+			var params = {
+				page: this.page,
+				per: 25,
+				scope: this.scope,
+				search_term: this.search_term
+			};
+
+			this.last_page = this.page;
+
+			$("#http-loader").show();
+			$http.get("/api/blog/v1/feed.json", {params: params}).then(
+				function(res, status){
+					if (self.page == 1){
+						self.feeds = res.data;
+					}
+					else{
+						self.feeds = self.feeds.concat(res.data);
+					}
+					self.page ++;
+					$("#http-loader").hide();
+				},
+				function(res, status){
+					self.last_page --;
+					$("#http-loader").hide();
+				}
+			);
+		}
+
+		this.GetImageUrl = function(feed){
+			if (feed.type == "Ad"){
+				return feed.ad.image;
+			}
+			else if (feed.type == "Post"){
+				return feed.post.image;
+			}
+			else if (feed.type == "ConsultQuestion"){
+				return feed.question.image;
+			}
+			else {
+				return feed.publication.image;
+			}
+		}
+
+		this.GetTitle = function(feed){
+			if (feed.type == "Ad"){
+				return "";
+			}
+			else if (feed.type == "Post"){
+				return feed.post.title;
+			}
+			else if (feed.type == "ConsultQuestion"){
+				return "";
+			}
+			else {
+				return feed.publication.title;
+			}
+		}
+
+		this.GetDescription = function(feed){
+			if (feed.type == "Ad"){
+				return "";
+			}
+			else if (feed.type == "Post"){
+				return feed.post.abstract;
+			}
+			else if (feed.type == "ConsultQuestion"){
+				return feed.question.message;
+			}
+			else {
+				return feed.publication.description;
+			}
+		}
+
+		this.GetDate = function(feed){
+			if (feed.type == "Ad"){
+				return "";
+			}
+			else if (feed.type == "Post"){
+				return feed.post.date;
+			}
+			else if (feed.type == "ConsultQuestion"){
+				return feed.question.date;
+			}
+			else {
+				return feed.publication.date;
+			}
+		}
+
+		this.GetUser = function(feed){
+			if (feed.type == "Ad"){
+				return {};
+			}
+			else if (feed.type == "Post"){
+				return {};
+			}
+			else if (feed.type == "ConsultQuestion"){
+				return feed.question.user;
+			}
+			else {
+				return feed.publication.user;
+			}
+		}
+
+		this.GetVisitsCount = function(feed){
+			if (feed.type == "Ad"){
+				return 0;
+			}
+			else if (feed.type == "Post"){
+				return feed.post.views_count;
+			}
+			else if (feed.type == "ConsultQuestion"){
+				return feed.question.visits_count;
+			}
+			else {
+				return feed.publication.visits_count;
+			}
+		}
+
+		this.GoTo = function(feed){
+			if (this.is_native == 'true'){
+				if (feed.type == "Ad"){
+					alert(feed.type+"|"+feed.ad.link);
+				}
+				else if (feed.type == "Post"){
+					alert(feed.type+"|"+feed.post.id);
+				}
+				else if (feed.type == "ConsultQuestion"){
+					alert(feed.type+"|"+feed.question.id);
+				}
+				else {
+					alert(feed.type+"|"+feed.publication.id+"|"+feed.publication.slug+"|"+feed.publication.user_id);
+				}
+			}
+			else{
+				if (feed.type == "Ad"){
+					window.location.href = feed.ad.link;
+				}
+				else if (feed.type == "Post"){
+					window.location.href = "/blog/posts/"+feed.post.slug;
+				}
+				else if (feed.type == "ConsultQuestion"){
+					window.location.href = "/consults/questions/"+feed.question.id;
+				}
+				else {
+					window.location.href = "/market/publications/"+feed.publication.slug;
+				}
+			}
+		}
+
+	}]);
+})();

@@ -1,0 +1,19 @@
+<div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#register" aria-controls="register" role="tab" data-toggle="tab"><h3>Subscríbete</h3></a></li>
+    <li role="presentation"><a href="#login" aria-controls="login" role="tab" data-toggle="tab"><h3>Iniciar sesión</h3></a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="register">
+      <%= render "devise/registrations/form", resource: User.new, resource_name: "user", controller_name: "registrations", no_error: true %>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="login">
+      <%= render "devise/sessions/form", resource: User.new, resource_name: "user", controller_name: "sessions", no_error: true %>
+    </div>
+  </div>
+
+</div>

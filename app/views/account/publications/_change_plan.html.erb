@@ -1,0 +1,61 @@
+<!-- Button trigger modal -->
+<% if publication.plan_id == 2 %>
+<button type="button" class="btn btn-primary" disabled>
+  Plan <%= publication.plan.name %>
+</button>
+<% else %>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#change-plan-<%= publication.id %>">
+  Aumentar exposición
+</button>
+<% end %>
+
+<!-- Modal -->
+<div class="modal fade" id="change-plan-<%= publication.id %>" tabindex="-1" role="dialog" aria-labelledby="change-plan-<%= publication.id %>Label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content text-left">
+      <%= nested_form_for [:account, publication], url: {action: "change_plan", id: publication.id}, html: {method: :post} do |f| %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="change-plan-<%= publication.id %>Label">Aumentar exposición</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p class="green" style="font-weight: bold; font-size: 22px;">
+              Publicación: <%= publication.title %>
+            </p>
+            <hr>
+          </div>
+          <% Plan.where("priority > ?", publication.plan.priority).order(priority: :asc).each_with_index do |plan, i| %>
+          <div class="col-md-6">
+            <p class="green">
+              ¡Vende más rápido!
+            </p>
+            <div class="input-group-radio">
+              <%= radio_button :plan_id, "", plan.id, :checked => i == 0 ? true : false %>
+              <%= label :plan_id, "Plan Oro", value: plan.id  %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <p class="green">
+              El plan <%= plan.name %> te ofrece:
+            </p>
+            <%= raw plan.description %>
+          </div>
+          <div class="col-md-12 text-center">
+            <hr>
+            <p class="green" style="font-weight: bold; font-size: 22px;">
+              Por: <%= plan.points %> PuntosAgro
+            </p>
+          </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Confirmar</button>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

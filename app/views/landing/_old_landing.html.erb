@@ -1,0 +1,28 @@
+<% if @empty == true %>
+<div class="alert alert-info">
+  No se encontraron resultados.
+  <%= link_to landing_index_path, class: "btn btn-default" do %>
+  <i class="fa fa-refresh"></i>
+  Recargar...
+  <% end %>
+</div>
+<% else %>
+<div class="grid2 blog-masonry">
+  <div class="grid-sizer2"></div>
+  <% user_id = 48 unless @all_users.find_by_id(48).nil? %>
+  <% user_id = @all_users.first.id if @all_users.find_by_id(48).nil? %>
+  <%= render "ads/04" %>
+  <%# @all_publications.where(user_id: user_id).order("RANDOM()").limit(6).each do |publication| %>
+    <%#= render "landing/publication_item", publication: publication %>
+  <%# end %>
+  <% (0..49).each do |j| %>
+    <% if j < @publications.count %>
+      <%= render "landing/publication_item", publication: @publications[j] %>
+    <% end %>
+    <% if j < @users.count %>
+      <%= render "landing/user_item", user: @users[j] %>
+    <% end %>
+  <% end %>
+</div>
+<% end %>
+<%= paginate @users %>

@@ -1,0 +1,42 @@
+<!-- WIZARD -->
+<div class="wizard-wrapper">
+  <div class="wizard">
+    <div class="steps-container clearfix">
+      <ul class="steps">
+        <li class="<%= @step == 1 ? 'active' : '' %>">
+          <% if @step > 1 %>
+            <%= link_to "Elige qué quieres publicar", edit_account_publication_path(@publication, step: 1, subject: @publication.subject, category_id: @publication.subcategory.category.id, subcategory_id: @publication.subcategory.id) %>
+          <% else %>
+            Elige qué quieres publicar
+          <% end %>
+          <span class="chevron"></span>
+        </li>
+        <li class="<%= @step == 2 ? 'active' : '' %>">
+          <% if @step > 2 %>
+            <%= link_to "Describe tu publicación", edit_account_publication_path(@publication, step: 2) %>
+          <% else %>
+            Describe tu publicación
+          <% end %>
+          <span class="chevron"></span>
+        </li>
+        <li class="<%= @step == 3 ? 'active' : '' %>">
+          <% if @step > 3 %>
+            <%= link_to "Ingresa precio y cantidad", edit_account_publication_path(@publication, step: 3) %>
+          <% else %>
+            Ingresa precio y cantidad
+          <% end %>
+          <span class="chevron"></span>
+        </li>
+        <li class="<%= @step == 4 ? 'active' : '' %>">
+          Confirma tu publicación
+        </li>
+      </ul>
+    </div>
+    <div class="step-content">
+      <div class="step-pane active">
+        <%= render "account/publications/step#{@step}" %>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END WIZARD -->

@@ -1,0 +1,2 @@
+class TermsVersion < ApplicationRecord
+end

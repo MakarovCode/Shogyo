@@ -1,0 +1,40 @@
+<% if !params[:search_term].nil? && params[:search_term] != "" %>
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm">
+      <%= render "market/publications/index/sidebar" %>
+    </div>
+    <div class="col-md-9" style="border-left: 1px solid #f2f2f2;">
+      <div class="grid2 blog-masonry">
+        <div class="grid-sizer2"></div>
+
+        <% if @publications.count == 0%>
+        <%= render "layouts/no_results", namespace: "Publicaciones" %>
+        <% end %>
+        <% if params[:view] == "list" %>
+          <% @publications.each do |publication| %>
+            <%= render "market/publications/index/list_item", publication: publication %>
+          <% end %>
+        <% else %>
+          <div class="row">
+            <% @publications.each do |publication| %>
+              <%= render "market/publications/index/grid_item", publication: publication %>
+            <% end %>
+          </div>
+        <% end %>
+
+      </div>
+      <%= paginate @publications %>
+    </div>
+  </div>
+  <%= render "market/publications/index/filters_modal" %>
+<% else %>
+  <% if session[:native_app].nil? %>
+    <%= render "market/publications/index/no_search" %>
+  <% else %>
+  <%= render "market/publications/index/search" %>
+  <% end %>
+<% end %>
+
+
+
+<%#= render "layouts/section_in_construction", message: "Muy pronto tendremos un Mercado dedicado a los productos y servicios del Agro", content: "Si deseas recibir información acerca de nosotros y nuestras actualizaciones te invitamos a registrate, sin costo, prometemos solo contactarte cuando sea algo importante."%>

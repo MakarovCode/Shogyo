@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-md-2">
+    <%= render "account/shared/sidebar" %>
+  </div>
+  <div class="col-md-10">
+    <table class="table table-responsive" style="border: none;">
+      <% if @feedbacks.count == 0%>
+      <%= render "layouts/no_results", namespace: "Denuncias" %>
+      <% end %>
+      <% @feedbacks.each do |feedback| %>
+      <tr>
+        <!-- <td></td> -->
+        <td class="text-left" style="width: 100px;">
+          <%= image_tag feedback.publication.get_image("low"), style: "width: 100px;" %>
+        </td>
+        <td>
+          <%= link_to market_publication_path(feedback.publication) do %>
+          <h4 class="green">
+            <%= feedback.publication.title %>
+          </h4>
+          <% end %>
+          <p>
+            <% unless feedback.resolution.nil? %>
+              <%= feedback.resolution %>
+            <% else %>
+              Te daremos respuesta pronto...
+            <% end %>
+          </p>
+        </td>
+        <td class="text-right">
+          <%= time_ago_in_words feedback.created_at %>
+          <br>
+          Estado
+          <br>
+          <span class="label label-default">
+            <%= feedback.get_status %>
+          </span>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<% if params[:page] == 1 || params[:page].nil? %>
+<% @last_publications.first(2).each do |publication| %>
+<div class="row">
+  <div class="col-xs-2">
+    <h3 class="green">
+      <%= publication.subcategory.name %>, <%= publication.subcategory.category.name %>
+    </h3>
+  </div>
+  <div class="col-xs-10" style="border-left: 1px solid #f2f2f2;">
+    <p style="margin-left: 50px;">
+      <span class="green">
+        <i class="fa fa-bookmark"></i>
+      </span>
+      <span>
+        Los destacados en <b class="green"><%= publication.subcategory.name %></b>
+      </span>
+    </p>
+    <%= render "market/publications/index/carusel_line", size: "col-md-3 col-sm-4 col-xs-6", publications: publication.subcategory.publications.actives.order(visits_count: :desc).uniq{|t| !t.id }, id: publication.id %>
+  </div>
+  <div class="col-md-12">
+    <hr>
+  </div>
+</div>
+<% end %>
+<% if @last_publications.count >= 4 %>
+<div class="row">
+  <div class="col-xs-2">
+    <h3 class="green">
+      <i class="fa fa-clock-o"></i>
+      Tu historial
+    </h3>
+  </div>
+  <div class="col-xs-10" style="border-left: 1px solid #f2f2f2;">
+    <%= render "market/publications/index/carusel_line", size: "col-md-3 col-sm-4 col-xs-6", publications: @last_publications.last(28), id: "history" %>
+  </div>
+  <div class="col-md-12">
+    <hr>
+  </div>
+</div>
+<% end %>
+<div class="row">
+  <div class="col-xs-2">
+    <h3 class="green">
+      <i class="fa fa-star-o"></i>
+      Destacados
+    </h3>
+  </div>
+  <div class="col-xs-10" style="border-left: 1px solid #f2f2f2;">
+    <%= render "market/publications/index/carusel_line", size: "col-md-3 col-sm-4 col-xs-6", publications: @features, id: "features" %>
+  </div>
+  <div class="col-md-12">
+    <hr>
+  </div>
+</div>
+<% end %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= render "market/publications/index/search" %>
+  </div>
+  <div class="col-md-12">
+    <div class="grid2 blog-masonry">
+      <div class="grid-sizer2"></div>
+
+      <% @new_publications.each do |publication| %>
+        <%= render "market/publications/index/grid_item", publication: publication %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <%= paginate @new_publications %>
+  </div>
+</div>

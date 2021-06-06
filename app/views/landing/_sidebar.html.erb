@@ -1,0 +1,87 @@
+<div class="sidebar visible-lg visible-md">
+  <div class="widget visible-md visible-lg">
+    <%= render "ads/02"%>
+  </div>
+  <!-- widget -->
+  <div class="widget">
+    <h1 class="text-center label label-primary" style="font-size: 20px;">
+      <%= number_with_delimiter (@all_publications.all.sum(:visits_count) + @all_posts.sum(:views_count)), delimiter: "." %>
+      Visitas
+    </h1>
+  </div>
+  <div class="widget">
+    <h1 class="text-center label label-secondary" style="font-size: 20px;">
+      <%= number_with_delimiter @all_publications.count + @all_posts.count, delimiter: "." %>
+      Publicaciones
+    </h1>
+  </div>
+  <div class="widget">
+    <h1 class="text-center label label-primary" style="font-size: 20px;">
+      <%= number_with_delimiter @all_users.count, delimiter: "." %>
+      Usuarios
+    </h1>
+  </div>
+  <div class="widget">
+    <%= render "landing/faces", users: User.profile_complete.order(created_at: :desc).first(8)  %>
+  </div>
+</div>
+<div class="widget visible-lg visible-md">
+  <h4 class="widget-title">Últimas noticias</h4>
+  <% @posts.order(date: :desc).offset(2).first(5).each do |post| %>
+  <%= link_to blog_post_path post do %>
+  <div class="media">
+    <div class="media-left">
+        <%= image_tag post.image.low.url, class: "media-object", style: "width: 64px;" %>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">
+        <%= post.title%>
+      </h4>
+      <p class="text-right">
+        <%= post.date.strftime("%d de %b, %Y")%>
+      </p>
+    </div>
+  </div>
+  <% end %>
+  <hr>
+  <% end %>
+  <%= link_to "Ver más...", blog_posts_path, class: "btn btn-link"%>
+</div>
+<div class="widget visible-md visible-lg">
+  <%= render "ads/03"%>
+</div>
+<!-- <div class="widget">
+  <div class="post-entry-card">
+    <%= image_tag "market.png", class: "img-responsive" %>
+    <div class="post-info">
+      <h4 class="post-excerpt text-center">
+        Conoce El Mercado dedicado a los productos del Agro.
+      </h4>
+      <%= render "layouts/searchbar", classs: "" %>
+    </div>
+  </div>
+</div> -->
+<!-- <div class="widget">
+  <div class="post-entry-card">
+    <%= image_tag "news.png", class: "img-responsive" %>
+    <div class="post-info">
+      <h4 class="post-excerpt text-center">
+        Informate con las últimas noticias en el mundo del Agro.
+      </h4>
+      <%= link_to "Noticias", blog_posts_path, class: "btn btn-secondary btn-block btn-lg"%>
+    </div>
+  </div>
+</div> -->
+<!-- <div class="widget">
+  <div class="post-entry-card" data-toggle="modal" data-target="#subscribe-modal">
+    <%= image_tag "forum.png", class: "img-responsive" %>
+    <div class="post-info">
+      <h4 class="post-excerpt text-center">
+        Conoce nuestra sección de AgroConsultas, has preguntas y recibe respuestas realcionadas con el Agro.
+      </h4>
+      <%= link_to "AgroConsultas", "/consults/questions?scope=hot", class: "btn btn-secondary btn-block btn-lg"%>
+    </div>
+  </div>
+</div> -->
+<!-- <div class="twitter" id="twitter-timeline-container" style="max-height: 600px; overflow-y: auto;">
+</div> -->

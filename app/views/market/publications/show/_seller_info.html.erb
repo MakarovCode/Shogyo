@@ -1,0 +1,65 @@
+<% #if @publication.subject == Publication::PRODUCTOS %>
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-8 col-md-offset-2 text-center">
+    <h2 class="green">
+      Información sobre el vendedor
+    </h2>
+    <p>
+      <i class="fa fa-map-marker"></i>
+      <%= @publication.user.city.name %> - <%= @publication.user.city.department.name %>
+    </p>
+    <% if params[:native_app].blank? %>
+      <%= link_to "Ver Perfil", account_user_path(@publication.user), class: "btn btn-secondary btn-lg" %>
+    <% end %>
+    <hr>
+  </div>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-xs-12 col-md-2 text-right">
+        <h4 class="green">
+          Reputación cómo vendedor
+        </h4>
+      </div>
+      <div class="col-md-8 col-xs-12" style="border-left: 1px solid #f2f2f2">
+        <% if @reputation[:sells_count] >= 8 %>
+        <table>
+          <tr>
+            <td style="font-size: 25px; padding: 10px;">
+              <%= @reputation[:percent] %>%
+            </td>
+            <td style="border-right: 1px solid #f2f2f2; padding: 10px;">
+              De sus compradores lo recomiendan
+            </td>
+            <td style="font-size: 25px; padding: 10px;">
+              <%= @reputation[:sells_count] %>
+            </td>
+            <td style="border-right: 1px solid #f2f2f2; padding: 10px;">
+              Ventas concretadas
+            </td>
+            <td style="padding: 10px;">
+              <b>
+                <%= time_ago_in_words @user.created_at %>
+              </b><br>
+              Vendiendo en AgroNeto
+            </td>
+          </tr>
+        </table>
+        <% else %>
+        <div class="alert alert-warning">
+          <div class="row">
+            <div class="col-md-2">
+              <i class="fa fa-thumbs-up fa-4x"></i>
+            </div>
+            <div class="col-md-10">
+              Compra a este nuevo vendedor y recibe el doble de PuntosAgro.
+              <br>
+              <b>AgroNeto</b> apoya a los nuevos vendedores.
+            </div>
+          </div>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<%# end %>

@@ -1,0 +1,197 @@
+<div class="row">
+  <div class="col-md-2">
+    <%= render "account/shared/sidebar" %>
+  </div>
+  <div class="col-md-10">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Detalle de venta #<%= @purchase.id%> <%= @purchase.created_at.strftime("%Y-%m-%d")%></h3>
+      </div>
+      <div class="panel-body">
+        <h4 class="green">
+          Producto
+        </h4>
+        <div class="row">
+          <div class="col-md-2">
+            <%= image_tag @purchase.publication.get_image("low"), style: "width: 100%;" %>
+          </div>
+          <div class="col-md-10">
+            <%= link_to market_publication_path(@purchase.publication) do %>
+            <h4 class="green">
+              <%= @purchase.publication.title %>
+            </h4>
+            <p>
+              <%= number_to_currency @purchase.price, precision: @purchase.publication.get_currency_precision, unit: @purchase.publication.get_currency_unit, delimiter: "." %>
+              <% if @purchase.publication.subject == Publication::PRODUCTOS %>
+              x
+              <%= @purchase.units %> unidad(es)
+              <% end %>
+            </p>
+          </div>
+          <% end %>
+        </div>
+        <% if @agent == "buyer" %>
+        <h4 class="green" style="margin-top: 20px;">
+          Ofertante
+        </h4>
+        <div class="row">
+          <div class="col-md-12">
+            <b>
+              <%= link_to account_user_path(@purchase.publication.user) do %>
+              <%= @purchase.publication.user.name %>
+              <% end %>
+            </b>
+            <br>
+            <small>
+              <%= @purchase.publication.user.email %>
+            </small>
+            <br>
+            <%= @purchase.publication.user.phone %>
+          </div>
+        </div>
+        <% else %>
+        <h4 class="green" style="margin-top: 20px;">
+          Interesado
+        </h4>
+        <div class="row">
+          <div class="col-md-12">
+            <b>
+              <%= link_to account_user_path(@purchase.user) do %>
+              <%= @purchase.user.name %>
+              <% end %>
+            </b>
+            <br>
+            <small>
+              <%= @purchase.user.email %>
+            </small>
+            <br>
+            <%= @purchase.user.phone %>
+          </div>
+        </div>
+        <% end %>
+        <h4 class="green" style="margin-top: 20px;">
+          Preguntas y respuestas
+        </h4>
+        <div class="row">
+          <% if @purchase.publication.publication_questions.count == 0 %>
+          <div class="col-md-12">
+            <div class="alert alert-info">
+              <% if @agent == "buyer" %>
+                No hiciste preguntas al vendedor
+              <% else %>
+                No te hizo preguntas el comprador
+              <% end %>
+            </div>
+          </div>
+          <% end %>
+          <% @purchase.publication.publication_questions.order(created_at: :desc).each do |question| %>
+          <div class="col-md-12">
+            <i class="fa fa-comment"></i> <%= question.question %>
+            <% unless question.answer.nil? %>
+            <br>
+            <i class="fa fa-comments" style="margin-left: 40px;"></i> <%= question.answer %>
+            <hr>
+            <% end %>
+          </div>
+          <% end %>
+
+        </div>
+        <% #unless @purchase.publication.in_need == true %>
+        <% if 5 == 6 %>
+        <h4 class="green" style="margin-top: 20px;">
+          Cobro
+        </h4>
+        <div class="row">
+          <div class="col-md-12">
+            <% if @agent == "buyer" %>
+              <% if @purchase.pay_status == true %>
+                <i class="fa fa-check-circle green"></i> Pagado
+              <% else %>
+                <i class="fa fa-check-circle"></i> Pendiente de pago
+              <% end %>
+            <% else %>
+            <% if @purchase.charge_status == true %>
+              <i class="fa fa-check-circle green"></i> Cobrado
+            <% else %>
+              <i class="fa fa-check-circle"></i> Pendiente de pago
+            <% end %>
+            <% end %>
+          </div>
+          <div class="col-md-12">
+            <% if @agent == "buyer" %>
+              <%= link_to @purchase.pay_status == true ? "Marcar como no pagado" : "Marcar como pagado", mark_as_payed_account_purchase_path(@purchase), method: :post, class: "btn btn-primary"%>
+            <% else %>
+              <%= link_to @purchase.charge_status == true ? "Marcar como no cobrado" : "Marcar como cobrado", mark_as_charged_account_purchase_path(@purchase), method: :post, class: "btn btn-primary"%>
+            <% end %>
+          </div>
+        </div>
+        <h4 class="green" style="margin-top: 20px;">
+          Entrega
+        </h4>
+        <div class="row">
+          <div class="col-md-12">
+            <% if @purchase.send_status == true %>
+              <i class="fa fa-truck green"></i> Despachado
+            <% else %>
+              <i class="fa fa-truck"></i> Pendiente por despachar
+            <% end %>
+          </div>
+          <div class="col-md-12">
+            <%= link_to @purchase.send_status == true ? "Marcar como no enviado" : "Marcar como enviado", mark_as_sent_account_purchase_path(@purchase), method: :post, class: "btn btn-primary"%>
+          </div>
+        </div>
+        <% end %>
+        <h4 class="green" style="margin-top: 20px;">
+          Calificación
+        </h4>
+        <div class="row">
+          <div class="col-md-12">
+            <h5 class="green">Interesado</h5>
+            <% if @purchase.buyer_reviewed == true %>
+              <% if @purchase.buyer_recommended == 1 %>
+                <i class="fa fa-thumbs-o-up green"></i> Calificación positiva
+              <% elsif @purchase.buyer_recommended == -1 %>
+                <i class="fa fa-thumbs-o-down error"></i> Calificación negativa
+              <% else %>
+                <i class="fa fa-minus-circle"></i> Calificación neutro
+              <% end %>
+            <% else %>
+              <% if @agent == "buyer" %>
+                Aún no te han calificado
+              <% else %>
+                Aún no has calificado
+              <% end %>
+            <% end %>
+          </div>
+          <div class="col-md-12">
+            <h5 class="green">Ofertante</h5>
+            <% if @purchase.reviewed == true %>
+              <% if @purchase.recommended == 1 %>
+                <i class="fa fa-thumbs-o-up green"></i> Calificación positiva
+              <% elsif @purchase.recommended == -1 %>
+                <i class="fa fa-thumbs-o-down error"></i> Calificación negativa
+              <% else %>
+                <i class="fa fa-minus-circle"></i> Calificación neutra
+              <% end %>
+            <% else %>
+              <% if @agent == "buyer" %>
+                Aún no has calificado
+              <% else %>
+                Aún no te han calificado
+              <% end %>
+            <% end %>
+          </div>
+          <div class="col-md-12">
+            <% if @agent == "buyer" && @purchase.reviewed != true %>
+              <%= link_to "Calificar", new_account_reputation_path(id: @purchase.id, as: "buyer"), class: "btn btn-primary"%>
+            <% elsif @purchase.buyer_reviewed != true %>
+              <%= link_to "Calificar", new_account_reputation_path(id: @purchase.id, as: "seller"), class: "btn btn-primary"%>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
