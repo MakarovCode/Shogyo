@@ -170,8 +170,8 @@ require 'faker'
   name = Faker::JapaneseMedia::OnePiece.character
   birthdate = Faker::Date.between(from:50.years.ago, to: 15.years.ago)
 
-  offset = rand(cities.count)
-  city_id = cities.offset(offset).first.id
+  offset = rand(City.count)
+  city_id = City.offset(offset).first.id
 
   profession = Faker::Job.title
   phone = Faker::PhoneNumber.cell_phone
