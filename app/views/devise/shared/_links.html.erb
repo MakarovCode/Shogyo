@@ -11,7 +11,7 @@
 <% end -%>
 
 <%- if controller_name != 'confirmations' %>
-  <%= link_to "No recibiste instrucciones de confirmación?", new_confirmation_path(resource_name) %><br />
+  <%#= link_to "No recibiste instrucciones de confirmación?", new_confirmation_path(resource_name) %><br />
 <% end -%>
 
 <%- if resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
