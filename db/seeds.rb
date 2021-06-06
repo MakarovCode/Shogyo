@@ -186,7 +186,7 @@ Plan.create name: "Pro", price: 20000, visibility_level: 2, unlimited_time: true
 
   user.remote_image_url = Faker::Avatar.image
 
-  user.skip_confirmation!
+  # user.skip_confirmation!
   user.save validate: false
   user.remote_image_url = Faker::Avatar.image
   subcategories = Subcategory.includes(:category).where({categories: {for_news: [nil, false]}}).references(:category)
