@@ -1,4 +1,4 @@
-# Hanbai
+# Shogyo
 Multi-Sided Platform for sellers and buyers with Gamification Levels and Achivements, includes a Blog, Consults like forum, and it's own simple Ads system.
 
 # DEMO
@@ -15,35 +15,35 @@ Multi-Sided Platform for sellers and buyers with Gamification Levels and Achivem
     * This app has a Trello like interface for dealing with the Funnels and Sales
 * PostgreSQL;
     * 13;
+* Elasticsearch;
+    * 7
 
 # MODULES & FUNCTIONALITIES
-* Manage companies records;
-* Manage clients records;
-* Funnel Trello like interface for creating and managing fully customized funnels;
-    * Create and customize
-        * Teams and permissions
-        * Funnel Stages or States
-        * Customized fields for deals
-        * Activities for each deal
-        * Background colors
-        * Drag n Drop and more
-* Calendar View
-* Metrics Dashboard
-* Settings
+* Feed of products, consults and more;
+* Market and search functionalities with Elasticsearch;
+* Question between seller and buyer;
+* Ratings for both seller and buyer;
+* Gamification with Points, Levels and Achivements.
+* Blog
+* Consults or Forum
+* Email and Push notifications
+* Favorites
+* Dashboard, Account and Profile
 * RestAPI
+* Test data seed with Faker.
 
 
 # SOME SCREENSHOTS
-![screen1](https://hanbai.geekoi.com/hanbai1.png)
-![screen2](https://hanbai.geekoi.com/hanbai2.png)
-![screen3](https://hanbai.geekoi.com/hanbai3.png)
-![screen4](https://hanbai.geekoi.com/hanbai4.png)
-![screen5](https://hanbai.geekoi.com/hanbai5.png)
+![screen1](https://shogyo.geekoi.com/shogyo1.png)
+![screen2](https://shogyo.geekoi.com/shogyo2.png)
+![screen3](https://shogyo.geekoi.com/shogyo3.png)
+![screen4](https://shogyo.geekoi.com/shogyo4.png)
+![screen5](https://shogyo.geekoi.com/shogyo5.png)
 
 # HOW TO INSTALL
 
 ```ruby
-# 1. Clone the repo
+# 1. Clone the repo and install Elasticsearch if not already installed
 
 git clone https://github.com/MakarovCode/Shogyo.git
 
@@ -64,7 +64,6 @@ CREATE EXTENSION unaccent;
 
 # Type localhost:3000
 
-# DO NOT FORGET TO install node in order to test real time functionalities
 ```
 
 # DISCLAIMER
