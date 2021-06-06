@@ -33,6 +33,7 @@ Multi-Sided Platform for sellers and buyers with Gamification Levels and Achivem
 * Dashboard, Account and Profile
 * RestAPI
 * Test data seed with Faker.
+* Customizable: Most logos, images and text are highly customizabled!
 
 
 # SOME SCREENSHOTS
