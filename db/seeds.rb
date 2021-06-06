@@ -66,104 +66,104 @@ require 'faker'
 # )
 # puts "Terminado Departamentos"
 
-if City.all.count < 9
-  puts "Iniciando Ciudades..."
-  require 'csv'
-  #csv_text = File.read('/Users/jacksonflorez/Desktop/Jack Air/proyectos/rubi/db/DIVIPOLA_Codigos_municipios.csv')
-  csv_text = File.read("#{Rails.root}/db/DIVIPOLA_Codigos_municipios.csv")
-
-  csv = CSV.parse(csv_text, headers: true)
-  csv.each do |raw_row|
-    row = raw_row.to_hash
-    departamento = Department.find_by_name(row["Nombre Departamento"])
-    unless departamento.nil?
-      departamento.cities.create(name: row["Nombre Municipio"], department_id: departamento.id)
-    end
-  end
-  puts "Terminado Ciudades"
-end
-
-
-codes_no_created = []
-
-puts "Loading CATEGORIES from CSV..."
-
-csv_text = File.read(Rails.root.to_s+'/db/categories.csv')
-csv = CSV.parse(csv_text, :headers => true)
-
-puts "Saving CATEGORIES Data..."
-csv.each do |raw_row|
-  row = raw_row.to_hash
-  puts "===>#{row}"
-  begin
-    puts "SAVING CATEGORY: #{row}"
-
-    category = Category.new id: row["id"].to_i + 14, name: row["name"], subject: Publication.getSubjectFromInt(row["subject"].to_s)
-    category.for_news = false
-    category.save
-
-  rescue => error
-    puts "ERROR Creating row #{row["id"]}..."
-    #codes_no_created.push row.to_hash
-  end
-end
-
-puts "Loading SUBCATEGORIES from CSV..."
-
-csv_text = File.read(Rails.root.to_s+'/db/subcategories.csv')
-csv = CSV.parse(csv_text, :headers => true)
-
-puts "Saving SUBCATEGORIES Data..."
-csv.each do |raw_row|
-  row = raw_row.to_hash
-  puts "===>#{row}"
-  begin
-    puts "SAVING SUBCATEGORY: #{row}"
-
-    Subcategory.create name: row["name"], category_id: row["category_id"].to_i + 14
-
-  rescue => error
-    puts "ERROR Creating row #{row["id"]}..."
-    # puts "ERROR #{error.backtrace}..."
-    #codes_no_created.push row.to_hash
-  end
-end
-
-# CSV.open("/home/rails/rails_project/db/codes_no_created.csv", "wb") do |csv|
-#     csv << ["code_segment", "name_segment", "code_family", "name_family", "code_class", "name_class", "code_product", "name_product"]
-#     codes_no_created.each do |hash|
-#         csv << [hash["code_segment"], hash["name_segment"], hash["code_family"], hash["name_family"], hash["code_class"], hash["name_class"], hash["code_product"], hash["name_product"]]
+# if City.all.count < 9
+#   puts "Iniciando Ciudades..."
+#   require 'csv'
+#   #csv_text = File.read('/Users/jacksonflorez/Desktop/Jack Air/proyectos/rubi/db/DIVIPOLA_Codigos_municipios.csv')
+#   csv_text = File.read("#{Rails.root}/db/DIVIPOLA_Codigos_municipios.csv")
+#
+#   csv = CSV.parse(csv_text, headers: true)
+#   csv.each do |raw_row|
+#     row = raw_row.to_hash
+#     departamento = Department.find_by_name(row["Nombre Departamento"])
+#     unless departamento.nil?
+#       departamento.cities.create(name: row["Nombre Municipio"], department_id: departamento.id)
 #     end
+#   end
+#   puts "Terminado Ciudades"
 # end
-
-# -  Hacer 20 usuarios
-# -  Cada usuario que tenga 50 publicaciones
-# -  Tendrá 5 vehiculos, 5 inmuebles, 3 servicios, 12 animales, 25 productos
-# -  Cada vehiculo estará en un random de subcategorias de vehiculos
-# -  Cada inmueble estará en una ciudad diferentes
-# -  Cada servicio estará en una categoría diferente.
-# -  Cada 3 animales estarán en categorías diferentes
-# -  Cada producto estará en categorías diferentes, con unidades diferentes, misma locación, mitad nuevos mitad usados
-# -  15 de las publicaciones de productos serán GOLD
-# -  la mitad de publicaciones que tengan preguntas y respuestas
-
-imageO = PublicationImage.new
-imageO.remote_source_url = Faker::Avatar.image
-imageO.save validate: false
-
-cities = City.all
-(2..10).each do |i|
-  Level.create name: Faker::Games::Pokemon.name, min: i*100, max: i*100*2, number: i, description: Faker::Lorem.paragraphs
-end
-(1..30).each do |i|
-  Achivement.create name: Faker::JapaneseMedia::DragonBall.character, remote_icon_url: Faker::Avatar.image, description: Faker::Lorem.paragraph, points: i*10, kind: i <= 10 ? 1 : i <= 20 ? 2 : 3
-end
-(1..20).each do |i|
-  Interest.create name: Faker::Movie.title, description: Faker::Movie.quote
-end
-
-Plan.create name: "Free", price: 0, visibility_level: 1, unlimited_time: false, points: 50, color: "grey", description: Faker::Lorem.paragraph, priority: 1
-Plan.create name: "Pro", price: 20000, visibility_level: 2, unlimited_time: true, points: 200, color: "gold", description: Faker::Lorem.paragraph, priority: 1
+#
+#
+# codes_no_created = []
+#
+# puts "Loading CATEGORIES from CSV..."
+#
+# csv_text = File.read(Rails.root.to_s+'/db/categories.csv')
+# csv = CSV.parse(csv_text, :headers => true)
+#
+# puts "Saving CATEGORIES Data..."
+# csv.each do |raw_row|
+#   row = raw_row.to_hash
+#   puts "===>#{row}"
+#   begin
+#     puts "SAVING CATEGORY: #{row}"
+#
+#     category = Category.new id: row["id"].to_i + 14, name: row["name"], subject: Publication.getSubjectFromInt(row["subject"].to_s)
+#     category.for_news = false
+#     category.save
+#
+#   rescue => error
+#     puts "ERROR Creating row #{row["id"]}..."
+#     #codes_no_created.push row.to_hash
+#   end
+# end
+#
+# puts "Loading SUBCATEGORIES from CSV..."
+#
+# csv_text = File.read(Rails.root.to_s+'/db/subcategories.csv')
+# csv = CSV.parse(csv_text, :headers => true)
+#
+# puts "Saving SUBCATEGORIES Data..."
+# csv.each do |raw_row|
+#   row = raw_row.to_hash
+#   puts "===>#{row}"
+#   begin
+#     puts "SAVING SUBCATEGORY: #{row}"
+#
+#     Subcategory.create name: row["name"], category_id: row["category_id"].to_i + 14
+#
+#   rescue => error
+#     puts "ERROR Creating row #{row["id"]}..."
+#     # puts "ERROR #{error.backtrace}..."
+#     #codes_no_created.push row.to_hash
+#   end
+# end
+#
+# # CSV.open("/home/rails/rails_project/db/codes_no_created.csv", "wb") do |csv|
+# #     csv << ["code_segment", "name_segment", "code_family", "name_family", "code_class", "name_class", "code_product", "name_product"]
+# #     codes_no_created.each do |hash|
+# #         csv << [hash["code_segment"], hash["name_segment"], hash["code_family"], hash["name_family"], hash["code_class"], hash["name_class"], hash["code_product"], hash["name_product"]]
+# #     end
+# # end
+#
+# # -  Hacer 20 usuarios
+# # -  Cada usuario que tenga 50 publicaciones
+# # -  Tendrá 5 vehiculos, 5 inmuebles, 3 servicios, 12 animales, 25 productos
+# # -  Cada vehiculo estará en un random de subcategorias de vehiculos
+# # -  Cada inmueble estará en una ciudad diferentes
+# # -  Cada servicio estará en una categoría diferente.
+# # -  Cada 3 animales estarán en categorías diferentes
+# # -  Cada producto estará en categorías diferentes, con unidades diferentes, misma locación, mitad nuevos mitad usados
+# # -  15 de las publicaciones de productos serán GOLD
+# # -  la mitad de publicaciones que tengan preguntas y respuestas
+#
+# imageO = PublicationImage.new
+# imageO.remote_source_url = Faker::Avatar.image
+# imageO.save validate: false
+#
+# cities = City.all
+# (2..10).each do |i|
+#   Level.create name: Faker::Games::Pokemon.name, min: i*100, max: i*100*2, number: i, description: Faker::Lorem.paragraphs
+# end
+# (1..30).each do |i|
+#   Achivement.create name: Faker::JapaneseMedia::DragonBall.character, remote_icon_url: Faker::Avatar.image, description: Faker::Lorem.paragraph, points: i*10, kind: i <= 10 ? 1 : i <= 20 ? 2 : 3
+# end
+# (1..20).each do |i|
+#   Interest.create name: Faker::Movie.title, description: Faker::Movie.quote
+# end
+#
+# Plan.create name: "Free", price: 0, visibility_level: 1, unlimited_time: false, points: 50, color: "grey", description: Faker::Lorem.paragraph, priority: 1
+# Plan.create name: "Pro", price: 20000, visibility_level: 2, unlimited_time: true, points: 200, color: "gold", description: Faker::Lorem.paragraph, priority: 1
 
 (1..20).each do |i|
   puts "CREATING USER"
