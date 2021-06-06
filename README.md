@@ -17,6 +17,8 @@ Multi-Sided Platform for sellers and buyers with Gamification Levels and Achivem
     * 13;
 * Elasticsearch;
     * 7
+* Redis + Sidekiq
+    * This app use redis and sidekiq for sending emails and notifications and some heavy opperations.
 
 # MODULES & FUNCTIONALITIES
 * Feed of products, consults and more;
