@@ -1,0 +1,178 @@
+id,name,category_id
+1,Accesorios para Maquinaria,1
+2,Autoelevadores y montacargas,1
+3,Cargadores y Transportadores de Rollos,1
+4,Carros Forrajeros y Compactadores,1
+5,Casillas Rurales,1
+6,Elevadores de granos y cintas transportadoras,1
+7,Cinceles,1
+8,Clasificadoras de Semillas,1
+9,Cosechadoras,1
+10,Desmalezadoras,1
+11,Embolsadoras,1
+12,Enfardadoras,1
+13,Estercoleras,1
+14,Extractoras,1
+15,Fertilizadoras,1
+16,Grúas,1
+17,Inoculadores,1
+18,Maquinaria Frutihorticola,1
+19,Mixers,1
+20,Moledoras y Quebradoras,1
+21,Norias,1
+22,Otras Maquinarias,1
+23,Palas y Niveladoras,1
+24,Surcadores y subsoladores,1
+25,Picadoras,1
+26,Plataformas y Cabezales,1
+27,Procesadoras de Alimentos balanceados,1
+28,Pulverizadoras,1
+29,Rastras,1
+30,Rastrillos,1
+31,Rolos,1
+32,Rotoenfardadoras,1
+33,S,1
+34,Segadoras,1
+35,Sembradoras,1
+36,Tolvas,1
+37,Tractores,1
+,Otros,1
+38,Accesorios y Equipamiento,2
+39,Acoplados,2
+40,Autos,2
+41,Camiones,2
+42,Camionetas,2
+43,Carrocerías,2
+44,Neumáticos,2
+45,Otros rodados,2
+46,Semirremolques,2
+47,Utilitarios,2
+48,Otros,2
+49,Alambrados,3
+50,Balanzas y básculas,3
+51,Galpones y techos,3
+52,Generadores de energía,3
+53,Instalaciones para Avicultura,3
+54,Instalaciones para Cerdos,3
+55,Instalaciones para Ganadería,3
+56,Instalaciones para Piscicultultura,3
+57,Instalaciones para Riego y Bebida,3
+58,Instalaciones para Tambos,3
+59,Invernaderos,3
+60,Otros elementos de Infraestructura,3
+61,Silos,3
+62,Tanques,3
+63,Otros,3
+64,A Motor,4
+65,Agricultura de precisión,4
+66,Eléctricas,4
+67,Indumentaria,4
+68,Manuales,4
+69,Otros,4
+70,Terrenos,5
+71,Fincas,5
+72,Otros,5
+73,Compactadores,6
+74,Excavadoras,6
+75,Minicargadoras,6
+76,Motoniveladoras,6
+77,Otras,6
+78,Palas cargadoras,6
+79,Palas con retroexcavadora,6
+80,Plataformas de Elevación,6
+81,Retroexcavadora,6
+82,Topadoras,6
+83,Otros,6
+84,Acoples,7
+85,Antenas,7
+86,Banderilleros satelitales,7
+87,Control de maquinarias,7
+88,Cuenta Hectáreas,7
+89,Dosificadores Variables,7
+90,Drones,7
+91,Estaciones meteorológicas,7
+92,Fertilización variable,7
+93,GPS,7
+94,Humedímetros,7
+95,Iluminación led,7
+96,Instrumentos de Medición,7
+97,Mapeadores Satelitales,7
+98,Monitores de rendimiento,7
+99,Monitores de siembra,7
+100,Niveles láser,7
+101,Otras Herramientas de Agricultura de Precisión,7
+102,Pastillas de pulverización,7
+103,Pilotos automáticos,7
+104,Pulverización selectiva,7
+105,Software de análisis,7
+106,Otros,7
+107,Todos,8
+108,Todos,9
+109,Todos,10
+110,Todos,11
+111,Todos,12
+112,Todos,13
+113,Ocio,14
+114,Deportivos,14
+115,Trocha,14
+116,Trote,14
+117,Galope,14
+118,Paso fino,14
+119,De trabajo,14
+120,Ponys,14
+121,Mulares,14
+122,Burros,14
+123,Percherones,14
+124,Para producción de carne,15
+125,Para producción de leche,15
+126,Caninos,16
+127,Felinos,16
+128,Roedores,16
+129,Peces,16
+130,Otros,16
+131,Todos,17
+132,Fungisidas,18
+133,Herbisidas,18
+134,Insecticidas,18
+135,Nutrición vegetal,18
+136,Fumigantes,18
+137,Semillas,18
+138,Caninos,19
+139,Felinos,19
+140,Ganadería,19
+141,Equinos,19
+142,Avicultura,19
+143,Roedores,19
+144,Peces,19
+145,Porcicultura,19
+146,Caninos,20
+147,Felinos,20
+148,Ganadería,20
+149,Equinos,20
+150,Porcinos,20
+151,Aves de corral,20
+152,Conejos o Cunicultura,20
+153,Peces,20
+154,Caprinos,20
+155,Ovinos,20
+156,Otras especies,20
+157,Todos,21
+158,Todos,22
+159,Todos,23
+160,Todos,24
+161,Todos,25
+162,Todos,26
+163,Todos,27
+164,Todos,28
+165,Todos,29
+166,Todos,30
+167,Todos,31
+168,Todos,32
+169,Todos,33
+170,Todos,34
+171,Todos,35
+172,Todos,36
+173,Todos,37
+174,Todos,38
+175,Todos,39
+176,Todos,40

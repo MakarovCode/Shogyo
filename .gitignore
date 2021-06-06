@@ -26,4 +26,3 @@ config/deploy.rb
 config/deploy/*
 
 *.dump
-*.csv

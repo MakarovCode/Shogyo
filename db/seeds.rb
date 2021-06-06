@@ -6,65 +6,65 @@
 # #
 #
 require 'faker'
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
-
-info = Information.new
-info.remote_logo_url = "#{Rails.root}/uploads/information/logo/1/logotype.png"
-info.facebook_link = "http://facebook.com"
-info.twitter_link ="http://facebook.com"
-info.linkedin_link ="http://facebook.com"
-info.remote_meta_image_url = "#{Rails.root}/uploads/information/meta_image/1/mall.jpg"
-info.blog_sidebar_title = "LOS MAS VISTOS"
-info.copyrights_text = "Todos los derechos reservados"
-info.contact_email = "contacto@agroneto.com"
-info.contact_address = "CALLE 67 A NO 29 A 48"
-info.contact_phone ="3165793255"
-info.remote_small_logo_url = "#{Rails.root}/uploads/information/small_logo/1/logo.png"
-info.save validate: false
-
-puts "Restarting CATEGORIES and SUBCATEGORIES tables indexes"
-
-Country.create name: "Colombia"
-
-puts "Iniciando Departamentos..."
-Department.create(
-  [
-    {name: 'Amazonas', country_id: 1},
-    {name: 'Antioquia', country_id: 1},
-    {name: 'Arauca', country_id: 1},
-    {name: 'Archipiélago de San Andrés Providencia y Santa Catalina', country_id: 1},
-    {name: 'Atlántico', country_id: 1},
-    {name: 'Bogotá D.C', country_id: 1},
-    {name: 'Bolívar', country_id: 1},
-    {name: 'Boyacá', country_id: 1},
-    {name: 'Caldas', country_id: 1},
-    {name: 'Caquetá', country_id: 1},
-    {name: 'Casanare', country_id: 1},
-    {name: 'Cauca', country_id: 1},
-    {name: 'Cesar', country_id: 1},
-    {name: 'Chocó', country_id: 1},
-    {name: 'Córdoba', country_id: 1},
-    {name: 'Cundinamarca', country_id: 1},
-    {name: 'Guainía', country_id: 1},
-    {name: 'Guaviare', country_id: 1},
-    {name: 'Huila', country_id: 1},
-    {name: 'La Guajira', country_id: 1},
-    {name: 'Magdalena', country_id: 1},
-    {name: 'Meta', country_id: 1},
-    {name: 'Nariño', country_id: 1},
-    {name: 'Norte de Santander', country_id: 1},
-    {name: 'Putumayo', country_id: 1},
-    {name: 'Quindio', country_id: 1},
-    {name: 'Risaralda', country_id: 1},
-    {name: 'Santander', country_id: 1},
-    {name: 'Sucre', country_id: 1},
-    {name: 'Tolima', country_id: 1},
-    {name: 'Valle del Cauca', country_id: 1},
-    {name: 'Vaupés', country_id: 1},
-    {name: 'Vichada', country_id: 1}
-  ]
-)
-puts "Terminado Departamentos"
+# AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+#
+# info = Information.new
+# info.remote_logo_url = "#{Rails.root}/uploads/information/logo/1/logotype.png"
+# info.facebook_link = "http://facebook.com"
+# info.twitter_link ="http://facebook.com"
+# info.linkedin_link ="http://facebook.com"
+# info.remote_meta_image_url = "#{Rails.root}/uploads/information/meta_image/1/mall.jpg"
+# info.blog_sidebar_title = "LOS MAS VISTOS"
+# info.copyrights_text = "Todos los derechos reservados"
+# info.contact_email = "contacto@agroneto.com"
+# info.contact_address = "CALLE 67 A NO 29 A 48"
+# info.contact_phone ="3165793255"
+# info.remote_small_logo_url = "#{Rails.root}/uploads/information/small_logo/1/logo.png"
+# info.save validate: false
+#
+# puts "Restarting CATEGORIES and SUBCATEGORIES tables indexes"
+#
+# Country.create name: "Colombia"
+#
+# puts "Iniciando Departamentos..."
+# Department.create(
+#   [
+#     {name: 'Amazonas', country_id: 1},
+#     {name: 'Antioquia', country_id: 1},
+#     {name: 'Arauca', country_id: 1},
+#     {name: 'Archipiélago de San Andrés Providencia y Santa Catalina', country_id: 1},
+#     {name: 'Atlántico', country_id: 1},
+#     {name: 'Bogotá D.C', country_id: 1},
+#     {name: 'Bolívar', country_id: 1},
+#     {name: 'Boyacá', country_id: 1},
+#     {name: 'Caldas', country_id: 1},
+#     {name: 'Caquetá', country_id: 1},
+#     {name: 'Casanare', country_id: 1},
+#     {name: 'Cauca', country_id: 1},
+#     {name: 'Cesar', country_id: 1},
+#     {name: 'Chocó', country_id: 1},
+#     {name: 'Córdoba', country_id: 1},
+#     {name: 'Cundinamarca', country_id: 1},
+#     {name: 'Guainía', country_id: 1},
+#     {name: 'Guaviare', country_id: 1},
+#     {name: 'Huila', country_id: 1},
+#     {name: 'La Guajira', country_id: 1},
+#     {name: 'Magdalena', country_id: 1},
+#     {name: 'Meta', country_id: 1},
+#     {name: 'Nariño', country_id: 1},
+#     {name: 'Norte de Santander', country_id: 1},
+#     {name: 'Putumayo', country_id: 1},
+#     {name: 'Quindio', country_id: 1},
+#     {name: 'Risaralda', country_id: 1},
+#     {name: 'Santander', country_id: 1},
+#     {name: 'Sucre', country_id: 1},
+#     {name: 'Tolima', country_id: 1},
+#     {name: 'Valle del Cauca', country_id: 1},
+#     {name: 'Vaupés', country_id: 1},
+#     {name: 'Vichada', country_id: 1}
+#   ]
+# )
+# puts "Terminado Departamentos"
 
 if City.all.count < 9
   puts "Iniciando Ciudades..."

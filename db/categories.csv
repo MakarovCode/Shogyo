@@ -1,0 +1,41 @@
+id,name,subject
+1,Maquinaria Agricola,4
+2,Vehículos y Remolques,2
+3,Instalaciones e Infraestructura,4
+4,Equipamiento y Herramientas,4
+5,Terrenos e Inmuebles,3
+6,Maquinaria Vial,2
+7,Agricultura de Precisión,4
+8,Porcinos,5
+9,Caprinos,5
+10,Ovinos,5
+11,Aves de corral,5
+12,Conejos,5
+13,Peces,5
+14,Equinos,5
+15,Bovinos y Vacunos,5
+16,Mascotas,5
+17,Otras especies,5
+18,Insumos Agropecuarios,4
+19,Insumos Veterinarios,4
+20,Concentrados,4
+21,Construcción,1
+22,Contaduría,1
+23,Veterinaria,1
+24,Zootecnia,1
+25,Contratistas Rurales,1
+26,Estabilización de Suelos,1
+27,Forestación,1
+28,Fumigación,1
+29,Geología,1
+30,Laboratorios de análisis agropecuario,1
+31,Topografía,1
+32,Movimiento de tierra y excavaciones,1
+33,Asesoramiento,1
+34,Perforaciones,1
+35,Reparaciones Metalurgicas,1
+36,Electricistas,1
+37,Plomeros,1
+38,Carpinteros,1
+39,Software,1
+40,Mecánica,1
